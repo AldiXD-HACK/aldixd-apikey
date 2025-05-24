@@ -29,7 +29,7 @@ function convertCRC16(str) {
 }
 
 function generateTransactionId() {
-    return `SKYZOPEDIA-${crypto.randomBytes(2).toString('hex').toUpperCase()}`
+    return `AldiXDHOST-${crypto.randomBytes(2).toString('hex').toUpperCase()}`
 }
 
 function generateExpirationTime() {
@@ -42,7 +42,7 @@ async function elxyzFile(buffer) {
     return new Promise(async (resolve, reject) => {
         try {
 const service = new ImageUploadService('pixhost.to');
-let { directLink } = await service.uploadFromBinary(buffer, 'skyzo.png');
+let { directLink } = await service.uploadFromBinary(buffer, 'aldixd.png');
             resolve(directLink);
         } catch (error) {
             console.error('🚫 Upload Failed:', error);
