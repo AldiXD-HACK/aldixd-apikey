@@ -245,6 +245,12 @@
       "path": "/tools/ssweb?apikey=&url="
     },
     {
+      "name": "Screenshot Web",
+      "desc": "Screenshot web url",
+      "status": "Active",
+      "path": "/tools/createuser?apikey=&username=&password=&ram=&nestid=&locid=&eggid=&domain=&ptla="
+    },
+    {
       "name": "Emoji To Gif",
       "desc": "Convert emoji to gif",
       "status": "Active",
