@@ -245,8 +245,8 @@
       "path": "/tools/ssweb?apikey=&url="
     },
     {
-      "name": "Screenshot Web",
-      "desc": "Screenshot web url",
+      "name": "Createuser Panel Bot",
+      "desc": "Create User Panel",
       "status": "Active",
       "path": "/tools/createuser?apikey=&username=&password=&ram=&nestid=&locid=&eggid=&domain=&ptla="
     },
