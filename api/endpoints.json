@@ -248,7 +248,7 @@
       "name": "Createuser Panel Bot",
       "desc": "Create User Panel",
       "status": "Active",
-      "path": "/tools/createuser?apikey=&username=&password=&ram=&nestid=&locid=&eggid=&domain=&ptla="
+      "path": "/tools/panel/createuser?apikey=&username=&password=&ram=&nestid=&locid=&eggid=&domain=&ptla="
     },
     {
       "name": "Emoji To Gif",
