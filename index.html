@@ -7,7 +7,7 @@
   <title id="page"></title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
   /* ===== Loading Screen Styles ===== */
   #loading-screen {
@@ -16,7 +16,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: #f8fafc;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,48 +26,48 @@
   }
   
   .loading-spinner-large {
-    border: 5px solid rgba(255, 255, 255, 0.3);
-    border-top: 5px solid #3ba7ff;
+    border: 4px solid rgba(15, 23, 42, 0.05);
+    border-top: 4px solid rgba(15, 23, 42, 0.8);
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
     animation: spin 1s linear infinite;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
   }
   
   :root {
-    --primary: #3ba7ff;
-    --primary-dark: #2a7cc7;
-    --primary-light: #7fb3d5;
-    --secondary: #88c1e0;
-    --dark: #2c3e50;
-    --darker: #1a1a1a;
+    --primary: #3b82f6;
+    --primary-dark: #2563eb;
+    --primary-light: #93c5fd;
+    --secondary: #e0f2fe;
+    --dark: #0f172a;
+    --darker: #0f172a;
     --light: #ffffff;
-    --gray: #7f8c8d;
-    --light-gray: #f8f9fa;
-    --lighter-gray: #f5f7f8;
-    --success: #27ae60;
-    --warning: #f39c12;
-    --danger: #e74c3c;
+    --gray: #64748b;
+    --light-gray: #f1f5f9;
+    --lighter-gray: #f8fafc;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
     --card-bg: #ffffff;
-    --card-hover: #f5f9fc;
+    --card-hover: #f8fafc;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 20px 25px rgba(0, 0, 0, 0.1);
-    --border-radius: 8px;
-    --border-radius-sm: 4px;
+    --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.05);
+    --shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.1), 0 2px 4px -1px rgba(15, 23, 42, 0.06);
+    --shadow-md: 0 10px 15px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -2px rgba(15, 23, 42, 0.05);
+    --shadow-lg: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
   }
   
   .loading-text {
-    color: var(--darker);
-    font-size: 1.2rem;
-    margin-top: 15px;
+    color: var(--gray);
+    font-size: 0.875rem;
+    margin-top: 8px;
     text-align: center;
     font-weight: 500;
-    letter-spacing: 0.5px;
+    font-family: 'Inter', sans-serif;
   }
 
   * {
@@ -77,13 +77,13 @@
   }
 
   body {
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--light-gray);
+    font-family: 'Inter', sans-serif;
+    background-color: var(--lighter-gray);
     color: var(--dark);
-    padding: 2rem;
+    padding: 1.5rem;
     min-height: 100vh;
     -webkit-tap-highlight-color: transparent;
-    line-height: 1.6;
+    line-height: 1.5;
   }
 
   .d-none {
@@ -92,58 +92,49 @@
   
   #apiLinks {
     display: flex;
-    margin-top: 1.5rem;
+    gap: 12px;
+    margin-top: 24px;
   }
   
   #apiLinks a {
-    background: var(--primary);
-    border: none;
-    padding: 0.75rem 1.5rem;
-    font-size: 0.9rem;
-    font-weight: 600;
+    background: var(--dark);
+    border: 1px solid var(--dark);
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
     text-decoration: none;
     color: white;
-    margin-right: 1rem;
+    border-radius: var(--radius-sm);
     transition: var(--transition);
-    border-radius: var(--border-radius-sm);
-    box-shadow: var(--shadow-sm);
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-  }
-  
-  #apiLinks a i {
-    font-size: 1rem;
+    gap: 6px;
   }
   
   #apiLinks a:nth-child(2) {
-    background: transparent;
-    border: 2px solid var(--primary);
-    color: var(--primary);
+    background: none;
+    border: 1px solid var(--dark);
+    color: var(--dark);
   }
   
   #apiLinks a:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow);
-  }
-  
-  #apiLinks a:nth-child(2):hover {
-    background: rgba(59, 167, 255, 0.1);
+    box-shadow: var(--shadow-md);
   }
 
   pre {
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow-x: auto;
-    background: #f8f9fa;
-    color: var(--darker);
+    background: var(--light-gray);
+    color: var(--dark);
     padding: 1rem;
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--radius-sm);
     max-height: 400px;
-    font-size: 0.85rem;    
+    font-size: 0.875rem;    
     font-weight: 500;
-    font-family: 'Roboto Mono', monospace;
-    border: 1px solid #e9ecef;
+    font-family: 'Inter', sans-serif;
+    border: 1px solid #e2e8f0;
   }
 
   /* ===== Form Styles ===== */
@@ -152,43 +143,41 @@
     font-weight: 500;
     margin-bottom: 8px;
     color: var(--dark);
-    font-size: 0.95rem;
+    font-size: 0.875rem;
   }
 
   .modal-body form input {
     width: 100%;
-    padding: 12px 16px;
-    border-radius: var(--border-radius-sm);
-    border: 1px solid #dee2e6;
-    background: #ffffff;
-    color: var(--darker);
+    padding: 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid #e2e8f0;
+    background: var(--light);
+    color: var(--dark);
     margin-bottom: 1rem;
-    font-size: 0.95rem;
+    font-size: 0.875rem;
     font-weight: 500;
     transition: var(--transition);
-    box-shadow: var(--shadow-sm);
   }
 
   .modal-body form input::placeholder {
-    color: #adb5bd;
-    font-weight: 400;
+    color: #94a3b8;
   }
 
   .modal-body form input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(59, 167, 255, 0.2);
+    box-shadow: 0 0 0 1px var(--primary);
   }
 
   #submitParamBtn {
-    background: var(--primary);
+    background: var(--dark);
     color: white;
     border: none;
-    padding: 14px 24px;
-    font-size: 1rem;
-    border-radius: var(--border-radius-sm);
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 500;
     transition: var(--transition);
     width: 100%;
     margin-top: 0.5rem;
@@ -200,7 +189,7 @@
   }
 
   #submitParamBtn:hover {
-    background: var(--primary-dark);
+    background: var(--dark);
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
   }
@@ -211,11 +200,11 @@
 
   .loading-spinner {
     margin: 2rem auto 0.5rem auto;
-    border: 4px solid rgba(59, 167, 255, 0.1);
-    border-top: 4px solid var(--primary);
+    border: 3px solid rgba(15, 23, 42, 0.1);
+    border-top: 3px solid var(--dark);
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     animation: spin 1s linear infinite;
   }
 
@@ -228,17 +217,13 @@
   .title-container {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
     margin-bottom: 1.5rem;
   }
   
   .icon-title {
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: var(--primary);
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
 
   /* ===== Modal Styles ===== */
@@ -249,7 +234,7 @@
     z-index: 100;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(15, 23, 42, 0.5);
     backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
@@ -267,17 +252,17 @@
 
   .modal-dialog {
     width: 100%;
-    max-width: 600px;
-    background: #ffffff;
-    border-radius: var(--border-radius);
-    padding: 2rem;
+    max-width: 500px;
+    background: var(--light);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
     color: var(--dark);
     overflow: hidden;
     transform: translateY(20px);
     transition: transform 0.3s ease, opacity 0.3s ease;
     opacity: 0;
     box-shadow: var(--shadow-lg);
-    border: none;
+    border: 1px solid #e2e8f0;
   }
 
   .modal.active .modal-dialog {
@@ -289,48 +274,46 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid #e9ecef;
-    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 1rem;
   }
 
   .modal-header h5 {
-    font-size: 1.4rem;
+    font-size: 1.125rem;
     font-weight: 600;
-    color: var(--darker);
-    line-height: 1.3;
+    color: var(--dark);
   }
 
   .modal-header span {
-    font-size: 0.95rem;
+    font-size: 0.875rem;
     color: var(--gray);
     display: block;
     font-weight: 400;
-    margin-top: 0.5rem;
-    line-height: 1.5;
+    margin-top: 4px;
   }
 
   .btn-close {
     background: none;
     border: none;
-    font-size: 2rem;
+    font-size: 1.5rem;
     line-height: 1;
     cursor: pointer;
     color: var(--gray);
     transition: var(--transition);
     padding: 0.25rem;
-    border-radius: 50%;
-    font-weight: 300;
-    width: 36px;
-    height: 36px;
+    border-radius: var(--radius-sm);
+    font-weight: 400;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   .btn-close:hover {
-    color: var(--danger);
-    background: rgba(231, 76, 60, 0.1);
+    color: var(--dark);
+    background: var(--light-gray);
   }
 
   /* ===== Modal Body Content ===== */
@@ -342,14 +325,14 @@
     display: none;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
-    background-color: #f8f9fa;
-    border: 1px solid #e9ecef;
-    padding: 12px 16px;
-    border-radius: var(--border-radius-sm);
-    font-size: 0.9rem;
-    color: var(--darker);
-    margin-bottom: 1.5rem;
+    gap: 8px;
+    background-color: var(--light-gray);
+    border: 1px solid #e2e8f0;
+    padding: 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    color: var(--dark);
+    margin-bottom: 1rem;
     overflow: auto;
     font-weight: 500;
     transition: var(--transition);
@@ -366,17 +349,17 @@
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
   .copy-button {
-    background: var(--primary);
+    background: var(--dark);
     border: none;
     color: white;
-    padding: 8px 12px;
-    border-radius: var(--border-radius-sm);
-    font-size: 0.9rem;
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
     cursor: pointer;
     transition: var(--transition);
     display: flex;
@@ -390,9 +373,9 @@
   }
 
   .copy-button:hover {
-    background: var(--primary-dark);
+    background: var(--dark);
     transform: translateY(-1px);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow);
   }
 
   .copy-button:active {
@@ -400,160 +383,131 @@
   }
 
   #apiResponseContent {
-    background-color: #ffffff;
-    padding: 1.5rem;
-    border-radius: var(--border-radius-sm);
-    border: 1px solid #e9ecef;
-    font-size: 0.95rem;
-    max-height: 500px;
+    background-color: var(--light-gray);
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid #e2e8f0;
+    font-size: 0.875rem;
+    max-height: 400px;
     overflow-y: auto;
     margin-top: 1rem;
     white-space: pre-wrap;
     word-wrap: break-word;
     transition: var(--transition);
-    box-shadow: var(--shadow-sm);
   }
   
   #apiResponseContent::-webkit-scrollbar {
-    width: 6px;
-  }
-  
-  #apiResponseContent::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-  }
-  
-  #apiResponseContent::-webkit-scrollbar-thumb {
-    background: var(--primary-light);
-    border-radius: 10px;
-  }
-  
-  #apiResponseContent::-webkit-scrollbar-thumb:hover {
-    background: var(--primary);
+    display: none;
   }
 
   .image-response {
     max-width: 100%;
-    max-height: 400px;
-    border-radius: var(--border-radius-sm);
+    max-height: 300px;
+    border-radius: var(--radius-sm);
     display: block;
     margin: 0 auto;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-sm);
   }
   
   .video-response {
-    max-width: 100%;
-    height: auto;
-    border-radius: var(--border-radius-sm);
-    display: block;
-    margin: 0 auto;
-    box-shadow: var(--shadow);
-  }
+     max-width: 100%;
+     height: auto;
+     border-radius: var(--radius-sm);
+   }
    
-  .audio-response {
-    width: 100%;
-    margin: 1rem auto;
-    border-radius: var(--border-radius-sm);
-    box-shadow: var(--shadow-sm);
-  }
+   .audio-response {
+     width: 100%;
+     margin-top: 1rem;
+   }
 
   /* ===== Page Sections ===== */
   .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: 0 1rem;
   }
 
   header h1 {
     font-size: 1.75rem;
     font-weight: 700;
     margin-bottom: 2rem;
-    color: var(--darker);
+    color: var(--dark);
   }
 
   .hero {
     text-align: left;
-    margin: 3rem 0 4rem;
+    margin: 2.5rem 0 3rem;
     max-width: 800px;
   }
 
   .hero h2 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
-    color: var(--darker);
-    margin-bottom: 1rem;
+    color: var(--dark);
+    margin-bottom: 16px;
     line-height: 1.2;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
   }
 
   .hero p {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--gray);
     margin-bottom: 0;
     font-weight: 400;
     line-height: 1.6;
-    max-width: 600px;
   }
 
   /* ===== Stats ===== */
   .stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 3rem;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
   }
 
   .stats div {
     background: var(--card-bg);
-    padding: 1.75rem 1.5rem;
-    border-radius: var(--border-radius);
+    padding: 1.5rem 1rem;
+    border-radius: var(--radius-md);
     text-align: center;
     transition: var(--transition);
-    border: 1px solid #e9ecef;
+    border: 1px solid #e2e8f0;
     box-shadow: var(--shadow);
   }
 
   .stats div:hover {
     transform: translateY(-5px);
-    background: var(--card-bg);
+    background: var(--card-hover);
     box-shadow: var(--shadow-md);
-    border-color: var(--primary-light);
   }
 
   .stats h3 {
-    font-size: 1rem;
+    font-size: 0.875rem;
     color: var(--gray);
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
     font-weight: 500;
   }
 
   .stats p {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    color: var(--primary);
-    line-height: 1;
+    color: var(--dark);
   }
 
   .content h2 {
     font-size: 1.5rem;
-    color: var(--darker);
-    margin-bottom: 1.5rem;
+    color: var(--dark);
+    margin-bottom: 1rem;
     font-weight: 600;
   }
 
   /* ===== Tabs ===== */
   .tabs {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
     overflow-x: auto;
-    margin-bottom: 2rem;
-    padding-bottom: 10px;
+    margin-bottom: 1.5rem;
+    padding-bottom: 8px;
     scrollbar-width: none;
-    border-bottom: 1px solid #e9ecef;
   }
 
   .tabs::-webkit-scrollbar {
@@ -565,30 +519,31 @@
     background: none;
     color: var(--gray);
     border: none;
-    font-weight: 600;
-    border-bottom: 3px solid transparent;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
     padding: 0.5rem 0;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.875rem;
     white-space: nowrap;
     position: relative;
     transition: var(--transition);
   }
 
   .tab.active {
-    border-bottom: 3px solid var(--primary);
-    color: var(--primary);
+    border-bottom: 2px solid var(--dark);
+    color: var(--dark);
+    font-weight: 600;
   }
 
   .tab:after {
     content: '';
     position: absolute;
-    bottom: -3px;
+    bottom: -2px;
     left: 0;
     width: 0;
-    height: 3px;
-    background: var(--primary);
-    transition: var(--transition);
+    height: 2px;
+    background: var(--dark);
+    transition: width 0.3s ease;
   }
 
   .tab:hover:not(.active):after {
@@ -598,22 +553,21 @@
   /* ===== API Card Animations ===== */
   .api-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
     margin-bottom: 4rem;
   }
 
   /* ===== API Cards ===== */
   .api-card {
     background: var(--card-bg);
-    padding: 1.5rem;
-    border-radius: var(--border-radius);
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
     transition: var(--transition);
-    border: 1px solid #e9ecef;
+    border: 1px solid #e2e8f0;
     box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     min-height: 180px;
     opacity: 0;
     transform: translateY(20px);
@@ -633,44 +587,38 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 4px;
+    width: 100%;
     height: 100%;
-    background: var(--primary);
-    transition: var(--transition);
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
 
   .api-card:hover::before {
-    width: 6px;
-  }
-
-  .api-card:hover .play-button {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    opacity: 1;
   }
 
   .api-info {
     flex: 1;
-    padding-right: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
 
   .play-button {
-    background: var(--primary);
+    background: var(--dark);
     border: none;
-    border-radius: var(--border-radius-sm);
-    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    padding: 0.75rem;
     color: white;
     cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 600;
+    font-size: 0.875rem;
+    font-weight: 500;
     transition: var(--transition);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow);
+    margin-top: auto;
     width: 100%;
-    align-self: flex-end;
   }
 
   @keyframes cardEntrance {
@@ -685,54 +633,46 @@
   }
 
   .api-info h3 {
-    font-size: 1.2rem;
-    color: var(--darker);
+    font-size: 1rem;
+    color: var(--dark);
     font-weight: 600;
-    margin-bottom: 0.5rem;
-    line-height: 1.3;
+    margin-bottom: 8px;
   }
 
   .api-info p {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     color: var(--gray);
     font-weight: 400;
     margin-bottom: 1rem;
     line-height: 1.5;
   }
   
-  .api-card:hover .status {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-sm);
-  }
-
   .status {
-    background: rgba(39, 174, 96, 0.1);
-    padding: 0.5rem 1rem;
-    border-radius: 50px;
-    font-size: 0.8rem;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 0.375rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
     color: var(--success);
     display: inline-block;
-    font-weight: 600;
-    margin-top: 0.5rem;
+    font-weight: 500;
     transition: var(--transition);
-    border: 1px solid rgba(39, 174, 96, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.2);
   }
 
   .status.warning {
-    background: rgba(243, 156, 18, 0.1);
+    background: rgba(245, 158, 11, 0.1);
     color: var(--warning);
-    border-color: rgba(243, 156, 18, 0.2);
+    border-color: rgba(245, 158, 11, 0.2);
   }
 
   .status.danger {
-    background: rgba(231, 76, 60, 0.1);
+    background: rgba(239, 68, 68, 0.1);
     color: var(--danger);
-    border-color: rgba(231, 76, 60, 0.2);
+    border-color: rgba(239, 68, 68, 0.2);
   }
 
   .play-button:hover {
-    background: var(--primary-dark);
-    transform: translateY(-3px);
+    transform: translateY(-2px);
     box-shadow: var(--shadow-md);
   }
 
@@ -742,12 +682,12 @@
 
   .footer {
     text-align: center;
-    padding: 3rem 0 2rem;
+    padding: 2rem 0 1rem;
     color: var(--gray);
-    font-size: 0.95rem;
+    font-size: 0.875rem;
     font-weight: 400;
-    border-top: 1px solid #e9ecef;
-    margin-top: 4rem;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 3rem;
   }
 
   .contact {
@@ -762,22 +702,20 @@
     text-decoration: none;
     font-size: 1.25rem;
     transition: var(--transition);
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: #f8f9fa;
-    border: 1px solid #e9ecef;
+    background: var(--light-gray);
   }
 
   .contact a:hover {
     color: white;
-    background: var(--primary);
+    background: var(--dark);
     transform: translateY(-3px);
     box-shadow: var(--shadow);
-    border-color: var(--primary);
   }
 
   /* ===== Animations ===== */
@@ -799,15 +737,15 @@
   /* ===== Responsive ===== */
   @media (max-width: 768px) {
     body {
-      padding: 1.5rem;
+      padding: 1rem;
     }
     
     .hero h2 {
-      font-size: 2rem;
+      font-size: 1.75rem;
     }
     
     .hero p {
-      font-size: 1rem;
+      font-size: 0.9375rem;
     }
     
     .api-list {
@@ -817,19 +755,11 @@
     .stats {
       grid-template-columns: repeat(2, 1fr);
     }
-    
-    .modal-dialog {
-      padding: 1.5rem;
-    }
   }
 
   @media (max-width: 480px) {
-    body {
-      padding: 1rem;
-    }
-    
     .hero h2 {
-      font-size: 1.8rem;
+      font-size: 1.5rem;
     }
     
     .stats {
@@ -842,11 +772,9 @@
     
     #apiLinks {
       flex-direction: column;
-      gap: 0.75rem;
     }
     
     #apiLinks a {
-      margin-right: 0;
       width: 100%;
       justify-content: center;
     }
@@ -857,7 +785,7 @@
   <!-- Loading Screen -->
   <div id="loading-screen">
     <div class="loading-spinner-large"></div>
-    <div class="loading-text">Loading API Documentation...</div>
+    <div class="loading-text">Loading ...</div>
   </div>
 
   <div class="container">
@@ -866,10 +794,10 @@
         <h2 id="apiTitle"></h2>
       </div>
       <p>Simple API with easy and minimalistic integration for WhatsApp Bot Developers.</p>
-      <section id="apiLinks">
-        <a id="information" href="#" title="Information"><i class="fas fa-info-circle"></i> API Information</a>
-        <a id="contactdev" href="#" title="Contact Dev"><i class="fas fa-paper-plane"></i> Contact Developer</a>
-      </section>
+          <section id="apiLinks">
+    <a id="information" href="#" title="Information">Information API</a>
+    <a id="contactdev" href="#" title="Contact Dev">Contact Dev</a>
+    </section>
     </section>
 
     <section class="content">
@@ -921,29 +849,30 @@
   </footer>
 
   <script>
+  
   (async () => {
-    const settings = await fetch("/settings.json").then(res => res.json());
-    
-    document.getElementById("icon").href = settings.favicon
-    const head = document.head;
-    
-    const ogTags = [
-          { property: 'og:title', content: settings.apititle },
-          { property: 'og:description', content: "Simple API with easy and minimalistic integration for WhatsApp Bot Developers." },
-          { property: 'og:image', content: settings.favicon },
-          { property: 'og:url', content: window.location.href },
-          { property: 'og:type', content: 'website' }
-        ];
-        
-    ogTags.forEach(({ property, content }) => {
-          const meta = document.createElement('meta');
-          meta.setAttribute('property', property);
-          meta.setAttribute('content', content);
-          head.appendChild(meta);
-        });
-    
-    })()
-    
+  const settings = await fetch("/settings.json").then(res => res.json());
+  
+  document.getElementById("icon").href = settings.favicon
+  const head = document.head;
+  
+  const ogTags = [
+        { property: 'og:title', content: settings.apititle },
+        { property: 'og:description', content: "Simple API with easy and minimalistic integration for WhatsApp Bot Developers." },
+        { property: 'og:image', content: settings.favicon },
+        { property: 'og:url', content: window.location.href },
+        { property: 'og:type', content: 'website' }
+      ];
+      
+  ogTags.forEach(({ property, content }) => {
+        const meta = document.createElement('meta');
+        meta.setAttribute('property', property);
+        meta.setAttribute('content', content);
+        head.appendChild(meta);
+      });
+  
+  })()
+  
     document.addEventListener('DOMContentLoaded', function() {
       // Hide the main content initially
       document.querySelector('.container').style.display = 'none';
@@ -1000,6 +929,7 @@
         apis[category].sort((a, b) => a.name.localeCompare(b.name)).forEach((api, i) => {
           const card = document.createElement("div");
           card.className = "api-card";
+          
           
           // Determine status class
           let statusClass = "";
@@ -1071,7 +1001,7 @@
             queryParams.forEach(param => {
               const [key, value] = param.split("=");
               paramForm.innerHTML += `
-                <label for="${key}">${key.charAt(0).toUpperCase() + key.slice(1)}</label>
+                <label for="${key}">${key}</label>
                 <input type="text" id="${key}" name="${key}" value="${value || ''}" 
                        placeholder="Enter ${key}" required />
               `;
@@ -1094,12 +1024,9 @@
           const textToCopy = document.getElementById("copyEndpointText").innerText;
           navigator.clipboard.writeText(textToCopy).then(() => {
             const copyBtn = e.target.closest(".copy-button");
-            const originalHTML = copyBtn.innerHTML;
-            copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-            copyBtn.style.background = "var(--success)";
+            copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied';
             setTimeout(() => {
-              copyBtn.innerHTML = originalHTML;
-              copyBtn.style.background = "var(--primary)";
+              copyBtn.innerHTML = '<i class="far fa-copy"></i> Copy';
             }, 2000);
           });
         }
@@ -1136,69 +1063,69 @@
       });
     }    
 
-    function fetchAPI(endpoint) {
-      const fullURL = window.location.origin + endpoint;
-      const responseEl = document.getElementById("apiResponseContent");
-      const loadingEl = document.getElementById("apiResponseLoading");
-      const urlsSection = document.querySelector(".copy-section");
-      const modal = document.getElementById("apiResponseModal");
+function fetchAPI(endpoint) {
+  const fullURL = window.location.origin + endpoint;
+  const responseEl = document.getElementById("apiResponseContent");
+  const loadingEl = document.getElementById("apiResponseLoading");
+  const urlsSection = document.querySelector(".copy-section");
+  const modal = document.getElementById("apiResponseModal");
 
-      // Show loading state
-      paramForm.style.display = "none";
-      document.getElementById("submitParamBtn").style.display = "none";
-      loadingEl.style.display = "block";
-      responseEl.classList.add("d-none");
-      responseEl.innerHTML = "";
-      urlsSection.classList.add("active");
-      document.getElementById("copyEndpointText").innerText = fullURL;
+  // Show loading state
+  paramForm.style.display = "none";
+  document.getElementById("submitParamBtn").style.display = "none";
+  loadingEl.style.display = "block";
+  responseEl.classList.add("d-none");
+  responseEl.innerHTML = "";
+  urlsSection.classList.add("active");
+  document.getElementById("copyEndpointText").innerText = fullURL;
 
-      fetch(fullURL)
-        .then(async (res) => {
-          loadingEl.style.display = "none";
-          const contentType = res.headers.get("content-type");
+  fetch(fullURL)
+    .then(async (res) => {
+      loadingEl.style.display = "none";
+      const contentType = res.headers.get("content-type");
 
-          if (contentType && contentType.includes("application/json")) {
-            const data = await res.json();
-            responseEl.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-          } 
-          else if (contentType && contentType.startsWith("image/")) {
-            const blob = await res.blob();
-            const imgUrl = URL.createObjectURL(blob);
-            responseEl.innerHTML = `<img src="${imgUrl}" class="image-response" alt="API Response" />`;
-          } 
-          else if (contentType && contentType.startsWith("video/")) {
-            const blob = await res.blob();
-            const videoUrl = URL.createObjectURL(blob);
-            responseEl.innerHTML = `
-              <video controls class="video-response" autoplay>
-                <source src="${videoUrl}" type="${contentType}">
-                Your browser does not support the video tag.
-              </video>
-            `;
-          }
-          else if (contentType && contentType.startsWith("audio/")) {
-            const blob = await res.blob();
-            const audioUrl = URL.createObjectURL(blob);
-            responseEl.innerHTML = `
-              <audio controls class="audio-response" autoplay>
-                <source src="${audioUrl}" type="${contentType}">
-                Your browser does not support the audio tag.
-              </audio>
-            `;
-          }
-          else {
-            const text = await res.text();
-            responseEl.innerHTML = `<pre>${text.substring(0, 1000)}</pre>`;
-          }
+      if (contentType && contentType.includes("application/json")) {
+        const data = await res.json();
+        responseEl.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+      } 
+      else if (contentType && contentType.startsWith("image/")) {
+        const blob = await res.blob();
+        const imgUrl = URL.createObjectURL(blob);
+        responseEl.innerHTML = `<img src="${imgUrl}" class="image-response" alt="API Response" />`;
+      } 
+      else if (contentType && contentType.startsWith("video/")) {
+        const blob = await res.blob();
+        const videoUrl = URL.createObjectURL(blob);
+        responseEl.innerHTML = `
+          <video controls class="video-response" autoplay>
+            <source src="${videoUrl}" type="${contentType}">
+            Your browser does not support the video tag.
+          </video>
+        `;
+      }
+      else if (contentType && contentType.startsWith("audio/")) {
+        const blob = await res.blob();
+        const audioUrl = URL.createObjectURL(blob);
+        responseEl.innerHTML = `
+          <audio controls class="audio-response" autoplay>
+            <source src="${audioUrl}" type="${contentType}">
+            Your browser does not support the audio tag.
+          </audio>
+        `;
+      }
+      else {
+        const text = await res.text();
+        responseEl.innerHTML = `<pre>${text.substring(0, 1000)}</pre>`;
+      }
 
-          responseEl.classList.remove("d-none");
-        })
-        .catch((err) => {
-          loadingEl.style.display = "none";
-          responseEl.classList.remove("d-none");
-          responseEl.innerHTML = `<pre>Error: ${err.message}</pre>`;
-        });
-    }
+      responseEl.classList.remove("d-none");
+    })
+    .catch((err) => {
+      loadingEl.style.display = "none";
+      responseEl.classList.remove("d-none");
+      responseEl.innerHTML = `<pre>Error: ${err.message}</pre>`;
+    });
+}
   </script>
 </body>
 </html>
