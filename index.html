@@ -7,16 +7,16 @@
   <title id="page"></title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-  /* ===== Loading Screen Styles ===== */
+  /* ===== Loading Screen ===== */
   #loading-screen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: #f8f9fa;
+    background: #f8fafc;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,18 +26,18 @@
   }
   
   .loading-spinner-large {
-    border: 3px solid rgba(0, 0, 0, 0.1);
-    border-top: 3px solid #4f46e5;
+    border: 4px solid rgba(99, 102, 241, 0.1);
+    border-top: 4px solid #6366f1;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     animation: spin 1s linear infinite;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
   }
   
   :root {
-    --primary: #4f46e5;
-    --primary-dark: #4338ca;
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
     --primary-light: #a5b4fc;
     --secondary: #e0e7ff;
     --dark: #111827;
@@ -52,19 +52,18 @@
     --card-bg: #ffffff;
     --card-hover: #f8fafc;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 20px 25px rgba(0, 0, 0, 0.1);
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
-    --radius-xl: 24px;
   }
   
   .loading-text {
     color: var(--gray);
-    font-size: 0.875rem;
+    font-size: 1rem;
     font-weight: 500;
     letter-spacing: 0.5px;
   }
@@ -76,11 +75,11 @@
   }
 
   body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     background-color: var(--lighter-gray);
     color: var(--dark);
     line-height: 1.6;
-    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
   }
 
   .container {
@@ -89,16 +88,17 @@
     padding: 0 24px;
   }
 
-  /* ===== Header Section ===== */
+  /* ===== Header ===== */
   .header {
-    padding: 40px 0;
-    border-bottom: 1px solid #e5e7eb;
+    padding: 24px 0;
     background: var(--light);
-    position: relative;
-    z-index: 10;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 50;
   }
 
-  .header-content {
+  .header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -119,7 +119,6 @@
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 1.25rem;
     font-weight: 700;
   }
 
@@ -132,20 +131,19 @@
   /* ===== Hero Section ===== */
   .hero {
     padding: 80px 0;
-    position: relative;
+    background: linear-gradient(to bottom, var(--light), var(--lighter-gray));
   }
 
-  .hero-content {
-    max-width: 720px;
+  .hero-container {
+    max-width: 800px;
   }
 
   .hero-title {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: var(--dark);
     line-height: 1.2;
-    margin-bottom: 24px;
-    letter-spacing: -0.5px;
+    margin-bottom: 20px;
   }
 
   .hero-description {
@@ -182,22 +180,22 @@
   .btn-primary:hover {
     background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow);
   }
 
   .btn-outline {
     background: transparent;
     color: var(--dark);
-    border: 1px solid var(--dark);
+    border: 1px solid var(--gray);
   }
 
   .btn-outline:hover {
     background: var(--light-gray);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow);
   }
 
-  /* ===== Tabs Section ===== */
+  /* ===== Tabs ===== */
   .tabs-section {
     padding: 40px 0;
     background: var(--light);
@@ -208,7 +206,7 @@
     display: flex;
     gap: 24px;
     overflow-x: auto;
-    padding-bottom: 8px;
+    padding-bottom: 12px;
     scrollbar-width: none;
   }
 
@@ -236,15 +234,11 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 2px;
+    height: 3px;
     background: var(--primary);
   }
 
-  .tab:hover:not(.active) {
-    color: var(--dark);
-  }
-
-  /* ===== API Cards Section ===== */
+  /* ===== API Cards ===== */
   .api-section {
     padding: 64px 0;
   }
@@ -269,22 +263,19 @@
 
   .api-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-md);
     border-color: var(--primary-light);
   }
 
   .api-card-header {
     margin-bottom: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
   }
 
   .api-card-title {
     font-size: 1.125rem;
     font-weight: 700;
     color: var(--dark);
-    margin-bottom: 4px;
+    margin-bottom: 8px;
   }
 
   .api-card-description {
@@ -341,10 +332,10 @@
   .api-card-button:hover {
     background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow);
   }
 
-  /* ===== Modal Styles ===== */
+  /* ===== Modal ===== */
   .modal {
     position: fixed;
     top: 0;
@@ -486,7 +477,7 @@
   .form-input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
   }
 
   .modal-submit {
@@ -510,7 +501,7 @@
   .modal-submit:hover {
     background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow);
   }
 
   .response-container {
@@ -537,7 +528,7 @@
   }
 
   .loading-spinner {
-    border: 3px solid rgba(79, 70, 229, 0.1);
+    border: 3px solid rgba(99, 102, 241, 0.1);
     border-top: 3px solid var(--primary);
     border-radius: 50%;
     width: 40px;
@@ -546,7 +537,7 @@
     margin: 24px auto;
   }
 
-  /* ===== Footer Section ===== */
+  /* ===== Footer ===== */
   .footer {
     padding: 64px 0;
     background: var(--dark);
@@ -623,10 +614,10 @@
     }
   }
 
-  /* ===== Responsive Styles ===== */
+  /* ===== Responsive ===== */
   @media (max-width: 768px) {
     .hero-title {
-      font-size: 2.25rem;
+      font-size: 2rem;
     }
     
     .hero-description {
@@ -635,7 +626,6 @@
     
     .hero-actions {
       flex-direction: column;
-      gap: 12px;
     }
     
     .btn {
@@ -681,14 +671,14 @@
   <!-- Header -->
   <header class="header">
     <div class="container">
-      <div class="header-content">
+      <div class="header-container">
         <div class="logo">
           <div class="logo-icon" id="logoIcon">API</div>
           <div class="logo-text" id="apiTitle">API Documentation</div>
         </div>
-        <div id="apiLinks">
+        <div>
           <a href="#" class="btn btn-outline" id="information">
-            <i class="fas fa-info-circle"></i> Documentation
+            <i class="fas fa-info-circle"></i> Docs
           </a>
         </div>
       </div>
@@ -698,7 +688,7 @@
   <!-- Hero Section -->
   <section class="hero">
     <div class="container">
-      <div class="hero-content">
+      <div class="hero-container">
         <h1 class="hero-title">Powerful API for Developers</h1>
         <p class="hero-description">Build amazing applications with our simple yet powerful API. Easy integration, comprehensive documentation, and reliable performance.</p>
         <div class="hero-actions">
@@ -706,7 +696,7 @@
             <i class="fas fa-paper-plane"></i> Contact Developer
           </a>
           <a href="#" class="btn btn-outline">
-            <i class="fas fa-book"></i> View Documentation
+            <i class="fas fa-book"></i> Documentation
           </a>
         </div>
       </div>
@@ -736,7 +726,6 @@
         <div class="footer-links">
           <a href="#" class="footer-link">Documentation</a>
           <a href="#" class="footer-link">API Reference</a>
-          <a href="#" class="footer-link">Examples</a>
           <a href="#" class="footer-link">Support</a>
         </div>
         <div class="footer-social">
@@ -776,10 +765,6 @@
         </div>
         
         <form id="paramForm">
-          <div class="form-group">
-            <label class="form-label" for="param1">Parameter 1</label>
-            <input type="text" class="form-input" id="param1" placeholder="Enter value">
-          </div>
           <!-- Dynamic form fields will be inserted here -->
         </form>
         
@@ -1034,4 +1019,4 @@
   }
   </script>
 </body>
-</html>p
+</html>
