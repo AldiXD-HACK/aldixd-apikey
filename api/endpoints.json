@@ -19,18 +19,30 @@
       "path": "/ai/gemini?apikey=&text="
     }    
   ],
-  "orderkuota": [
+  "Payment Gateway": [
     {
       "name": "Create Payment",
-      "desc": "Create qris payment",
+      "desc": "Create qris Orkut",
       "status": "Active",
       "path": "/orderkuota/createpayment?apikey=&amount=&codeqr="
     },
     {
       "name": "Cek Status",
-      "desc": "Cek status payment",
+      "desc": "Cek status Orkut",
       "status": "Active",
       "path": "/orderkuota/cekstatus?apikey=&merchant=&keyorkut="
+    }
+    {
+      "name": "Create Payment",
+      "desc": "Create qris QiosPay",
+      "status": "Active",
+      "path": "/qiospay/createpayment?apikey=&amount=&codeqr="
+    },
+    {
+      "name": "Cek Status",
+      "desc": "Cek status QiosPay",
+      "status": "Active",
+      "path": "/qiospay/cekstatus?apikey=&merchant=&keyorkut="
     }
   ],
   "downloader": [
@@ -243,12 +255,6 @@
       "desc": "Screenshot web url",
       "status": "Active",
       "path": "/tools/ssweb?apikey=&url="
-    },
-    {
-      "name": "Createuser Panel Bot",
-      "desc": "Create User Panel",
-      "status": "Active",
-      "path": "/tools/panel/createuser?apikey=&username=&password=&ram=&nestid=&locid=&eggid=&domain=&ptla="
     },
     {
       "name": "Emoji To Gif",
