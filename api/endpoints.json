@@ -31,7 +31,7 @@
       "desc": "Cek status Orkut",
       "status": "Active",
       "path": "/orderkuota/cekstatus?apikey=&merchant=&keyorkut="
-    }
+    },
     {
       "name": "Create Payment",
       "desc": "Create qris QiosPay",
