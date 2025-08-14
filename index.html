@@ -7,7 +7,7 @@
   <title id="page"></title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
   /* ===== Loading Screen Styles ===== */
   #loading-screen {
@@ -16,7 +16,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: #f9fafb;
+    background: #f8f9fa;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,11 +26,11 @@
   }
   
   .loading-spinner-large {
-    border: 3px solid rgba(15, 23, 42, 0.05);
-    border-top: 3px solid rgba(15, 23, 42, 0.8);
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top: 3px solid #4f46e5;
     border-radius: 50%;
-    width: 48px;
-    height: 48px;
+    width: 50px;
+    height: 50px;
     animation: spin 1s linear infinite;
     margin-bottom: 20px;
   }
@@ -56,20 +56,16 @@
     --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --radius-sm: 6px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
-    --radius-xl: 16px;
-    --radius-full: 999px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
   }
   
   .loading-text {
     color: var(--gray);
     font-size: 0.875rem;
-    margin-top: 12px;
-    text-align: center;
     font-weight: 500;
-    font-family: 'Manrope', sans-serif;
     letter-spacing: 0.5px;
   }
 
@@ -80,159 +76,272 @@
   }
 
   body {
-    font-family: 'Manrope', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     background-color: var(--lighter-gray);
     color: var(--dark);
-    padding: 2rem;
-    min-height: 100vh;
-    -webkit-tap-highlight-color: transparent;
     line-height: 1.6;
-    letter-spacing: 0.2px;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .d-none {
-    display: none !important;
-  }
-  
-  #apiLinks {
-    display: flex;
-    gap: 12px;
-    margin-top: 28px;
-  }
-  
-  #apiLinks a {
-    background: var(--dark);
-    border: 1px solid var(--dark);
-    padding: 0.75rem 1.25rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-decoration: none;
-    color: white;
-    border-radius: var(--radius-sm);
-    transition: var(--transition);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    letter-spacing: 0.5px;
-  }
-  
-  #apiLinks a:nth-child(2) {
-    background: none;
-    border: 1px solid var(--dark);
-    color: var(--dark);
-  }
-  
-  #apiLinks a:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
   }
 
-  pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow-x: auto;
-    background: var(--light-gray);
-    color: var(--dark);
-    padding: 1.25rem;
-    border-radius: var(--radius-sm);
-    max-height: 400px;
-    font-size: 0.875rem;    
-    font-weight: 500;
-    font-family: 'Manrope', sans-serif;
-    border: 1px solid #e5e7eb;
-    line-height: 1.7;
-  }
-
-  /* ===== Form Styles ===== */
-  .modal-body form label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 8px;
-    color: var(--dark);
-    font-size: 0.875rem;
-    letter-spacing: 0.3px;
-  }
-
-  .modal-body form input {
-    width: 100%;
-    padding: 0.875rem;
-    border-radius: var(--radius-sm);
-    border: 1px solid #e5e7eb;
+  /* ===== Header Section ===== */
+  .header {
+    padding: 40px 0;
+    border-bottom: 1px solid #e5e7eb;
     background: var(--light);
-    color: var(--dark);
-    margin-bottom: 1rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: var(--transition);
-    letter-spacing: 0.3px;
+    position: relative;
+    z-index: 10;
   }
 
-  .modal-body form input::placeholder {
-    color: #9ca3af;
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .modal-body form input:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
 
-  #submitParamBtn {
-    background: var(--dark);
-    color: white;
-    border: none;
-    padding: 0.875rem;
-    font-size: 0.875rem;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    font-weight: 600;
-    transition: var(--transition);
-    width: 100%;
-    margin-top: 0.5rem;
-    box-shadow: var(--shadow);
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    letter-spacing: 0.5px;
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 700;
   }
 
-  #submitParamBtn:hover {
-    background: var(--dark);
+  .logo-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--dark);
+  }
+
+  /* ===== Hero Section ===== */
+  .hero {
+    padding: 80px 0;
+    position: relative;
+  }
+
+  .hero-content {
+    max-width: 720px;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.2;
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
+  }
+
+  .hero-description {
+    font-size: 1.125rem;
+    color: var(--gray);
+    margin-bottom: 32px;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+  }
+
+  .btn {
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+    border: 1px solid var(--primary);
+  }
+
+  .btn-primary:hover {
+    background: var(--primary-dark);
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
   }
 
-  #submitParamBtn:active {
-    transform: translateY(0);
+  .btn-outline {
+    background: transparent;
+    color: var(--dark);
+    border: 1px solid var(--dark);
   }
 
-  .loading-spinner {
-    margin: 2rem auto 0.5rem auto;
-    border: 3px solid rgba(15, 23, 42, 0.1);
-    border-top: 3px solid var(--dark);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
+  .btn-outline:hover {
+    background: var(--light-gray);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
   }
 
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
+  /* ===== Tabs Section ===== */
+  .tabs-section {
+    padding: 40px 0;
+    background: var(--light);
+    border-bottom: 1px solid #e5e7eb;
   }
-  
-  .title-container {
+
+  .tabs-container {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+  }
+
+  .tabs-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab {
+    padding: 12px 0;
+    font-weight: 600;
+    color: var(--gray);
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+    transition: var(--transition);
+  }
+
+  .tab.active {
+    color: var(--primary);
+  }
+
+  .tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--primary);
+  }
+
+  .tab:hover:not(.active) {
+    color: var(--dark);
+  }
+
+  /* ===== API Cards Section ===== */
+  .api-section {
+    padding: 64px 0;
+  }
+
+  .api-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+
+  .api-card {
+    background: var(--light);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid #e5e7eb;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .api-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-light);
+  }
+
+  .api-card-header {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .api-card-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 4px;
+  }
+
+  .api-card-description {
+    font-size: 0.875rem;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .api-card-footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .api-card-status {
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .status-active {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+  }
+
+  .status-warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--warning);
+  }
+
+  .status-danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+  }
+
+  .api-card-button {
+    padding: 8px 16px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 600;
     display: flex;
     align-items: center;
-    gap: 16px;
-    margin-bottom: 1.75rem;
+    gap: 8px;
+    cursor: pointer;
+    transition: var(--transition);
   }
-  
-  .icon-title {
-    font-size: 2rem;
-    color: var(--primary);
+
+  .api-card-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
   }
 
   /* ===== Modal Styles ===== */
@@ -240,18 +349,18 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 100;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(15, 23, 42, 0.7);
-    backdrop-filter: blur(10px);
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.5rem;
+    z-index: 1000;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
+    padding: 24px;
   }
 
   .modal.active {
@@ -259,552 +368,305 @@
     pointer-events: all;
   }
 
-  .modal-dialog {
-    width: 100%;
-    max-width: 520px;
+  .modal-content {
     background: var(--light);
-    border-radius: var(--radius-md);
-    padding: 1.75rem;
-    color: var(--dark);
-    overflow: hidden;
-    transform: translateY(20px);
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    opacity: 0;
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 560px;
     box-shadow: var(--shadow-lg);
-    border: 1px solid #e5e7eb;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+    overflow: hidden;
   }
 
-  .modal.active .modal-dialog {
+  .modal.active .modal-content {
     transform: translateY(0);
-    opacity: 1;
   }
 
   .modal-header {
+    padding: 24px;
+    border-bottom: 1px solid #e5e7eb;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    padding-bottom: 1.25rem;
-    border-bottom: 1px solid #e5e7eb;
-    margin-bottom: 1.25rem;
+    align-items: center;
   }
 
-  .modal-header h5 {
+  .modal-title {
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--dark);
-    line-height: 1.3;
   }
 
-  .modal-header span {
+  .modal-description {
     font-size: 0.875rem;
     color: var(--gray);
-    display: block;
-    font-weight: 400;
-    margin-top: 6px;
-    line-height: 1.5;
+    margin-top: 4px;
   }
 
-  .btn-close {
+  .modal-close {
     background: none;
     border: none;
     font-size: 1.5rem;
-    line-height: 1;
-    cursor: pointer;
     color: var(--gray);
+    cursor: pointer;
     transition: var(--transition);
-    padding: 0.25rem;
-    border-radius: var(--radius-sm);
-    font-weight: 400;
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
+    border-radius: var(--radius-sm);
   }
 
-  .btn-close:hover {
-    color: var(--dark);
+  .modal-close:hover {
     background: var(--light-gray);
+    color: var(--dark);
   }
 
-  /* ===== Modal Body Content ===== */
   .modal-body {
-    padding: 0.5rem 0;
+    padding: 24px;
   }
 
-  .copy-section {
-    display: none;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    background-color: var(--light-gray);
-    border: 1px solid #e5e7eb;
-    padding: 0.875rem;
-    border-radius: var(--radius-sm);
-    font-size: 0.875rem;
-    color: var(--dark);
-    margin-bottom: 1.25rem;
-    overflow: auto;
-    font-weight: 500;
-    transition: var(--transition);
-  }
-  
-  .copy-section::-webkit-scrollbar {
-    display: none;
-    height: 0;
-  }
-
-  .copy-section.active {
+  .endpoint-url {
     display: flex;
-    animation: fadeIn 0.3s ease;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  .copy-button {
-    background: var(--dark);
-    border: none;
-    color: white;
-    padding: 0.625rem 0.875rem;
+    background: var(--light-gray);
     border-radius: var(--radius-sm);
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 6px;
-    font-weight: 500;
-    min-width: 90px;
-    flex-shrink: 0;
-    letter-spacing: 0.3px;
-  }
-
-  .copy-button:hover {
-    background: var(--dark);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow);
-  }
-
-  .copy-button:active {
-    transform: translateY(0);
-  }
-
-  #apiResponseContent {
-    background-color: var(--light-gray);
-    padding: 1.25rem;
-    border-radius: var(--radius-sm);
-    border: 1px solid #e5e7eb;
-    font-size: 0.875rem;
-    max-height: 400px;
-    overflow-y: auto;
-    margin-top: 1.25rem;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    transition: var(--transition);
-  }
-  
-  #apiResponseContent::-webkit-scrollbar {
-    display: none;
-  }
-
-  .image-response {
-    max-width: 100%;
-    max-height: 300px;
-    border-radius: var(--radius-sm);
-    display: block;
-    margin: 0 auto;
-    box-shadow: var(--shadow-sm);
-  }
-  
-  .video-response {
-     max-width: 100%;
-     height: auto;
-     border-radius: var(--radius-sm);
-   }
-   
-   .audio-response {
-     width: 100%;
-     margin-top: 1.25rem;
-   }
-
-  /* ===== Page Sections ===== */
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
-
-  header h1 {
-    font-size: 1.75rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    color: var(--dark);
-  }
-
-  .hero {
-    text-align: left;
-    margin: 3rem 0 4rem;
-    max-width: 800px;
-  }
-
-  .hero h2 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--dark);
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
-    letter-spacing: -0.5px;
-  }
-
-  .hero p {
-    font-size: 1.125rem;
-    color: var(--gray);
-    margin-bottom: 0;
-    font-weight: 400;
-    line-height: 1.7;
-    max-width: 640px;
-  }
-
-  /* ===== Stats ===== */
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-  }
-
-  .stats div {
-    background: var(--card-bg);
-    padding: 1.75rem;
-    border-radius: var(--radius-md);
-    text-align: center;
-    transition: var(--transition);
-    border: 1px solid #e5e7eb;
-    box-shadow: var(--shadow);
-  }
-
-  .stats div:hover {
-    transform: translateY(-5px);
-    background: var(--card-hover);
-    box-shadow: var(--shadow-md);
-    border-color: var(--primary-light);
-  }
-
-  .stats h3 {
-    font-size: 0.875rem;
-    color: var(--gray);
-    margin-bottom: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-
-  .stats p {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--dark);
-    letter-spacing: -0.5px;
-  }
-
-  .content h2 {
-    font-size: 1.5rem;
-    color: var(--dark);
-    margin-bottom: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.25px;
-  }
-
-  /* ===== Tabs ===== */
-  .tabs {
-    display: flex;
-    gap: 1.5rem;
-    overflow-x: auto;
-    margin-bottom: 2rem;
-    padding-bottom: 12px;
-    scrollbar-width: none;
-  }
-
-  .tabs::-webkit-scrollbar {
-    display: none;
-    height: 0;
-  }
-
-  .tab {
-    background: none;
-    color: var(--gray);
-    border: none;
-    font-weight: 600;
-    border-bottom: 2px solid transparent;
-    padding: 0.5rem 0;
-    cursor: pointer;
-    font-size: 0.9375rem;
-    white-space: nowrap;
-    position: relative;
-    transition: var(--transition);
-    letter-spacing: 0.3px;
-  }
-
-  .tab.active {
-    border-bottom: 2px solid var(--dark);
-    color: var(--dark);
-    font-weight: 700;
-  }
-
-  .tab:after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--dark);
-    transition: width 0.3s ease;
-  }
-
-  .tab:hover:not(.active):after {
-    width: 100%;
-  }
-
-  /* ===== API Card Animations ===== */
-  .api-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 4rem;
-  }
-
-  /* ===== API Cards ===== */
-  .api-card {
-    background: var(--card-bg);
-    padding: 1.5rem;
-    border-radius: var(--radius-md);
-    transition: var(--transition);
-    border: 1px solid #e5e7eb;
-    box-shadow: var(--shadow);
-    display: flex;
-    flex-direction: column;
-    min-height: 200px;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: cardEntrance 0.6s ease-out forwards;
-    position: relative;
     overflow: hidden;
+    margin-bottom: 24px;
   }
 
-  .api-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-md);
-    border-color: var(--primary-light);
-  }
-
-  .api-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .api-info {
+  .endpoint-text {
     flex: 1;
-    margin-bottom: 1.5rem;
+    padding: 12px 16px;
+    font-family: monospace;
+    font-size: 0.875rem;
+    overflow-x: auto;
+    white-space: nowrap;
   }
 
-  .play-button {
-    background: var(--dark);
-    border: none;
-    border-radius: var(--radius-sm);
-    padding: 0.875rem;
+  .endpoint-copy {
+    background: var(--primary);
     color: white;
-    cursor: pointer;
+    border: none;
+    padding: 0 16px;
     font-size: 0.875rem;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
     transition: var(--transition);
+  }
+
+  .endpoint-copy:hover {
+    background: var(--primary-dark);
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--dark);
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    transition: var(--transition);
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+  }
+
+  .modal-submit {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    box-shadow: var(--shadow);
-    margin-top: auto;
-    width: 100%;
-    letter-spacing: 0.3px;
-  }
-
-  @keyframes cardEntrance {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .api-info h3 {
-    font-size: 1.125rem;
-    color: var(--dark);
-    font-weight: 700;
-    margin-bottom: 12px;
-    letter-spacing: -0.25px;
-  }
-
-  .api-info p {
-    font-size: 0.9375rem;
-    color: var(--gray);
-    font-weight: 400;
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
-  }
-  
-  .status {
-    background: rgba(16, 185, 129, 0.1);
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-full);
-    font-size: 0.75rem;
-    color: var(--success);
-    display: inline-block;
-    font-weight: 600;
+    cursor: pointer;
     transition: var(--transition);
-    border: 1px solid rgba(16, 185, 129, 0.2);
-    letter-spacing: 0.5px;
+    margin-top: 16px;
   }
 
-  .status.warning {
-    background: rgba(245, 158, 11, 0.1);
-    color: var(--warning);
-    border-color: rgba(245, 158, 11, 0.2);
-  }
-
-  .status.danger {
-    background: rgba(239, 68, 68, 0.1);
-    color: var(--danger);
-    border-color: rgba(239, 68, 68, 0.2);
-  }
-
-  .play-button:hover {
+  .modal-submit:hover {
+    background: var(--primary-dark);
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
   }
 
-  .play-button:active {
-    transform: translateY(0);
+  .response-container {
+    margin-top: 24px;
+    background: var(--light-gray);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    max-height: 400px;
+    overflow-y: auto;
   }
 
-  .footer {
-    text-align: center;
-    padding: 3rem 0 2rem;
-    color: var(--gray);
+  .response-title {
     font-size: 0.875rem;
-    font-weight: 400;
-    border-top: 1px solid #e5e7eb;
-    margin-top: 4rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 12px;
   }
 
-  .contact {
-    margin-top: 2rem;
+  .response-content {
+    font-family: monospace;
+    font-size: 0.875rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .loading-spinner {
+    border: 3px solid rgba(79, 70, 229, 0.1);
+    border-top: 3px solid var(--primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 24px auto;
+  }
+
+  /* ===== Footer Section ===== */
+  .footer {
+    padding: 64px 0;
+    background: var(--dark);
+    color: white;
+  }
+
+  .footer-content {
     display: flex;
-    justify-content: center;
-    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
-  .contact a {
-    color: var(--gray);
+  .footer-logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+
+  .footer-description {
+    max-width: 600px;
+    margin-bottom: 32px;
+    color: #9ca3af;
+    line-height: 1.6;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  .footer-link {
+    color: white;
     text-decoration: none;
-    font-size: 1.25rem;
     transition: var(--transition);
-    width: 44px;
-    height: 44px;
+  }
+
+  .footer-link:hover {
+    color: var(--primary-light);
+  }
+
+  .footer-social {
+    display: flex;
+    gap: 16px;
+  }
+
+  .social-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    background: var(--light-gray);
-  }
-
-  .contact a:hover {
     color: white;
-    background: var(--dark);
-    transform: translateY(-3px);
-    box-shadow: var(--shadow);
+    transition: var(--transition);
   }
 
-  /* ===== Animations ===== */
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
+  .social-icon:hover {
+    background: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  .footer-copyright {
+    margin-top: 32px;
+    font-size: 0.875rem;
+    color: #9ca3af;
+  }
+
+  @keyframes spin {
     to {
-      opacity: 1;
-      transform: translateY(0);
+      transform: rotate(360deg);
     }
   }
 
-  .fade-in {
-    animation: fadeInUp 0.6s ease forwards;
-  }
-
-  /* ===== Responsive ===== */
+  /* ===== Responsive Styles ===== */
   @media (max-width: 768px) {
-    body {
-      padding: 1.5rem;
+    .hero-title {
+      font-size: 2.25rem;
     }
     
-    .hero h2 {
-      font-size: 2rem;
-    }
-    
-    .hero p {
+    .hero-description {
       font-size: 1rem;
     }
     
-    .api-list {
-      grid-template-columns: 1fr;
+    .hero-actions {
+      flex-direction: column;
+      gap: 12px;
     }
     
-    .stats {
-      grid-template-columns: repeat(2, 1fr);
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .api-grid {
+      grid-template-columns: 1fr;
     }
   }
 
   @media (max-width: 480px) {
-    body {
-      padding: 1.25rem;
+    .container {
+      padding: 0 16px;
     }
     
-    .hero h2 {
+    .hero {
+      padding: 60px 0;
+    }
+    
+    .hero-title {
       font-size: 1.75rem;
     }
     
-    .hero p {
-      font-size: 0.9375rem;
+    .modal-header {
+      padding: 16px;
     }
     
-    .stats {
-      grid-template-columns: 1fr;
-    }
-    
-    .modal-dialog {
-      padding: 1.5rem;
-    }
-    
-    #apiLinks {
-      flex-direction: column;
-    }
-    
-    #apiLinks a {
-      width: 100%;
-      justify-content: center;
+    .modal-body {
+      padding: 16px;
     }
   }
   </style>
@@ -813,141 +675,168 @@
   <!-- Loading Screen -->
   <div id="loading-screen">
     <div class="loading-spinner-large"></div>
-    <div class="loading-text">Loading ...</div>
+    <div class="loading-text">Loading API Documentation...</div>
   </div>
 
-  <div class="container">
-    <section class="hero fade-in">
-      <div class="title-container">
-        <h2 id="apiTitle"></h2>
-      </div>
-      <p>Simple API with easy and minimalistic integration for WhatsApp Bot Developers.</p>
-          <section id="apiLinks">
-    <a id="information" href="#" title="Information">Information API</a>
-    <a id="contactdev" href="#" title="Contact Dev">Contact Dev</a>
-    </section>
-    </section>
-
-    <section class="content">
-      <div class="tabs" id="tabs"></div>
-      <div id="api-list" class="api-list"></div>
-    </section>
-  </div>
-
-  <!-- Modal for API Response -->
-  <div class="modal" id="apiResponseModal">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <div>
-          <h5></h5>
-          <span></span>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <div class="logo-icon" id="logoIcon">API</div>
+          <div class="logo-text" id="apiTitle">API Documentation</div>
         </div>
-        <button id="btn-close" class="btn-close">×</button>
-      </div>
-      <div class="modal-body">
-        <div class="copy-section">
-          <span id="copyEndpointText"></span>
-          <button class="copy-button">
-            <i class="far fa-copy"></i> Copy
-          </button>
+        <div id="apiLinks">
+          <a href="#" class="btn btn-outline" id="information">
+            <i class="fas fa-info-circle"></i> Documentation
+          </a>
         </div>
-        <form id="paramForm" style="margin-bottom: 0.5rem"></form>
-        <button id="submitParamBtn" type="button">
-          <i class="fas fa-paper-plane"></i> Submit Request
-        </button>
-        <div id="apiResponseLoading" class="loading-spinner" style="display: none;"></div>
-        <div id="apiResponseContent" class="d-none"></div>
       </div>
     </div>
-  </div>
+  </header>
 
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Powerful API for Developers</h1>
+        <p class="hero-description">Build amazing applications with our simple yet powerful API. Easy integration, comprehensive documentation, and reliable performance.</p>
+        <div class="hero-actions">
+          <a href="#" class="btn btn-primary" id="contactdev">
+            <i class="fas fa-paper-plane"></i> Contact Developer
+          </a>
+          <a href="#" class="btn btn-outline">
+            <i class="fas fa-book"></i> View Documentation
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tabs Section -->
+  <section class="tabs-section">
+    <div class="container">
+      <div class="tabs-container" id="tabs"></div>
+    </div>
+  </section>
+
+  <!-- API Cards Section -->
+  <section class="api-section">
+    <div class="container">
+      <div class="api-grid" id="api-list"></div>
+    </div>
+  </section>
+
+  <!-- Footer -->
   <footer class="footer">
-    <div id="credits"></div>
-    <div class="contact">
-      <a id="githubLink" target="_blank" title="GitHub">
-        <i class="fab fa-github"></i>
-      </a>
-      <a id="whatsappLink" target="_blank" title="WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-      </a>
-      <a id="youtubeLink" target="_blank" title="YouTube">
-        <i class="fab fa-youtube"></i>
-      </a>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo" id="footerLogo">API</div>
+        <p class="footer-description">Build the future with our powerful API solutions. Simple integration, reliable performance, and comprehensive documentation.</p>
+        <div class="footer-links">
+          <a href="#" class="footer-link">Documentation</a>
+          <a href="#" class="footer-link">API Reference</a>
+          <a href="#" class="footer-link">Examples</a>
+          <a href="#" class="footer-link">Support</a>
+        </div>
+        <div class="footer-social">
+          <a href="#" class="social-icon" id="githubLink">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="#" class="social-icon" id="whatsappLink">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+          <a href="#" class="social-icon" id="youtubeLink">
+            <i class="fab fa-youtube"></i>
+          </a>
+        </div>
+        <div class="footer-copyright" id="credits">© 2023 API Documentation. All rights reserved.</div>
+      </div>
     </div>
   </footer>
 
+  <!-- API Response Modal -->
+  <div class="modal" id="apiResponseModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="modalTitle">API Endpoint</h3>
+          <p class="modal-description" id="modalDescription">Endpoint description</p>
+        </div>
+        <button class="modal-close" id="btn-close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="endpoint-url">
+          <div class="endpoint-text" id="copyEndpointText">https://api.example.com/endpoint</div>
+          <button class="endpoint-copy" id="copyButton">
+            <i class="far fa-copy"></i> Copy
+          </button>
+        </div>
+        
+        <form id="paramForm">
+          <div class="form-group">
+            <label class="form-label" for="param1">Parameter 1</label>
+            <input type="text" class="form-input" id="param1" placeholder="Enter value">
+          </div>
+          <!-- Dynamic form fields will be inserted here -->
+        </form>
+        
+        <button class="modal-submit" id="submitParamBtn">
+          <i class="fas fa-paper-plane"></i> Submit Request
+        </button>
+        
+        <div class="loading-spinner" id="apiResponseLoading" style="display: none;"></div>
+        
+        <div class="response-container" id="apiResponseContent" style="display: none;">
+          <div class="response-title">API Response</div>
+          <pre class="response-content"></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-  
   (async () => {
-  const settings = await fetch("/settings.json").then(res => res.json());
-  
-  document.getElementById("icon").href = settings.favicon
-  const head = document.head;
-  
-  const ogTags = [
-        { property: 'og:title', content: settings.apititle },
-        { property: 'og:description', content: "Simple API with easy and minimalistic integration for WhatsApp Bot Developers." },
-        { property: 'og:image', content: settings.favicon },
-        { property: 'og:url', content: window.location.href },
-        { property: 'og:type', content: 'website' }
-      ];
-      
-  ogTags.forEach(({ property, content }) => {
-        const meta = document.createElement('meta');
-        meta.setAttribute('property', property);
-        meta.setAttribute('content', content);
-        head.appendChild(meta);
-      });
-  
-  })()
-  
-    document.addEventListener('DOMContentLoaded', function() {
-      // Hide the main content initially
-      document.querySelector('.container').style.display = 'none';
-      document.querySelector('footer').style.display = 'none';
-      
-      // Load settings and then hide loading screen
-      loadSettings().then(() => {
-        setTimeout(() => {
-          document.getElementById('loading-screen').style.opacity = '0';
-          setTimeout(() => {
-            document.getElementById('loading-screen').style.display = 'none';
-            document.querySelector('.container').style.display = 'block';
-            document.querySelector('footer').style.display = 'block';
-          }, 500);
-        }, 1000);
-      });
-    });
+    const settings = await fetch("/settings.json").then(res => res.json());
+    
+    document.getElementById("icon").href = settings.favicon || "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>";
+    document.title = "Docs - " + (settings.apititle || "API Documentation");
+    document.getElementById("apiTitle").textContent = settings.apititle || "API Documentation";
+    document.getElementById("footerLogo").textContent = settings.apititle?.charAt(0) || "API";
+    document.getElementById("logoIcon").textContent = settings.apititle?.charAt(0) || "API";
+    document.getElementById("credits").textContent = `© ${new Date().getFullYear()} ${settings.creator || "API Documentation"}. All rights reserved.`;
+    
+    document.getElementById("githubLink").href = settings.github || "#";
+    document.getElementById("whatsappLink").href = settings.whatsapp || "#";
+    document.getElementById("youtubeLink").href = settings.youtube || "#";
+    document.getElementById("information").href = settings.saluran || "#";
+    document.getElementById("contactdev").href = settings.whatsapp || "#";
+    
+    // Hide loading screen after 1.5 seconds
+    setTimeout(() => {
+      document.getElementById('loading-screen').style.opacity = '0';
+      setTimeout(() => {
+        document.getElementById('loading-screen').style.display = 'none';
+      }, 500);
+    }, 1500);
+  })();
 
-    async function loadSettings() {
-      const tabsContainer = document.getElementById("tabs");
-      const apiList = document.getElementById("api-list");
-      let currentEndpoint = "";
+  document.addEventListener('DOMContentLoaded', async function() {
+    const tabsContainer = document.getElementById("tabs");
+    const apiList = document.getElementById("api-list");
+    let currentEndpoint = "";
 
-      const settings = await fetch("/settings.json").then(res => res.json());
+    try {
       const apis = await fetch("/api/endpoints.json").then(res => res.json());
-
-      const setContent = (id, property, value) => {
-        const el = document.getElementById(id);
-        if (el) el[property] = value;
-      };
-
-      setContent("page", "textContent", "Docs - " + settings.apititle || "Docs - Skyzopedia API");
-      setContent("credits", "textContent", `© ${new Date().getFullYear()} Powered by ${settings.creator || "Skyzopedia"}`);
-      setContent("apiTitle", "textContent", settings.apititle || "Skyzopedia API");
-
-      document.getElementById("githubLink").href = settings.github || "#";
-      document.getElementById("whatsappLink").href = settings.whatsapp || "#";
-      document.getElementById("youtubeLink").href = settings.youtube || "#";
-      document.getElementById("information").href = settings.saluran || "#";
-      document.getElementById("contactdev").href = settings.whatsapp || "#";
 
       // Create tabs
       Object.keys(apis).forEach((key, index) => {
         const button = document.createElement("button");
         button.className = `tab ${index === 0 ? "active" : ""}`;
         button.dataset.tab = key;
-        button.innerText = key.charAt(0).toUpperCase() + key.slice(1);
+        button.textContent = key.charAt(0).toUpperCase() + key.slice(1);
         tabsContainer.appendChild(button);
       });
 
@@ -958,29 +847,24 @@
           const card = document.createElement("div");
           card.className = "api-card";
           
-          
           // Determine status class
-          let statusClass = "";
-          if (api.status.toLowerCase().includes("maintenance")) statusClass = "danger";
-          else if (api.status.toLowerCase().includes("beta")) statusClass = "warning";
-          else statusClass = "";
+          let statusClass = "status-active";
+          if (api.status.toLowerCase().includes("maintenance")) statusClass = "status-danger";
+          else if (api.status.toLowerCase().includes("beta")) statusClass = "status-warning";
           
           card.innerHTML = `
-            <div class="api-info">
-              <h3>${api.name}</h3>
-              ${api.desc ? `<p>${api.desc}</p>` : "" }
-              <span class="status ${statusClass}">${api.status}</span>
+            <div class="api-card-header">
+              <h3 class="api-card-title">${api.name}</h3>
             </div>
-            <button class="play-button" data-endpoint="${api.path}" data-api="${api.name}" data-desc="${api.desc}">
-              <i class="fa-solid fa-play"></i> Try API
-            </button>
+            <p class="api-card-description">${api.desc || "No description available"}</p>
+            <div class="api-card-footer">
+              <span class="api-card-status ${statusClass}">${api.status}</span>
+              <button class="api-card-button" data-endpoint="${api.path}" data-api="${api.name}" data-desc="${api.desc}">
+                <i class="fas fa-play"></i> Try API
+              </button>
+            </div>
           `;
           apiList.appendChild(card);
-          
-          // Trigger reflow to restart animation
-          setTimeout(() => {
-            card.style.animation = `cardEntrance 0.6s ease-out ${i * 0.1}s forwards`;
-          }, 10);
         });
       }
 
@@ -998,29 +882,23 @@
 
       // Event listeners
       document.addEventListener("click", (e) => {
-        // Play button click
-        if (e.target.closest(".play-button")) {
-          const btn = e.target.closest(".play-button");
+        // API card button click
+        if (e.target.closest(".api-card-button")) {
+          const btn = e.target.closest(".api-card-button");
           const endpoint = btn.getAttribute("data-endpoint");
           const api = btn.getAttribute("data-api");
           const desc = btn.getAttribute("data-desc");
 
-          const paramForm = document.getElementById("paramForm");
-          const submitBtn = document.getElementById("submitParamBtn");
           const modal = document.getElementById("apiResponseModal");
-
-          // Reset modal state
-          document.getElementById("apiResponseContent").textContent = "";
-          document.getElementById("apiResponseContent").classList.add("d-none");
+          document.getElementById("modalTitle").textContent = api;
+          document.getElementById("modalDescription").textContent = desc;
+          document.getElementById("copyEndpointText").textContent = window.location.origin + endpoint;
+          document.getElementById("apiResponseContent").style.display = "none";
           document.getElementById("apiResponseLoading").style.display = "none";
-          paramForm.style.display = "block";
-          submitBtn.style.display = "none";
 
           currentEndpoint = endpoint;
+          const paramForm = document.getElementById("paramForm");
           paramForm.innerHTML = "";
-
-          document.querySelector(".modal-dialog h5").innerText = api;
-          document.querySelector(".modal-dialog span").innerText = desc;
 
           // Check if endpoint has parameters
           if (endpoint.includes("?")) {
@@ -1028,30 +906,32 @@
 
             queryParams.forEach(param => {
               const [key, value] = param.split("=");
-              paramForm.innerHTML += `
-                <label for="${key}">${key}</label>
-                <input type="text" id="${key}" name="${key}" value="${value || ''}" 
-                       placeholder="Enter ${key}" required />
+              const formGroup = document.createElement("div");
+              formGroup.className = "form-group";
+              formGroup.innerHTML = `
+                <label class="form-label" for="${key}">${key}</label>
+                <input type="text" class="form-input" id="${key}" name="${key}" value="${value || ''}" 
+                       placeholder="Enter ${key}" required>
               `;
+              paramForm.appendChild(formGroup);
             });
 
-            submitBtn.style.display = "block";
+            document.getElementById("submitParamBtn").style.display = "flex";
           } else {
-            // If no parameters, fetch immediately
+            // If no parameters, hide submit button
+            document.getElementById("submitParamBtn").style.display = "none";
+            // Fetch immediately
             fetchAPI(endpoint);
           }
           
           modal.classList.add("active");
-          document.querySelector(".copy-section").classList.add("active");
-          document.getElementById("copyEndpointText").innerText = window.location.origin + endpoint;
         }
-        
 
         // Copy button click
-        if (e.target.closest(".copy-button")) {
-          const textToCopy = document.getElementById("copyEndpointText").innerText;
+        if (e.target.closest(".endpoint-copy")) {
+          const textToCopy = document.getElementById("copyEndpointText").textContent;
           navigator.clipboard.writeText(textToCopy).then(() => {
-            const copyBtn = e.target.closest(".copy-button");
+            const copyBtn = e.target.closest(".endpoint-copy");
             copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied';
             setTimeout(() => {
               copyBtn.innerHTML = '<i class="far fa-copy"></i> Copy';
@@ -1075,7 +955,6 @@
           return;
         }
 
-        form.style.display = "none";
         submitBtn.style.display = "none";
         document.getElementById("apiResponseLoading").style.display = "block";
         
@@ -1089,71 +968,70 @@
         
         fetchAPI(endpoint);
       });
-    }    
 
-function fetchAPI(endpoint) {
-  const fullURL = window.location.origin + endpoint;
-  const responseEl = document.getElementById("apiResponseContent");
-  const loadingEl = document.getElementById("apiResponseLoading");
-  const urlsSection = document.querySelector(".copy-section");
-  const modal = document.getElementById("apiResponseModal");
+    } catch (error) {
+      console.error("Error loading API data:", error);
+      apiList.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--gray)">Failed to load API endpoints. Please try again later.</div>`;
+    }
+  });
 
-  // Show loading state
-  paramForm.style.display = "none";
-  document.getElementById("submitParamBtn").style.display = "none";
-  loadingEl.style.display = "block";
-  responseEl.classList.add("d-none");
-  responseEl.innerHTML = "";
-  urlsSection.classList.add("active");
-  document.getElementById("copyEndpointText").innerText = fullURL;
+  function fetchAPI(endpoint) {
+    const fullURL = window.location.origin + endpoint;
+    const responseEl = document.getElementById("apiResponseContent");
+    const loadingEl = document.getElementById("apiResponseLoading");
+    const submitBtn = document.getElementById("submitParamBtn");
 
-  fetch(fullURL)
-    .then(async (res) => {
-      loadingEl.style.display = "none";
-      const contentType = res.headers.get("content-type");
+    // Show loading state
+    loadingEl.style.display = "block";
+    responseEl.style.display = "none";
+    document.getElementById("copyEndpointText").textContent = fullURL;
 
-      if (contentType && contentType.includes("application/json")) {
-        const data = await res.json();
-        responseEl.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-      } 
-      else if (contentType && contentType.startsWith("image/")) {
-        const blob = await res.blob();
-        const imgUrl = URL.createObjectURL(blob);
-        responseEl.innerHTML = `<img src="${imgUrl}" class="image-response" alt="API Response" />`;
-      } 
-      else if (contentType && contentType.startsWith("video/")) {
-        const blob = await res.blob();
-        const videoUrl = URL.createObjectURL(blob);
-        responseEl.innerHTML = `
-          <video controls class="video-response" autoplay>
-            <source src="${videoUrl}" type="${contentType}">
-            Your browser does not support the video tag.
-          </video>
-        `;
-      }
-      else if (contentType && contentType.startsWith("audio/")) {
-        const blob = await res.blob();
-        const audioUrl = URL.createObjectURL(blob);
-        responseEl.innerHTML = `
-          <audio controls class="audio-response" autoplay>
-            <source src="${audioUrl}" type="${contentType}">
-            Your browser does not support the audio tag.
-          </audio>
-        `;
-      }
-      else {
-        const text = await res.text();
-        responseEl.innerHTML = `<pre>${text.substring(0, 1000)}</pre>`;
-      }
+    fetch(fullURL)
+      .then(async (res) => {
+        loadingEl.style.display = "none";
+        responseEl.style.display = "block";
+        const contentType = res.headers.get("content-type");
 
-      responseEl.classList.remove("d-none");
-    })
-    .catch((err) => {
-      loadingEl.style.display = "none";
-      responseEl.classList.remove("d-none");
-      responseEl.innerHTML = `<pre>Error: ${err.message}</pre>`;
-    });
-}
+        if (contentType && contentType.includes("application/json")) {
+          const data = await res.json();
+          responseEl.querySelector(".response-content").textContent = JSON.stringify(data, null, 2);
+        } 
+        else if (contentType && contentType.startsWith("image/")) {
+          const blob = await res.blob();
+          const imgUrl = URL.createObjectURL(blob);
+          responseEl.querySelector(".response-content").innerHTML = `<img src="${imgUrl}" style="max-width: 100%; border-radius: var(--radius-sm)">`;
+        } 
+        else if (contentType && contentType.startsWith("video/")) {
+          const blob = await res.blob();
+          const videoUrl = URL.createObjectURL(blob);
+          responseEl.querySelector(".response-content").innerHTML = `
+            <video controls style="max-width: 100%; border-radius: var(--radius-sm)" autoplay>
+              <source src="${videoUrl}" type="${contentType}">
+              Your browser does not support the video tag.
+            </video>
+          `;
+        }
+        else if (contentType && contentType.startsWith("audio/")) {
+          const blob = await res.blob();
+          const audioUrl = URL.createObjectURL(blob);
+          responseEl.querySelector(".response-content").innerHTML = `
+            <audio controls style="width: 100%; margin-top: 12px" autoplay>
+              <source src="${audioUrl}" type="${contentType}">
+              Your browser does not support the audio tag.
+            </audio>
+          `;
+        }
+        else {
+          const text = await res.text();
+          responseEl.querySelector(".response-content").textContent = text.substring(0, 1000);
+        }
+      })
+      .catch((err) => {
+        loadingEl.style.display = "none";
+        responseEl.style.display = "block";
+        responseEl.querySelector(".response-content").textContent = `Error: ${err.message}`;
+      });
+  }
   </script>
 </body>
-</html>
+</html>p
