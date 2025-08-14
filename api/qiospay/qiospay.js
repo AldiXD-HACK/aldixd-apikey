@@ -159,7 +159,7 @@ app.get('/qiospay/cekstatus', async (req, res) => {
     const check = global.apikey
     if (!global.apikey.includes(apikey)) return res.json({ status: false, error: 'Apikey invalid' })
     if (!merchant) return res.json({ status: false, error: 'Merchant ID is required' });
-    if (!keyorkut) return res.json({ status: false, error: 'Apikey Orderkuota is required' });
+    if (!keyorkut) return res.json({ status: false, error: 'Apikey Qiospay is required' });
         try {
         const apiUrl = `https://qiospay.id/api/mutasi/qris/${merchant}/${keyorkut}`;
         const response = await axios.get(apiUrl);
