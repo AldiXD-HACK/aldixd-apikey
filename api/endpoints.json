@@ -21,28 +21,28 @@
   ],
   "Payment Gateway": [
     {
-      "name": "Create Payment",
+      "name": "Create Payment OrderKouta",
       "desc": "Create qris Orkut",
       "status": "Active",
       "path": "/orderkuota/createpayment?apikey=&amount=&codeqr="
     },
     {
-      "name": "Cek Status",
+      "name": "Cek Status OrderKouta",
       "desc": "Cek status Orkut",
       "status": "Active",
       "path": "/orderkuota/cekstatus?apikey=&merchant=&keyorkut="
     },
     {
-      "name": "Create Payment",
+      "name": "Create Payment QiosPay",
       "desc": "Create qris QiosPay",
       "status": "Active",
       "path": "/qiospay/createpayment?apikey=&amount=&codeqr="
     },
     {
-      "name": "Cek Status",
+      "name": "Cek Status QiosPay",
       "desc": "Cek status QiosPay",
       "status": "Active",
-      "path": "/qiospay/cekstatus?apikey=&merchant=&keyorkut="
+      "path": "/qiospay/cekstatus?apikey=&merchant=&keyqiospay="
     }
   ],
   "downloader": [
