@@ -3,17 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link id="icon" rel="icon" href="" type="image/png">
   <title id="page"></title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     :root {
-      --primary: #6366F1;
-      --primary-dark: #4F46E5;
-      --primary-light: #C7D2FE;
-      --secondary: #E0E7FF;
-      --dark: #111827;
-      --darker: #0F172A;
+      --primary: #8B5CF6;
+      --primary-dark: #7C3AED;
+      --primary-light: #C4B5FD;
+      --dark: #1F2937;
+      --darker: #111827;
       --light: #FFFFFF;
       --gray: #6B7280;
       --light-gray: #F3F4F6;
@@ -21,13 +19,13 @@
       --success: #10B981;
       --warning: #F59E0B;
       --danger: #EF4444;
-      --radius-sm: 6px;
-      --radius-md: 8px;
-      --radius-lg: 12px;
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-      --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 20px 25px rgba(0, 0, 0, 0.1);
     }
 
     * {
@@ -38,12 +36,13 @@
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--lighter-gray);
+      background-color: #F9FAFB;
       color: var(--dark);
-      line-height: 1.5;
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
 
+    /* Loading Screen */
     #loading-screen {
       position: fixed;
       top: 0;
@@ -56,25 +55,27 @@
       align-items: center;
       justify-content: center;
       z-index: 9999;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.4s ease;
     }
 
     .loading-spinner-large {
-      border: 4px solid rgba(99, 102, 241, 0.1);
+      border: 4px solid rgba(139, 92, 246, 0.1);
       border-top: 4px solid var(--primary);
       border-radius: 50%;
-      width: 48px;
-      height: 48px;
+      width: 60px;
+      height: 60px;
       animation: spin 1s linear infinite;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     .loading-text {
       color: var(--gray);
-      font-size: 0.875rem;
+      font-size: 1rem;
       font-weight: 500;
+      letter-spacing: 0.5px;
     }
 
+    /* Container */
     .container {
       max-width: 1200px;
       margin: 0 auto;
@@ -104,42 +105,67 @@
     }
 
     .logo-icon {
-      width: 36px;
-      height: 36px;
-      background: var(--primary);
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
       border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 600;
+      box-shadow: var(--shadow);
     }
 
     .logo-text {
-      font-size: 1.125rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: var(--dark);
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    /* Hero */
+    /* Hero Section */
     .hero {
-      padding: 80px 0;
+      padding: 96px 0;
       background: linear-gradient(to bottom, var(--light), var(--lighter-gray));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 80%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.05) 0%, rgba(139, 92, 246, 0) 70%);
+      z-index: 0;
+    }
+
+    .hero-container {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
     }
 
     .hero-title {
-      font-size: 2.5rem;
+      font-size: 3rem;
       font-weight: 800;
-      color: var(--dark);
+      color: var(--darker);
       line-height: 1.2;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+      letter-spacing: -0.05em;
     }
 
     .hero-description {
       font-size: 1.125rem;
       color: var(--gray);
-      max-width: 700px;
+      max-width: 600px;
       margin-bottom: 32px;
+      line-height: 1.7;
     }
 
     .hero-actions {
@@ -147,39 +173,41 @@
       gap: 16px;
     }
 
+    /* Buttons */
     .btn {
-      padding: 10px 20px;
+      padding: 12px 24px;
       border-radius: var(--radius-md);
       font-weight: 600;
       font-size: 0.875rem;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
       text-decoration: none;
     }
 
     .btn-primary {
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
-      border: 1px solid var(--primary);
+      border: none;
+      box-shadow: var(--shadow);
     }
 
     .btn-primary:hover {
-      background: var(--primary-dark);
       transform: translateY(-2px);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-md);
     }
 
     .btn-outline {
       background: transparent;
       color: var(--dark);
       border: 1px solid var(--gray);
+      backdrop-filter: blur(4px);
     }
 
     .btn-outline:hover {
-      background: var(--light-gray);
+      background: rgba(255, 255, 255, 0.5);
       transform: translateY(-2px);
       box-shadow: var(--shadow);
     }
@@ -189,6 +217,9 @@
       background: var(--light);
       border-bottom: 1px solid #E5E7EB;
       padding: 24px 0;
+      position: sticky;
+      top: 72px;
+      z-index: 40;
     }
 
     .tabs-container {
@@ -223,8 +254,8 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 2px;
-      background: var(--primary);
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-dark));
     }
 
     /* API Cards */
@@ -234,40 +265,56 @@
 
     .api-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 24px;
     }
 
     .api-card {
       background: var(--light);
       border-radius: var(--radius-lg);
-      padding: 20px;
+      padding: 24px;
       box-shadow: var(--shadow);
       border: 1px solid #E5E7EB;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       flex-direction: column;
       height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .api-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary), var(--primary-dark));
     }
 
     .api-card:hover {
       transform: translateY(-4px);
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--shadow-lg);
       border-color: var(--primary-light);
+    }
+
+    .api-card-header {
+      margin-bottom: 16px;
     }
 
     .api-card-title {
       font-size: 1.125rem;
       font-weight: 700;
-      color: var(--dark);
+      color: var(--darker);
       margin-bottom: 8px;
     }
 
     .api-card-description {
       font-size: 0.875rem;
       color: var(--gray);
-      margin-bottom: 16px;
       line-height: 1.6;
+      margin-bottom: 16px;
     }
 
     .api-card-footer {
@@ -301,7 +348,7 @@
 
     .api-card-button {
       padding: 8px 16px;
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
       border: none;
       border-radius: var(--radius-sm);
@@ -311,13 +358,13 @@
       align-items: center;
       gap: 8px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--shadow);
     }
 
     .api-card-button:hover {
-      background: var(--primary-dark);
       transform: translateY(-2px);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-md);
     }
 
     /* Modal */
@@ -370,7 +417,7 @@
     .modal-title {
       font-size: 1.25rem;
       font-weight: 700;
-      color: var(--dark);
+      color: var(--darker);
     }
 
     .modal-description {
@@ -414,14 +461,14 @@
     .endpoint-text {
       flex: 1;
       padding: 12px 16px;
-      font-family: monospace;
+      font-family: 'Roboto Mono', monospace;
       font-size: 0.875rem;
       overflow-x: auto;
       white-space: nowrap;
     }
 
     .endpoint-copy {
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
       border: none;
       padding: 0 16px;
@@ -435,7 +482,7 @@
     }
 
     .endpoint-copy:hover {
-      background: var(--primary-dark);
+      opacity: 0.9;
     }
 
     .form-group {
@@ -447,7 +494,7 @@
       font-size: 0.875rem;
       font-weight: 600;
       margin-bottom: 8px;
-      color: var(--dark);
+      color: var(--darker);
     }
 
     .form-input {
@@ -457,18 +504,19 @@
       border-radius: var(--radius-sm);
       font-size: 0.875rem;
       transition: all 0.2s ease;
+      background: var(--light);
     }
 
     .form-input:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
     }
 
     .modal-submit {
       width: 100%;
       padding: 12px;
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
       border: none;
       border-radius: var(--radius-sm);
@@ -481,12 +529,12 @@
       cursor: pointer;
       transition: all 0.2s ease;
       margin-top: 16px;
+      box-shadow: var(--shadow);
     }
 
     .modal-submit:hover {
-      background: var(--primary-dark);
       transform: translateY(-2px);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-md);
     }
 
     .response-container {
@@ -501,19 +549,19 @@
     .response-title {
       font-size: 0.875rem;
       font-weight: 600;
-      color: var(--dark);
+      color: var(--darker);
       margin-bottom: 12px;
     }
 
     .response-content {
-      font-family: monospace;
+      font-family: 'Roboto Mono', monospace;
       font-size: 0.875rem;
       white-space: pre-wrap;
       word-break: break-word;
     }
 
     .loading-spinner {
-      border: 3px solid rgba(99, 102, 241, 0.1);
+      border: 3px solid rgba(139, 92, 246, 0.1);
       border-top: 3px solid var(--primary);
       border-radius: 50%;
       width: 40px;
@@ -524,12 +572,25 @@
 
     /* Footer */
     .footer {
-      padding: 64px 0;
-      background: var(--dark);
+      padding: 80px 0;
+      background: var(--darker);
       color: white;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top left, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
     }
 
     .footer-content {
+      position: relative;
+      z-index: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -540,6 +601,9 @@
       font-size: 1.5rem;
       font-weight: 700;
       margin-bottom: 24px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .footer-description {
@@ -571,20 +635,23 @@
     }
 
     .social-icon {
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .social-icon:hover {
       background: var(--primary);
       transform: translateY(-2px);
+      box-shadow: var(--shadow);
     }
 
     .footer-copyright {
@@ -593,6 +660,7 @@
       color: #9CA3AF;
     }
 
+    /* Animations */
     @keyframes spin {
       to {
         transform: rotate(360deg);
@@ -602,7 +670,7 @@
     /* Responsive */
     @media (max-width: 768px) {
       .hero-title {
-        font-size: 2rem;
+        font-size: 2.25rem;
       }
       
       .hero-description {
@@ -629,7 +697,7 @@
       }
       
       .hero {
-        padding: 60px 0;
+        padding: 72px 0;
       }
       
       .hero-title {
@@ -658,12 +726,14 @@
     <div class="container">
       <div class="header-container">
         <div class="logo">
-          <div class="logo-icon" id="logoIcon">API</div>
-          <div class="logo-text" id="apiTitle">API Documentation</div>
+          <div class="logo-icon" id="logoIcon">
+            <i class="fas fa-code"></i>
+          </div>
+          <div class="logo-text" id="apiTitle">API Docs</div>
         </div>
         <div>
           <a href="#" class="btn btn-outline" id="information">
-            <i class="fas fa-info-circle"></i> Docs
+            <i class="fas fa-book"></i> Documentation
           </a>
         </div>
       </div>
@@ -673,7 +743,7 @@
   <!-- Hero Section -->
   <section class="hero">
     <div class="container">
-      <div>
+      <div class="hero-container">
         <h1 class="hero-title">Powerful API for Developers</h1>
         <p class="hero-description">Build amazing applications with our simple yet powerful API. Easy integration, comprehensive documentation, and reliable performance.</p>
         <div class="hero-actions">
@@ -681,7 +751,7 @@
             <i class="fas fa-paper-plane"></i> Contact Developer
           </a>
           <a href="#" class="btn btn-outline">
-            <i class="fas fa-book"></i> Documentation
+            <i class="fas fa-code-branch"></i> API Reference
           </a>
         </div>
       </div>
@@ -773,9 +843,9 @@
     
     document.getElementById("icon").href = settings.favicon || "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>";
     document.title = "Docs - " + (settings.apititle || "API Documentation");
-    document.getElementById("apiTitle").textContent = settings.apititle || "API Documentation";
+    document.getElementById("apiTitle").textContent = settings.apititle || "API Docs";
     document.getElementById("footerLogo").textContent = settings.apititle?.charAt(0) || "API";
-    document.getElementById("logoIcon").textContent = settings.apititle?.charAt(0) || "API";
+    document.getElementById("logoIcon").innerHTML = settings.apititle?.charAt(0) ? `<span>${settings.apititle.charAt(0)}</span>` : '<i class="fas fa-code"></i>';
     document.getElementById("credits").textContent = `© ${new Date().getFullYear()} ${settings.creator || "API Documentation"}. All rights reserved.`;
     
     document.getElementById("githubLink").href = settings.github || "#";
@@ -823,7 +893,7 @@
           else if (api.status.toLowerCase().includes("beta")) statusClass = "status-warning";
           
           card.innerHTML = `
-            <div>
+            <div class="api-card-header">
               <h3 class="api-card-title">${api.name}</h3>
               <p class="api-card-description">${api.desc || "No description available"}</p>
             </div>
