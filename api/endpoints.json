@@ -68,7 +68,7 @@
       "name": "Delete User pterodactyl",
       "desc": "pterodactyl",
       "status": "Active",
-      "path": "/pterodactyl/deleteuser?iduser=&domain=&ptla="
+      "path": "/pterodactyl/deleteuser?user_id=&domain=&ptla="
     },
     {
       "name": "Delete All Server pterodactyl",
