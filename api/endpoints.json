@@ -83,6 +83,20 @@
       "path": "/pterodactyl/listservers?domain=&ptla="
     }
   ],
+  "cloudflare": [
+    {
+      "name": "Create Subdomain Cloudflare",
+      "desc": "cloudflare",
+      "status": "Active",
+      "path": "/cloudflare/createsubdomainwebp?zoneid=&apikeycf=&domain=&nama=&ip="
+    },
+    {
+      "name": "Create Subdomain Cloudflare",
+      "desc": "cloudflare",
+      "status": "Active",
+      "path": "/cloudflare/createsubdomainpanel?zoneid=&apikeycf=&domain=&nama=&ip="
+    }
+   ],
   "downloader": [
     {
       "name": "Tiktok",
