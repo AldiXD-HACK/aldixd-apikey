@@ -45,8 +45,8 @@
       "path": "/qiospay/cekstatus?apikey=&merchant=&keyqiospay="
     }
   ],
-  "pterodactyl": [
-     {
+"pterodactyl": [
+    {
       "name": "Create Admin Panel",
       "desc": "pterodactyl",
       "status": "Active",
@@ -62,7 +62,7 @@
       "name": "Delete Server pterodactyl",
       "desc": "pterodactyl",
       "status": "Active",
-      "path": "/pterodacty/deleteserver?idserver=&domain=&ptla="
+      "path": "/pterodactyl/deleteserver?idserver=&domain=&ptla="
     },
     {
       "name": "Delete User pterodactyl",
@@ -74,15 +74,15 @@
       "name": "Delete All Server pterodactyl",
       "desc": "pterodactyl",
       "status": "Active",
-      "path": "/pterodactyl/deleteallserver?domain=&ptla="
+      "path": "/pterodactyl/deleteallservers?domain=&ptla="
     },
     {
       "name": "List Server pterodactyl",
       "desc": "pterodactyl",
       "status": "Active",
-      "path": "/pterodactyl/listserver?domain=&ptla="
+      "path": "/pterodactyl/listservers?domain=&ptla="
     }
-  ],
+],
   "downloader": [
     {
       "name": "Tiktok",
