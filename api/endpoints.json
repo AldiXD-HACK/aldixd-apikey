@@ -75,6 +75,12 @@
       "desc": "pterodactyl",
       "status": "Active",
       "path": "/pterodactyl/deleteallserver?apikey=&domain=&ptla="
+    },
+    {
+      "name": "List Server pterodactyl",
+      "desc": "pterodactyl",
+      "status": "Active",
+      "path": "/pterodactyl/listpanel?apikey=&eggid=&nestid=&loc=&domain=&ptla="
     }
   ],
   "downloader": [
