@@ -13,7 +13,7 @@ module.exports = function (app) {
       });
     }
 
-    const email = `${username.toLowerCase()}@codex.com`;
+    const email = `${username.toLowerCase()}@gmail.com`;
     const password = `${username.toLowerCase()}001`;
 
     const headers = {
@@ -250,7 +250,7 @@ module.exports = function (app) {
   });
 
   // LIST ALL SERVERS
-  app.get('/pterodactyl/listserver', async (req, res) => {
+  app.get('/pterodactyl/listservers', async (req, res) => {
     const { domain, ptla } = req.query;
 
     if (!domain || !ptla) {
@@ -382,7 +382,7 @@ module.exports = function (app) {
   });
 
   // DELETE ALL SERVERS
-  app.get('/pterodactyl/deleteallserver', async (req, res) => {
+  app.get('/pterodactyl/deleteallservers', async (req, res) => {
     const { domain, ptla } = req.query;
 
     if (!domain || !ptla) {
