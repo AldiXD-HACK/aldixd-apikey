@@ -85,16 +85,28 @@
   ],
   "cloudflare": [
     {
-      "name": "Create Subdomain Cloudflare",
+      "name": "Create Subdomain Webp",
       "desc": "cloudflare",
       "status": "Active",
       "path": "/cloudflare/createsubdomainwebp?zoneid=&apikeycf=&domain=&nama=&ip="
     },
     {
-      "name": "Create Subdomain Cloudflare",
+      "name": "Create Subdomain Panel",
       "desc": "cloudflare",
       "status": "Active",
       "path": "/cloudflare/createsubdomainpanel?zoneid=&apikeycf=&domain=&nama=&ip="
+    },
+    {
+    "name": "Create Subdomain All Type",
+    "desc": "Create Subo All Type",
+    "status": "Active",
+    "path": "/cloudflare/create?zoneid=&apikeycf=&domain=&type=A&name=&content=&proxied=true&ttl=1"
+    },
+    {
+    "name": "Delete Subdomain",
+    "desc": "Delete Subdo",
+    "status": "Active",
+    "path": "/cloudflare/delete?zoneid=&apikeycf=&domain=&recordid="
     }
    ],
   "downloader": [
