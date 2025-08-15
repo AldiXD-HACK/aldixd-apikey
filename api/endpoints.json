@@ -80,7 +80,7 @@
       "name": "List Server pterodactyl",
       "desc": "pterodactyl",
       "status": "Active",
-      "path": "/pterodactyl/listserver?eggid=&nestid=&loc=&domain=&ptla="
+      "path": "/pterodactyl/listserver?domain=&ptla="
     }
   ],
   "downloader": [
