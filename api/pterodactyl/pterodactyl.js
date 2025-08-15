@@ -80,17 +80,17 @@ module.exports = function (app) {
     }
 
     const ramMapping = {
-      "1GB": { ram: "1000", disk: "1000", cpu: "40" },
-      "2GB": { ram: "2000", disk: "1000", cpu: "60" },
-      "3GB": { ram: "3000", disk: "2000", cpu: "80" },
-      "4GB": { ram: "4000", disk: "2000", cpu: "100" },
-      "5GB": { ram: "5000", disk: "3000", cpu: "120" },
-      "6GB": { ram: "6000", disk: "3000", cpu: "140" },
-      "7GB": { ram: "7000", disk: "4000", cpu: "160" },
-      "8GB": { ram: "8000", disk: "4000", cpu: "180" },
-      "9GB": { ram: "9000", disk: "5000", cpu: "200" },
-      "10GB": { ram: "10000", disk: "5000", cpu: "220" },
-      "UNLI": { ram: "0", disk: "0", cpu: "0" }
+      "1gb": { ram: "1000", disk: "1000", cpu: "40" },
+      "2gb": { ram: "2000", disk: "1000", cpu: "60" },
+      "3gb": { ram: "3000", disk: "2000", cpu: "80" },
+      "3gb": { ram: "4000", disk: "2000", cpu: "100" },
+      "5gb": { ram: "5000", disk: "3000", cpu: "120" },
+      "6gb": { ram: "6000", disk: "3000", cpu: "140" },
+      "7gb": { ram: "7000", disk: "4000", cpu: "160" },
+      "8gb": { ram: "8000", disk: "4000", cpu: "180" },
+      "9gb": { ram: "9000", disk: "5000", cpu: "200" },
+      "10gb": { ram: "10000", disk: "5000", cpu: "220" },
+      "unli": { ram: "0", disk: "0", cpu: "0" }
     };
 
     const spec = ramMapping[ram];
