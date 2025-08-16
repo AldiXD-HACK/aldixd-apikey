@@ -47,64 +47,51 @@ module.exports = function (app) {
 
 
   // CEK MUTASI QRIS (NEW VERSION)
-  
-  // CEK MUTASI QRIS (EXACT FORMAT)
+  // CEK MUTASI QRIS ENDPOINT
   app.get('/mutasiqris', async (req, res) => {
-    const { merchant, auth_username, auth_token } = req.query;
+    const { authToken, authUsername } = req.query;
 
-    if (!merchant || !auth_username || !auth_token) {
+    if (!authToken || !authUsername) {
       return res.status(400).json({
         status: "error",
-        message: "Missing parameters: merchant, auth_username, auth_token required",
+        message: "Parameter required: authToken, authUsername",
         data: null
       });
     }
 
-    const url = 'https://bovalone.me/api/orderkuota-qr-mutasi';
-    const apiKey = 'bvl-bBV4RYPhBuYnVHks3O'; // Replace with your actual key
+    const url = 'https://bovalone.me/api/orderkuota/mutasiqris';
+    const apiKey = 'arie-PtdKRj6051SPulxjSf'; // Replace with your actual API key
+
+    const data = {
+      authToken,
+      authUsername
+    };
 
     try {
-      const response = await axios.post(url, {
-        merchant,
-        auth_username,
-        auth_token
-      }, {
+      const response = await axios.post(url, data, {
         headers: { 
           'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json'
         }
       });
 
-      // Format response exactly as the example
-      const responseData = {
+      // Format response structure
+      return res.status(200).json({
         status: "success",
         message: null,
-        data: response.data.data.map(item => ({
-          date: item.date,
-          amount: item.amount,
-          type: item.type,
-          qris: item.qris,
-          brand_name: item.brand_name,
-          issuer_reff: item.issuer_reff,
-          buyer_reff: item.buyer_reff,
-          balance: item.balance
-        })),
-        merchant: merchant,
-        key: apiKey.slice(0, 32) // Show first 32 chars of key for reference
-      };
-
-      return res.status(200).json(responseData);
+        data: response.data.data || response.data, // Adjust according to actual API response
+        timestamp: new Date().toISOString()
+      });
 
     } catch (error) {
       return res.status(500).json({
         status: "error",
-        message: error.response?.data?.message || "QRIS mutation check failed",
+        message: error.response?.data?.message || "Failed to check QRIS mutation",
         data: null,
-        merchant: merchant || null,
-        key: null
+        timestamp: new Date().toISOString()
       });
     }
- });
+  });
   
   // VERIFY OTP ENDPOINT
   app.get('/verifyotp', async (req, res) => {
