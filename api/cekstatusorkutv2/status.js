@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 module.exports = function (app) {
 
   // GET QRIS MERCHANT HISTORY (API KEY IN SCRIPT)
-  app.get('/wbk/mutasi-orderkuota', async (req, res) => {
+  app.get('/mutasiqris', async (req, res) => {
     const { username, token } = req.query;
     const apikey = "f21f9421"; // API key langsung di script
 
