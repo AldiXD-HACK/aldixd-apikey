@@ -2,36 +2,36 @@ const axios = require('axios');
 
 module.exports = function (app) {
 
-  // CEK STATUS ORKUT ENDPOINT
+  // REQUEST OTP ENDPOINT
   app.get('/cekstatusorkut', async (req, res) => {
-    const { authtoken, usernameorkut } = req.query;
+    const { username, password } = req.query;
 
-    if (!authtoken || !usernameorkut) {
+    if (!username || !password) {
       return res.status(400).json({
         status: false,
-        error: 'Parameter tidak lengkap. Wajib: authtoken, usernameorkut'
+        error: 'Parameter tidak lengkap. Wajib: username, password'
       });
     }
 
-    const url = 'https://bovalone.me/api/orderkuota/mutasiqris';
-    const apiKey = 'arie-PtdKRj6051SPulxjSf'; // Consider moving this to environment variables
+    const url = 'https://bovalone.me/api/orderkuota/request_otp';
+    const apiKey = 'arie-PtdKRj6051SPulxjSf'; // Replace with your actual API key
 
-    const data = {
-      authToken: authtoken,
-      authUsername: usernameorkut
+    const payload = {
+      username: username,
+      password: password
+    };
+
+    const headers = {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json'
     };
 
     try {
-      const response = await axios.post(url, data, {
-        headers: { 
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      const response = await axios.post(url, payload, { headers });
 
       return res.status(200).json({
         status: true,
-        message: "✅ Data status berhasil didapatkan",
+        message: "✅ OTP request berhasil",
         data: response.data
       });
 
@@ -39,7 +39,7 @@ module.exports = function (app) {
       const errorData = error.response ? error.response.data : error.message;
       return res.status(500).json({
         status: false,
-        error: "❌ Gagal mengambil data status",
+        error: "❌ Gagal meminta OTP",
         detail: errorData
       });
     }
