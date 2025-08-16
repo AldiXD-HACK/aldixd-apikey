@@ -46,48 +46,48 @@ module.exports = function (app) {
   });
 
 
-  // CEK MUTASI QRIS (NEW VERSION)
-  // CEK MUTASI QRIS ENDPOINT
+  
+  // CEK MUTASI QRIS (GET VERSION)
   app.get('/mutasiqris', async (req, res) => {
-    const { authToken, authUsername } = req.query;
+    const { merchant, auth_username, auth_token } = req.query;
 
-    if (!authToken || !authUsername) {
+    if (!merchant || !auth_username || !auth_token) {
       return res.status(400).json({
         status: "error",
-        message: "Parameter required: authToken, authUsername",
+        message: "Parameter tidak lengkap: merchant, auth_username, auth_token diperlukan",
         data: null
       });
     }
 
-    const url = 'https://bovalone.me/api/orderkuota/mutasiqris';
-    const apiKey = 'arie-PtdKRj6051SPulxjSf'; // Replace with your actual API key
-
-    const data = {
-      authToken,
-      authUsername
-    };
+    const url = 'https://matic.eu.org/api/orderkuota-qr-mutasi';
+    const apiKey = 'arie-PtdKRj6051SPulxjSf'; // Ganti dengan API key asli
 
     try {
-      const response = await axios.post(url, data, {
+      const response = await axios.post(url, {
+        merchant,
+        auth_username,
+        auth_token
+      }, {
         headers: { 
           'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json'
         }
       });
 
-      // Format response structure
       return res.status(200).json({
         status: "success",
         message: null,
-        data: response.data.data || response.data, // Adjust according to actual API response
+        data: response.data.data || response.data,
+        merchant: merchant,
         timestamp: new Date().toISOString()
       });
 
     } catch (error) {
       return res.status(500).json({
         status: "error",
-        message: error.response?.data?.message || "Failed to check QRIS mutation",
+        message: error.response?.data?.message || "Gagal memeriksa mutasi QRIS",
         data: null,
+        merchant: merchant,
         timestamp: new Date().toISOString()
       });
     }
