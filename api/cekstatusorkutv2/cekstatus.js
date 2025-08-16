@@ -45,25 +45,27 @@ module.exports = function (app) {
     }
   });
 
-  // CEK MUTASI QRIS ENDPOINT
-  app.get('/mutasiqris', async (req, res) => {
-    const { authtoken, authusername } = req.query;
 
-    if (!authtoken || !authusername) {
+  // CEK MUTASI QRIS (NEW VERSION)
+  app.get('/mutasiqris', async (req, res) => {
+    const { merchant, auth_username, auth_token } = req.query;
+
+    if (!merchant || !auth_username || !auth_token) {
       return res.status(400).json({
         status: "error",
-        message: "Parameter tidak lengkap. Wajib: authtoken, authusername",
+        message: "Parameter tidak lengkap. Wajib: merchant, auth_username, auth_token",
         data: null
       });
     }
 
-    const url = 'https://bovalone.me/api/orderkuota/mutasiqris';
-    const apiKey = 'bvl-bBV4RYPhBuYnVHks3O';
+    const url = 'https://bovalone.me/api/orderkuota-qr-mutasi';
+    const apiKey = 'arie-PtdKRj6051SPulxjSf'; // Replace with your actual API key
 
     try {
       const response = await axios.post(url, {
-        authToken: authtoken,
-        authUsername: authusername
+        merchant: merchant,
+        auth_username: auth_username,
+        auth_token: auth_token
       }, {
         headers: { 
           'Authorization': `Bearer ${apiKey}`,
@@ -71,26 +73,17 @@ module.exports = function (app) {
         }
       });
 
-      // Format response sesuai contoh yang diberikan
+      // Format response sesuai API Bovalone
       return res.status(200).json({
         status: "success",
         message: null,
-        data: response.data.data.map(item => ({
-          date: item.date,
-          amount: item.amount,
-          type: item.type,
-          qris: item.qris,
-          brand_name: item.brand_name,
-          issuer_reff: item.issuer_reff,
-          buyer_reff: item.buyer_reff,
-          balance: item.balance
-        }))
+        data: response.data.data || response.data // Sesuaikan dengan struktur response aktual
       });
 
     } catch (error) {
       return res.status(500).json({
         status: "error",
-        message: error.response?.data?.message || "Gagal mengambil data mutasi",
+        message: error.response?.data?.message || "Gagal mengambil data mutasi QRIS",
         data: null
       });
     }
