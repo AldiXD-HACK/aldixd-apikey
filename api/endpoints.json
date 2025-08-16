@@ -32,6 +32,12 @@
       "status": "Active",
       "path": "/orderkuota/cekstatus?apikey=&merchant=&keyorkut="
     },
+     {
+    "name": "Cek Status Orkut V2",
+    "desc": "Endpoint untuk mengecek status",
+    "status": "Active",
+    "path": "/cekstatusorkut?authtoken=&usernameorkut="
+    },
     {
       "name": "Create Payment QiosPay",
       "desc": "Create qris QiosPay",
