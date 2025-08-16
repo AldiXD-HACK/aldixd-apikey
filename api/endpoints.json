@@ -39,6 +39,12 @@
     "path": "/getauthtoken?username=&password="
     },
     {
+    "name": "Cek Status OrkutV2",
+    "desc": "Ambil data mutasi transaksi QRIS",
+    "status": "Active",
+    "path": "/mutasiqris?authtoken=&authusername="
+    },
+    {
       "name": "Create Payment QiosPay",
       "desc": "Create qris QiosPay",
       "status": "Active",
