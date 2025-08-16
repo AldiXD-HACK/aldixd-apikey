@@ -59,7 +59,7 @@ module.exports = function (app) {
     }
 
     const url = 'https://bovalone.me/api/orderkuota-qr-mutasi';
-    const apiKey = 'arie-PtdKRj6051SPulxjSf'; // Replace with your actual API key
+    const apiKey = 'bvl-bBV4RYPhBuYnVHks3O'; // Replace with your actual API key
 
     try {
       const response = await axios.post(url, {
