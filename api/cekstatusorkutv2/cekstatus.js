@@ -47,48 +47,42 @@ module.exports = function (app) {
 
 
   
-  // CEK MUTASI QRIS (GET VERSION)
-  app.get('/mutasiqris', async (req, res) => {
-    const { merchant, auth_username, auth_token } = req.query;
+      app.get('/mutasiqris', async (req, res) => {
+    const { username, token } = req.query;
+    const apikey = "f21f9421"; // API key langsung di script
 
-    if (!merchant || !auth_username || !auth_token) {
+    if (!username || !token) {
       return res.status(400).json({
-        status: "error",
-        message: "Parameter tidak lengkap: merchant, auth_username, auth_token diperlukan",
-        data: null
+        status: false,
+        error: 'Parameter required: username, token'
       });
     }
 
-    const url = 'https://matic.eu.org/api/orderkuota-qr-mutasi';
-    const apiKey = 'arie-PtdKRj6051SPulxjSf'; // Ganti dengan API key asli
-
     try {
-      const response = await axios.post(url, {
-        merchant,
-        auth_username,
-        auth_token
-      }, {
-        headers: { 
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      const url = `https://api.wbk.web.id/api/mutasi-orderkuota?username=${encodeURIComponent(username)}&token=${encodeURIComponent(token)}&apikey=${apikey}`;
+      
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (!response.ok) {
+        return res.status(response.status).json({
+          status: false,
+          error: 'Failed to fetch QRIS history',
+          details: data
+        });
+      }
 
       return res.status(200).json({
-        status: "success",
-        message: null,
-        data: response.data.data || response.data,
-        merchant: merchant,
-        timestamp: new Date().toISOString()
+        status: true,
+        message: 'QRIS history retrieved successfully',
+        data: data
       });
 
     } catch (error) {
       return res.status(500).json({
-        status: "error",
-        message: error.response?.data?.message || "Gagal memeriksa mutasi QRIS",
-        data: null,
-        merchant: merchant,
-        timestamp: new Date().toISOString()
+        status: false,
+        error: 'Internal server error',
+        details: error.message
       });
     }
   });
