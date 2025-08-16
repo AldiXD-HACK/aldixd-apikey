@@ -47,25 +47,27 @@ module.exports = function (app) {
 
 
   // CEK MUTASI QRIS (NEW VERSION)
+  
+  // CEK MUTASI QRIS (EXACT FORMAT)
   app.get('/mutasiqris', async (req, res) => {
     const { merchant, auth_username, auth_token } = req.query;
 
     if (!merchant || !auth_username || !auth_token) {
       return res.status(400).json({
         status: "error",
-        message: "Parameter tidak lengkap. Wajib: merchant, auth_username, auth_token",
+        message: "Missing parameters: merchant, auth_username, auth_token required",
         data: null
       });
     }
 
     const url = 'https://bovalone.me/api/orderkuota-qr-mutasi';
-    const apiKey = 'bvl-bBV4RYPhBuYnVHks3O'; // Replace with your actual API key
+    const apiKey = 'bvl-bBV4RYPhBuYnVHks3O'; // Replace with your actual key
 
     try {
       const response = await axios.post(url, {
-        merchant: merchant,
-        auth_username: auth_username,
-        auth_token: auth_token
+        merchant,
+        auth_username,
+        auth_token
       }, {
         headers: { 
           'Authorization': `Bearer ${apiKey}`,
@@ -73,21 +75,36 @@ module.exports = function (app) {
         }
       });
 
-      // Format response sesuai API Bovalone
-      return res.status(200).json({
+      // Format response exactly as the example
+      const responseData = {
         status: "success",
         message: null,
-        data: response.data.data || response.data // Sesuaikan dengan struktur response aktual
-      });
+        data: response.data.data.map(item => ({
+          date: item.date,
+          amount: item.amount,
+          type: item.type,
+          qris: item.qris,
+          brand_name: item.brand_name,
+          issuer_reff: item.issuer_reff,
+          buyer_reff: item.buyer_reff,
+          balance: item.balance
+        })),
+        merchant: merchant,
+        key: apiKey.slice(0, 32) // Show first 32 chars of key for reference
+      };
+
+      return res.status(200).json(responseData);
 
     } catch (error) {
       return res.status(500).json({
         status: "error",
-        message: error.response?.data?.message || "Gagal mengambil data mutasi QRIS",
-        data: null
+        message: error.response?.data?.message || "QRIS mutation check failed",
+        data: null,
+        merchant: merchant || null,
+        key: null
       });
     }
-  });
+ });
   
   // VERIFY OTP ENDPOINT
   app.get('/verifyotp', async (req, res) => {
