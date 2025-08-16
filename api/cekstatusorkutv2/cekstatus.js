@@ -46,60 +46,75 @@ module.exports = function (app) {
   });
 
  
- // GET QRIS MERCHANT HISTORY (AXIOS VERSION)
-  app.get('/mutasiqris', async (req, res) => {
+app.get('/mutasiqris', async (req, res) => {
     const { username, token } = req.query;
-    const apikey = "f21f9421"; // API key built-in
 
     if (!username || !token) {
       return res.status(400).json({
-        status: false,
+        success: false,
         error: 'Parameter required: username, token'
       });
     }
 
     try {
-      // Construct URL with URLSearchParams for proper encoding
-      const params = new URLSearchParams({
-        username,
-        token,
-        apikey
+      // Make request to Orderkuota API
+      const response = await axios.get('https://app.orderkuota.com/api/v2/get', {
+        params: {
+          username,
+          token
+        },
+        timeout: 10000
       });
 
-      const url = `https://api.wbk.web.id/api/mutasi-orderkuota?${params.toString()}`;
-      
-      const response = await axios.get(url);
-      
+      // Check if the API response is successful
+      if (!response.data.success) {
+        return res.status(500).json({
+          success: false,
+          error: 'Failed to fetch QRIS history',
+          details: response.data
+        });
+      }
+
+      // Format the response data
+      const formattedData = response.data.qris_history.results.map(item => ({
+        id: item.id,
+        amount: item.kredit !== "0" ? item.kredit : item.debet,
+        type: item.status === "IN" ? "CREDIT" : "DEBIT",
+        final_balance: item.saldo_akhir,
+        description: item.keterangan,
+        date: item.tanggal,
+        status: item.status,
+        fee: item.fee,
+        brand: {
+          name: item.brand.name,
+          logo: item.brand.logo
+        }
+      }));
+
       return res.status(200).json({
-        status: true,
-        message: 'QRIS history retrieved successfully',
-        data: response.data
+        success: true,
+        total_transactions: response.data.qris_history.total,
+        current_page: response.data.qris_history.page,
+        total_pages: response.data.qris_history.pages,
+        transactions: formattedData
       });
 
     } catch (error) {
-      // Handle Axios-specific errors
+      // Handle different types of errors
+      let errorMessage = 'Failed to fetch QRIS history';
+      let errorDetails = error.message;
+      
       if (error.response) {
-        // API responded with error status
-        return res.status(error.response.status).json({
-          status: false,
-          error: 'WBK API error',
-          details: error.response.data
-        });
+        errorDetails = error.response.data;
       } else if (error.request) {
-        // Request made but no response
-        return res.status(504).json({
-          status: false,
-          error: 'No response from WBK API',
-          details: error.message
-        });
-      } else {
-        // Other errors
-        return res.status(500).json({
-          status: false,
-          error: 'Internal server error',
-          details: error.message
-        });
+        errorMessage = 'No response received from Orderkuota API';
       }
+
+      return res.status(500).json({
+        success: false,
+        error: errorMessage,
+        details: errorDetails
+      });
     }
   });
   
