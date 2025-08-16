@@ -45,58 +45,67 @@ module.exports = function (app) {
     }
   });
 
- // GET QRIS MERCHANT HISTORY (AXIOS VERSION)
+ 
+  // GET QRIS MUTATION HISTORY
   app.get('/mutasiqris', async (req, res) => {
     const { username, token } = req.query;
-    const apikey = "f21f9421"; // API key built-in
 
     if (!username || !token) {
       return res.status(400).json({
         status: false,
-        error: 'Parameter required: username, token'
+        creator: "Orderkuota Proxy",
+        message: "Parameter required: username, token",
+        merchant: username || "unknown",
+        result: []
       });
     }
 
     try {
-      // Construct URL with URLSearchParams for proper encoding
-      const params = new URLSearchParams({
-        username,
-        token,
-        apikey
+      const response = await axios.get('https://app.orderkuota.com/api/v2/get', {
+        params: {
+          username,
+          token
+        },
+        timeout: 10000
       });
 
-      const url = `https://api.wbk.web.id/api/mutasi-orderkuota?${params.toString()}`;
-      
-      const response = await axios.get(url);
-      
+      // Format response to match Orderkuota structure
       return res.status(200).json({
-        status: true,
-        message: 'QRIS history retrieved successfully',
-        data: response.data
+        status: response.data.status || true,
+        creator: response.data.creator || "Orderkuota",
+        message: response.data.message || "Mutasi berhasil ditampilkan",
+        merchant: response.data.merchant || username,
+        result: response.data.result || []
       });
 
     } catch (error) {
-      // Handle Axios-specific errors
+      // Handle different types of errors
       if (error.response) {
         // API responded with error status
         return res.status(error.response.status).json({
           status: false,
-          error: 'WBK API error',
-          details: error.response.data
+          creator: "AldiXDCodeX",
+          message: `API error: ${error.response.data.message || error.response.statusText}`,
+          merchant: username,
+          result: []
         });
       } else if (error.request) {
         // Request made but no response
         return res.status(504).json({
           status: false,
-          error: 'No response from WBK API',
-          details: error.message
+          creator: "AldiXDCodeX",
+          message: "Tidak ada respons dari server Orderkuota",
+          merchant: username,
+          result: []
         });
       } else {
         // Other errors
         return res.status(500).json({
           status: false,
-          error: 'Internal server error',
-          details: error.message
+          creator: "Orderkuota Proxy",
+          message: `Internal server error: ${error.message}`,
+          merchant: username,
+          result: []
         });
       }
     }
