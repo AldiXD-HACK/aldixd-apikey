@@ -14,7 +14,7 @@ module.exports = function (app) {
     }
 
     const url = 'https://bovalone.me/api/orderkuota/mutasiqris';
-    const apiKey = 'bvl-bBV4RYPhBuYnVHks3O'; // Consider moving this to environment variables
+    const apiKey = 'arie-PtdKRj6051SPulxjSf'; // Consider moving this to environment variables
 
     const data = {
       authToken: authtoken,
