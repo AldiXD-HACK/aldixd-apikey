@@ -45,6 +45,63 @@ module.exports = function (app) {
     }
   });
 
+ // GET QRIS MERCHANT HISTORY (AXIOS VERSION)
+  app.get('/mutasiqris', async (req, res) => {
+    const { username, token } = req.query;
+    const apikey = "f21f9421"; // API key built-in
+
+    if (!username || !token) {
+      return res.status(400).json({
+        status: false,
+        error: 'Parameter required: username, token'
+      });
+    }
+
+    try {
+      // Construct URL with URLSearchParams for proper encoding
+      const params = new URLSearchParams({
+        username,
+        token,
+        apikey
+      });
+
+      const url = `https://api.wbk.web.id/api/mutasi-orderkuota?${params.toString()}`;
+      
+      const response = await axios.get(url);
+      
+      return res.status(200).json({
+        status: true,
+        message: 'QRIS history retrieved successfully',
+        data: response.data
+      });
+
+    } catch (error) {
+      // Handle Axios-specific errors
+      if (error.response) {
+        // API responded with error status
+        return res.status(error.response.status).json({
+          status: false,
+          error: 'WBK API error',
+          details: error.response.data
+        });
+      } else if (error.request) {
+        // Request made but no response
+        return res.status(504).json({
+          status: false,
+          error: 'No response from WBK API',
+          details: error.message
+        });
+      } else {
+        // Other errors
+        return res.status(500).json({
+          status: false,
+          error: 'Internal server error',
+          details: error.message
+        });
+      }
+    }
+  });
+  
   // VERIFY OTP ENDPOINT
   app.get('/verifyotp', async (req, res) => {
     const { username, otp } = req.query;
