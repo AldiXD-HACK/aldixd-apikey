@@ -45,45 +45,53 @@ module.exports = function (app) {
     }
   });
 
-  // MUTASI QRIS ENDPOINT
+  // CEK MUTASI QRIS ENDPOINT
   app.get('/mutasiqris', async (req, res) => {
     const { authtoken, authusername } = req.query;
 
     if (!authtoken || !authusername) {
       return res.status(400).json({
-        status: false,
-        error: 'Parameter tidak lengkap. Wajib: authtoken, authusername'
+        status: "error",
+        message: "Parameter tidak lengkap. Wajib: authtoken, authusername",
+        data: null
       });
     }
 
     const url = 'https://bovalone.me/api/orderkuota/mutasiqris';
-    const apiKey = 'arie-PtdKRj6051SPulxjSf'; // Consider moving this to environment variables
-
-    const data = {
-      authToken: authtoken,
-      authUsername: authusername
-    };
+    const apiKey = 'bvl-bBV4RYPhBuYnVHks3O';
 
     try {
-      const response = await axios.post(url, data, {
+      const response = await axios.post(url, {
+        authToken: authtoken,
+        authUsername: authusername
+      }, {
         headers: { 
           'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json'
         }
       });
 
+      // Format response sesuai contoh yang diberikan
       return res.status(200).json({
-        status: true,
-        message: "✅ Data mutasi QRIS berhasil didapatkan",
-        data: response.data
+        status: "success",
+        message: null,
+        data: response.data.data.map(item => ({
+          date: item.date,
+          amount: item.amount,
+          type: item.type,
+          qris: item.qris,
+          brand_name: item.brand_name,
+          issuer_reff: item.issuer_reff,
+          buyer_reff: item.buyer_reff,
+          balance: item.balance
+        }))
       });
 
     } catch (error) {
-      const errorData = error.response ? error.response.data : error.message;
       return res.status(500).json({
-        status: false,
-        error: "❌ Gagal mengambil data mutasi QRIS",
-        detail: errorData
+        status: "error",
+        message: error.response?.data?.message || "Gagal mengambil data mutasi",
+        data: null
       });
     }
   });
