@@ -36,13 +36,19 @@
     "name": "Get Auth Token Request Otp",
     "desc": "Endpoint untuk Get auth token",
     "status": "Active",
-    "path": "/getauthtoken?username=&password="
+    "path": "/requestotp?username=&password="
     },
     {
     "name": "Cek Status OrkutV2",
     "desc": "Ambil data mutasi transaksi QRIS",
     "status": "Active",
     "path": "/mutasiqris?authtoken=&authusername="
+    },
+    {
+    "name": "Get Auth Token Verifyotp",
+    "desc": "Endpoint untuk Get Auth token",
+    "status": "Active",
+    "path": "/verifyotp?username=&otp="
     },
     {
       "name": "Create Payment QiosPay",
