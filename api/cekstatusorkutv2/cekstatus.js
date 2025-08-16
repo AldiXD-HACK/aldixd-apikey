@@ -3,7 +3,7 @@ const axios = require('axios');
 module.exports = function (app) {
 
   // REQUEST OTP ENDPOINT
-  app.get('/cekstatusorkut', async (req, res) => {
+  app.get('/getauthtoken', async (req, res) => {
     const { username, password } = req.query;
 
     if (!username || !password) {
