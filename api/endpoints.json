@@ -36,7 +36,7 @@
     "name": "Cek Status Orkut V2",
     "desc": "Endpoint untuk mengecek status",
     "status": "Active",
-    "path": "/cekstatusorkut?authtoken=&usernameorkut="
+    "path": "/cekstatusorkut?username=&password="
     },
     {
       "name": "Create Payment QiosPay",
