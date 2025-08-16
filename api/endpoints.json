@@ -33,7 +33,7 @@
       "path": "/orderkuota/cekstatus?apikey=&merchant=&keyorkut="
     },
      {
-    "name": "Get Auth Token",
+    "name": "Get Auth Token Send Otp",
     "desc": "Endpoint untuk Get auth token",
     "status": "Active",
     "path": "/getauthtoken?username=&password="
