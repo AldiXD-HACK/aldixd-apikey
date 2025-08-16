@@ -42,7 +42,7 @@
     "name": "Cek Status OrkutV2",
     "desc": "Ambil data mutasi transaksi QRIS",
     "status": "Active",
-    "path": "/mutasiqris?mutasiqris?authToken=&authUsername="
+    "path": "/mutasiqris?authToken=&authUsername="
     },
     {
     "name": "Get Auth Token Verifyotp",
