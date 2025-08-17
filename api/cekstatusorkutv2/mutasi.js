@@ -4,7 +4,7 @@ const axios = require('axios');
 const OrderKuota = {
   KASIR_HOST: 'app.orderkuota.com:443',
   MEBVIEW_USER_AGENT: 'Mozilla/5.0 (Linux; Android 10; M2004J19C Build/QP1A.190711.020; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.185 Mobile Safari/537.36',
-  APP_PACKAGE: 'app.orderkuota.com'
+  APP_PACKAGE: 'com.orderkuota'
 };
 
 // Mock function to generate dynamic key (replace with actual implementation)
