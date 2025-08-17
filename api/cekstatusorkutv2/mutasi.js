@@ -1,85 +1,122 @@
 const axios = require('axios');
+const https = require('https');
+const { URL } = require('url');
 
-// Configuration constants
-const OrderKuota = {
-  KASIR_HOST: 'app.orderkuota.com',
-  MEBVIEW_USER_AGENT: 'Mozilla/5.0 (Linux; Android 10; M2004J19C Build/QP1A.190711.020; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.185 Mobile Safari/537.36',
-  APP_PACKAGE: 'app.orderkuota.com'
-};
-
-// Mock function to generate dynamic key (replace with actual implementation)
-async function getDynamicKey(authUsername, authToken) {
-  // In a real implementation, this would make an API call to get the dynamic key
-  return Buffer.from(`${authUsername}:${authToken}`).toString('base64');
-}
+// Configuration
+const ORDERKUOTA_HOST = 'app.orderkuota.com';
+const ORDERKUOTA_PORT = 443;
+const MUTASI_PATH = '/api/v2/get';
+const TIMEOUT = 5000; // 5 seconds timeout
 
 module.exports = function (app) {
 
-  // GET QRIS MUTATION DATA
+  // COMBINED CONNECTIVITY CHECK + MUTASI DATA
   app.get('/mutasiqris', async (req, res) => {
-    const { merchant, username, token } = req.query;
+    const { username, token } = req.query;
+    const results = {
+      connectivity: {},
+      mutasi: {}
+    };
 
-    if (!merchant || !username || !token) {
-      return res.status(400).json({
-        success: false,
-        error: 'Parameter required: merchant, username, token'
+    // 1. Connectivity Check
+    try {
+      const startTime = Date.now();
+      
+      await new Promise((resolve, reject) => {
+        const socket = require('net').Socket();
+        socket.connect(ORDERKUOTA_PORT, ORDERKUOTA_HOST, resolve);
+        socket.on('error', reject);
+        socket.setTimeout(TIMEOUT, () => {
+          socket.destroy();
+          reject(new Error('Connection timeout'));
+        });
       });
+
+      results.connectivity = {
+        status: true,
+        message: `✅ Connected to ${ORDERKUOTA_HOST}:${ORDERKUOTA_PORT}`,
+        response_time_ms: Date.now() - startTime,
+        timestamp: new Date().toISOString()
+      };
+    } catch (connectError) {
+      results.connectivity = {
+        status: false,
+        error: `❌ Failed to connect to ${ORDERKUOTA_HOST}:${ORDERKUOTA_PORT}`,
+        details: connectError.message,
+        timestamp: new Date().toISOString()
+      };
+      
+      // If connection fails, don't proceed to mutasi request
+      return res.status(500).json(results);
+    }
+
+    // 2. Mutasi Data Retrieval (only if connectivity succeeded)
+    if (!username || !token) {
+      results.mutasi = {
+        status: false,
+        error: 'Missing parameters for mutasi: username, token'
+      };
+      return res.status(400).json(results);
     }
 
     try {
-      // Get dynamic key
-      const dynamicKey = await getDynamicKey(username, token);
-      
-      // Prepare request parameters
-      const params = {
-        timestamp: Date.now(),
-        merchant: merchant
-      };
+      const mutasiUrl = new URL(MUTASI_PATH, `https://${ORDERKUOTA_HOST}`);
+      mutasiUrl.searchParams.append('username', username);
+      mutasiUrl.searchParams.append('token', token);
 
-      // Prepare headers
-      const headers = {
-        'Host': OrderKuota.KASIR_HOST,
-        'Accept': 'application/json',
-        'Referer': `https://${OrderKuota.KASIR_HOST}/qris/?id=${merchant}&key=${dynamicKey}`,
-        'User-Agent': OrderKuota.MEBVIEW_USER_AGENT,
-        'X-Requested-With': OrderKuota.APP_PACKAGE
-      };
-
-      // Make API request
-      const response = await axios.get(`https://${OrderKuota.KASIR_HOST}/qris/curl/mutasi.php`, {
-        params,
-        headers,
-        timeout: 10000
+      const mutasiResponse = await axios.get(mutasiUrl.toString(), {
+        timeout: TIMEOUT,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
       });
 
-      return res.status(200).json({
-        success: true,
-        message: 'QRIS mutation data retrieved',
-        data: response.data,
-        merchant: merchant,
+      // Format mutasi data
+      const formattedData = mutasiResponse.data.qris_history?.results?.map(item => ({
+        id: item.id,
+        date: item.tanggal,
+        amount: item.kredit !== "0" ? item.kredit : item.debet,
+        type: item.status === "IN" ? "CREDIT" : "DEBIT",
+        final_balance: item.saldo_akhir,
+        description: item.keterangan,
+        fee: item.fee,
+        brand: {
+          name: item.brand?.name,
+          logo: item.brand?.logo
+        }
+      })) || [];
+
+      results.mutasi = {
+        status: true,
+        message: 'Mutasi data retrieved successfully',
+        total_transactions: mutasiResponse.data.qris_history?.total || 0,
+        transactions: formattedData,
         timestamp: new Date().toISOString()
-      });
+      };
 
-    } catch (error) {
-      // Handle different error scenarios
-      let status = 500;
-      let errorMessage = 'Internal server error';
-      
-      if (error.response) {
-        status = error.response.status;
-        errorMessage = error.response.data.message || `API responded with status ${status}`;
-      } else if (error.request) {
-        errorMessage = 'No response received from OrderKuota API';
-      } else {
-        errorMessage = error.message;
+      return res.status(200).json(results);
+
+    } catch (mutasiError) {
+      let errorMessage = 'Mutasi request failed';
+      let errorDetails = mutasiError.message;
+      let statusCode = 500;
+
+      if (mutasiError.response) {
+        statusCode = mutasiError.response.status;
+        errorDetails = mutasiError.response.data;
+      } else if (mutasiError.request) {
+        errorMessage = 'No response received from Mutasi API';
       }
 
-      return res.status(status).json({
-        success: false,
+      results.mutasi = {
+        status: false,
         error: errorMessage,
-        merchant: merchant,
+        details: errorDetails,
+        status_code: statusCode,
         timestamp: new Date().toISOString()
-      });
+      };
+
+      return res.status(statusCode).json(results);
     }
   });
 };
