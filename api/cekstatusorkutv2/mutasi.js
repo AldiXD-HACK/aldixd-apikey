@@ -12,14 +12,16 @@ const OrderKuotaConfig = {
 
 module.exports = function (app) {
 
-  // GET MUTATION DATA (API v2)
-  app.get('/mutasiqris', async (req, res) => {
-    const { username, token } = req.query;
+  // GET MUTATION DATA (API v2) - FIXED VERSION
+  app.get('/mutasuqris', async (req, res) => {
+    const { username, token, apikey } = req.query;
 
-    if (!username || !token) {
+    if (!username || !token || !apikey) {
       return res.status(400).json({
+        creator: "AldiXDCodeX",
         success: false,
-        error: 'Parameter required: username, token'
+        error: 'Parameter required: username, token, apikey',
+        timestamp: new Date().toISOString()
       });
     }
 
@@ -31,18 +33,26 @@ module.exports = function (app) {
         'Accept': 'application/json',
         'X-App-Version-Name': OrderKuotaConfig.APP_VERSION_NAME,
         'X-App-Version-Code': OrderKuotaConfig.APP_VERSION_CODE,
-        'X-App-Reg-ID': OrderKuotaConfig.APP_REG_ID,
-        'Authorization': `Basic ${Buffer.from(`${username}:${token}`).toString('base64')}`
+        'X-App-Reg-ID': OrderKuotaConfig.APP_REG_ID
+      };
+
+      // Prepare query parameters
+      const params = {
+        username: username,
+        token: token,
+        apikey: apikey
       };
 
       // Make API request to v2 endpoint
       const response = await axios.get(`${OrderKuotaConfig.API_URL}/get`, {
+        params,
         headers,
         timeout: 10000
       });
 
       // Format the response
       return res.status(200).json({
+        creator: "AldiXDCodeX",
         success: true,
         message: 'QRIS mutation data retrieved successfully',
         data: response.data,
@@ -64,36 +74,9 @@ module.exports = function (app) {
       }
 
       return res.status(status).json({
+        creator: "AldiXDCodeX",
         success: false,
         error: errorMessage,
-        timestamp: new Date().toISOString()
-      });
-    }
-  });
-
-  // CHECK ORDERKUOTA API STATUS
-  app.get('/mutasiqrischeck', async (req, res) => {
-    try {
-      const response = await axios.get(`${OrderKuotaConfig.API_URL}/get`, {
-        headers: {
-          'Host': OrderKuotaConfig.HOST,
-          'User-Agent': OrderKuotaConfig.USER_AGENT
-        },
-        timeout: 5000
-      });
-
-      return res.status(200).json({
-        success: true,
-        message: 'OrderKuota API v2 is operational',
-        status: response.status,
-        timestamp: new Date().toISOString()
-      });
-
-    } catch (error) {
-      return res.status(500).json({
-        success: false,
-        error: 'OrderKuota API v2 is not responding',
-        details: error.message,
         timestamp: new Date().toISOString()
       });
     }
