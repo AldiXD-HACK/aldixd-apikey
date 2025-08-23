@@ -11,7 +11,7 @@ const TIMEOUT = 5000; // 5 seconds timeout
 module.exports = function (app) {
 
   // COMBINED CONNECTIVITY CHECK + MUTASI DATA
-  app.get('/orderkuota/full-check', async (req, res) => {
+  app.get('/mutasiqris', async (req, res) => {
     const { username, token } = req.query;
     const results = {
       connectivity: {},
