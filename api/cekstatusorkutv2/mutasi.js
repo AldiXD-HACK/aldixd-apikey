@@ -1,13 +1,14 @@
 const axios = require('axios');
 const { URLSearchParams } = require('url');
 
-// OrderKuota API Configuration
+// Updated OrderKuota API Configuration with current version info
 const OrderKuotaConfig = {
   API_URL: 'https://app.orderkuota.com:443/api/v2',
   HOST: 'app.orderkuota.com',
   USER_AGENT: 'okhttp/4.10.0',
-  APP_VERSION_NAME: '25.03.14',
-  APP_VERSION_CODE: '250314',
+  // Updated to more recent version numbers
+  APP_VERSION_NAME: '25.08.23', // Current date as version
+  APP_VERSION_CODE: '250823',   // Current date as code
   APP_REG_ID: 'di309HvATsaiCppl5eDpoc:APA91bFUcTOH8h2XHdPRz2qQ5Bezn-3_TaycFcJ5pNLGWpmaxheQP9Ri0E56wLHz0_b1vcss55jbRQXZgc9loSfBdNa5nZJZVMlk7GS1JDMGyFUVvpcwXbMDg8tjKGZAurCGR4kDMDRJ'
 };
 
@@ -41,6 +42,10 @@ class OrderKuota {
       'Host': OrderKuotaConfig.HOST,
       'User-Agent': OrderKuotaConfig.USER_AGENT,
       'Content-Type': 'application/x-www-form-urlencoded',
+      // Adding additional headers that might be required
+      'Accept': 'application/json',
+      'Accept-Language': 'id-ID, id;q=0.9, en-US;q=0.8, en;q=0.7',
+      'Connection': 'Keep-Alive',
     };
   }
 
@@ -62,7 +67,7 @@ class OrderKuota {
 }
 
 module.exports = function (app) {
-  // GET QRIS MUTATION DATA (SIMPLIFIED VERSION)
+  // GET QRIS MUTATION DATA
   app.get('/mutasiqris', async (req, res) => {
     const { username, token } = req.query;
 
@@ -78,6 +83,17 @@ module.exports = function (app) {
     try {
       const ok = new OrderKuota(token, username);
       let response = await ok.getTransactionQris();
+      
+      // Check if the API is asking for an update
+      if (response.qris_history && response.qris_history.success === false) {
+        return res.status(426).json({
+          creator: "AldiXDCodeX",
+          success: false,
+          error: 'API requires app update',
+          message: response.qris_history.message,
+          timestamp: new Date().toISOString()
+        });
+      }
       
       // Filter only IN transactions if needed
       const inTransactions = response.qris_history?.results?.filter(e => e.status === "IN") || [];
@@ -104,5 +120,19 @@ module.exports = function (app) {
         timestamp: new Date().toISOString()
       });
     }
+  });
+
+  // ADDITIONAL ENDPOINT TO GET CURRENT APP INFO
+  app.get('/orderkuota/appinfo', async (req, res) => {
+    res.json({
+      creator: "AldiXDCodeX",
+      app_info: {
+        version_name: OrderKuotaConfig.APP_VERSION_NAME,
+        version_code: OrderKuotaConfig.APP_VERSION_CODE,
+        user_agent: OrderKuotaConfig.USER_AGENT,
+        api_url: OrderKuotaConfig.API_URL
+      },
+      timestamp: new Date().toISOString()
+    });
   });
 };
