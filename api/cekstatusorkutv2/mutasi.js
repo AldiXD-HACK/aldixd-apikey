@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 // OrderKuota API Configuration
-const OrderKuotaConfig = {
+const OrderKuota = {
   API_URL: 'https://app.orderkuota.com:443/api/v2',
   HOST: 'app.orderkuota.com',
   USER_AGENT: 'okhttp/4.10.0',
@@ -12,49 +12,143 @@ const OrderKuotaConfig = {
 
 module.exports = function (app) {
 
-  // GET MUTATION DATA (API v2) - FIXED VERSION
-  app.get('/mutasiqris', async (req, res) => {
-    const { username, token, apikey } = req.query;
+  // GET QRIS TRANSACTION HISTORY
+  app.post('/mutasiqris', async (req, res) => {
+    const { 
+      auth_token, 
+      auth_username, 
+      jenis = '', 
+      page = '1', 
+      dari_tanggal = '', 
+      ke_tanggal = '', 
+      keterangan = '' 
+    } = req.body;
 
-    if (!username || !token || !apikey) {
+    if (!auth_token || !auth_username) {
       return res.status(400).json({
         creator: "AldiXDCodeX",
         success: false,
-        error: 'Parameter required: username, token, apikey',
+        error: 'Parameter required: auth_token, auth_username',
         timestamp: new Date().toISOString()
       });
     }
 
     try {
-      // Prepare headers for API v2
+      // Prepare form data
+      const formData = new URLSearchParams();
+      formData.append('auth_token', auth_token);
+      formData.append('auth_username', auth_username);
+      formData.append('requests[qris_history][jumlah]', '');
+      formData.append('requests[qris_history][jenis]', jenis);
+      formData.append('requests[qris_history][page]', page);
+      formData.append('requests[qris_history][dari_tanggal]', dari_tanggal);
+      formData.append('requests[qris_history][ke_tanggal]', ke_tanggal);
+      formData.append('requests[qris_history][keterangan]', keterangan);
+      formData.append('requests[0]', 'account');
+      formData.append('app_version_name', OrderKuota.APP_VERSION_NAME);
+      formData.append('app_version_code', OrderKuota.APP_VERSION_CODE);
+      formData.append('app_reg_id', OrderKuota.APP_REG_ID);
+
+      // Prepare headers
       const headers = {
-        'Host': OrderKuotaConfig.HOST,
-        'User-Agent': OrderKuotaConfig.USER_AGENT,
-        'Accept': 'application/json',
-        'X-App-Version-Name': OrderKuotaConfig.APP_VERSION_NAME,
-        'X-App-Version-Code': OrderKuotaConfig.APP_VERSION_CODE,
-        'X-App-Reg-ID': OrderKuotaConfig.APP_REG_ID
+        'Host': OrderKuota.HOST,
+        'User-Agent': OrderKuota.USER_AGENT,
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json'
       };
 
-      // Prepare query parameters
-      const params = {
-        username: username,
-        token: token,
-        apikey: apikey
-      };
-
-      // Make API request to v2 endpoint
-      const response = await axios.get(`${OrderKuotaConfig.API_URL}/get`, {
-        params,
+      // Make API request
+      const response = await axios.post(`${OrderKuota.API_URL}/get`, formData.toString(), {
         headers,
         timeout: 10000
       });
 
-      // Format the response
       return res.status(200).json({
         creator: "AldiXDCodeX",
         success: true,
-        message: 'QRIS mutation data retrieved successfully',
+        message: 'QRIS transaction data retrieved successfully',
+        data: response.data,
+        timestamp: new Date().toISOString()
+      });
+
+    } catch (error) {
+      // Handle errors
+      let status = 500;
+      let errorMessage = 'Internal server error';
+      
+      if (error.response) {
+        status = error.response.status;
+        errorMessage = error.response.data.message || `API responded with status ${status}`;
+      } else if (error.request) {
+        errorMessage = 'No response received from OrderKuota API';
+      } else {
+        errorMessage = error.message;
+      }
+
+      return res.status(status).json({
+        creator: "AldiXDCodeX",
+        success: false,
+        error: errorMessage,
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
+  // GET QRIS TRANSACTION HISTORY (GET VERSION)
+  app.get('/orderkuota/qris/transactions', async (req, res) => {
+    const { 
+      auth_token, 
+      auth_username, 
+      jenis = '', 
+      page = '1', 
+      dari_tanggal = '', 
+      ke_tanggal = '', 
+      keterangan = '' 
+    } = req.query;
+
+    if (!auth_token || !auth_username) {
+      return res.status(400).json({
+        creator: "AldiXDCodeX",
+        success: false,
+        error: 'Parameter required: auth_token, auth_username',
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    try {
+      // Prepare form data
+      const formData = new URLSearchParams();
+      formData.append('auth_token', auth_token);
+      formData.append('auth_username', auth_username);
+      formData.append('requests[qris_history][jumlah]', '');
+      formData.append('requests[qris_history][jenis]', jenis);
+      formData.append('requests[qris_history][page]', page);
+      formData.append('requests[qris_history][dari_tanggal]', dari_tanggal);
+      formData.append('requests[qris_history][ke_tanggal]', ke_tanggal);
+      formData.append('requests[qris_history][keterangan]', keterangan);
+      formData.append('requests[0]', 'account');
+      formData.append('app_version_name', OrderKuota.APP_VERSION_NAME);
+      formData.append('app_version_code', OrderKuota.APP_VERSION_CODE);
+      formData.append('app_reg_id', OrderKuota.APP_REG_ID);
+
+      // Prepare headers
+      const headers = {
+        'Host': OrderKuota.HOST,
+        'User-Agent': OrderKuota.USER_AGENT,
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json'
+      };
+
+      // Make API request
+      const response = await axios.post(`${OrderKuota.API_URL}/get`, formData.toString(), {
+        headers,
+        timeout: 10000
+      });
+
+      return res.status(200).json({
+        creator: "AldiXDCodeX",
+        success: true,
+        message: 'QRIS transaction data retrieved successfully',
         data: response.data,
         timestamp: new Date().toISOString()
       });
