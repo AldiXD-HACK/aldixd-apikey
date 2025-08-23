@@ -13,7 +13,7 @@ const OrderKuotaConfig = {
 module.exports = function (app) {
 
   // GET MUTATION DATA (API v2) - FIXED VERSION
-  app.get('/mutasuqris', async (req, res) => {
+  app.get('/mutasiqris', async (req, res) => {
     const { username, token, apikey } = req.query;
 
     if (!username || !token || !apikey) {
