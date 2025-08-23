@@ -26,7 +26,7 @@ class OrderKuota {
       'requests[qris_history][dari_tanggal]': '',
       'requests[qris_history][ke_tanggal]': '',
       'requests[qris_history][keterangan]': '',
-      'requests[0]': 'mutasi',
+      'requests[0]': 'account',
       app_version_name: OrderKuota.APP_VERSION_NAME,
       app_version_code: OrderKuota.APP_VERSION_CODE,
       app_reg_id: OrderKuota.APP_REG_ID,
