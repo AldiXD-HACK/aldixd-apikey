@@ -16,28 +16,6 @@ class OrderKuota {
     this.authToken = authToken;
   }
 
-  async loginRequest(username, password) {
-    const payload = new URLSearchParams({
-      username,
-      password,
-      app_reg_id: OrderKuota.APP_REG_ID,
-      app_version_code: OrderKuota.APP_VERSION_CODE,
-      app_version_name: OrderKuota.APP_VERSION_NAME,
-    });
-    return await this.request('POST', `${OrderKuota.API_URL}/login`, payload);
-  }
-
-  async getAuthToken(username, otp) {
-    const payload = new URLSearchParams({
-      username,
-      password: otp,
-      app_reg_id: OrderKuota.APP_REG_ID,
-      app_version_code: OrderKuota.APP_VERSION_CODE,
-      app_version_name: OrderKuota.APP_VERSION_NAME,
-    });
-    return await this.request('POST', `${OrderKuota.API_URL}/login`, payload);
-  }
-
   async getTransactionQris(type = '') {
     const payload = new URLSearchParams({
       auth_token: this.authToken,
@@ -53,6 +31,7 @@ class OrderKuota {
       app_version_code: OrderKuota.APP_VERSION_CODE,
       app_reg_id: OrderKuota.APP_REG_ID,
     });
+    
     return await this.request('POST', `${OrderKuota.API_URL}/get`, payload);
   }
 
@@ -66,19 +45,17 @@ class OrderKuota {
 
   async request(method, url, body = null) {
     try {
-      const res = await fetch(url, {
+      const response = await axios({
         method,
+        url,
         headers: this.buildHeaders(),
-        body: body ? body.toString() : null,
+        data: body.toString(),
+        timeout: 10000
       });
-      const contentType = res.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        return await res.json();
-      } else {
-        return await res.text();
-      }
+      
+      return response.data;
     } catch (err) {
-      return { error: err.message };
+      throw new Error(err.response?.data?.message || err.message);
     }
   }
 }
@@ -105,7 +82,7 @@ function generateExpirationTime() {
   return expirationTime;
 }
 
-// Simplified image upload service (replace with actual implementation)
+// Simplified image upload service
 class ImageUploadService {
   constructor(host) {
     this.host = host;
@@ -158,48 +135,64 @@ module.exports = function (app) {
     // API key validation
     if (!globalApikey.includes(apikey)) {
       return res.json({ 
+        creator: "AldiXDCodeX",
         status: false, 
-        error: 'Apikey invalid' 
+        error: 'Apikey invalid',
+        timestamp: new Date().toISOString()
       });
     }
     
     if (!username) {
       return res.json({ 
+        creator: "AldiXDCodeX",
         status: false, 
-        error: 'Missing username' 
+        error: 'Missing username',
+        timestamp: new Date().toISOString()
       });
     }
     
     if (!token) {
       return res.json({ 
+        creator: "AldiXDCodeX",
         status: false, 
-        error: 'Missing token' 
+        error: 'Missing token',
+        timestamp: new Date().toISOString()
       });
     }
 
     try {
       const ok = new OrderKuota(username, token);
-      let login = await ok.getTransactionQris();
+      const response = await ok.getTransactionQris();
+      
+      // Check if the API response has the expected structure
+      if (!response || !response.qris_history || !response.qris_history.results) {
+        return res.json({
+          creator: "AldiXDCodeX",
+          status: false,
+          error: 'Invalid API response structure',
+          apiResponse: response,
+          timestamp: new Date().toISOString()
+        });
+      }
       
       // Filter only IN transactions
-      login = login.qris_history.results.filter(e => e.status === "IN");
-      
-      // Transform the response to match your expected format
-      const transactions = login.map(item => ({
-        date: item.tanggal,
-        amount: item.kredit !== "0" ? item.kredit : item.debet,
-        type: "CR",
-        qris: "static",
-        brand_name: item.brand.name,
-        issuer_reff: item.id.toString(),
-        buyer_reff: item.keterangan,
-        balance: item.saldo_akhir
-      }));
+      const transactions = response.qris_history.results
+        .filter(e => e.status === "IN")
+        .map(item => ({
+          date: item.tanggal,
+          amount: item.kredit !== "0" ? item.kredit : item.debet,
+          type: "CR",
+          qris: "static",
+          brand_name: item.brand?.name || "Unknown",
+          issuer_reff: item.id?.toString() || "N/A",
+          buyer_reff: item.keterangan || "N/A",
+          balance: item.saldo_akhir || "0"
+        }));
       
       res.json({ 
         creator: "AldiXDCodeX",
         status: true, 
-        result: transactions,
+        data: transactions,
         timestamp: new Date().toISOString()
       });
     } catch (err) {
@@ -219,22 +212,28 @@ module.exports = function (app) {
     // API key validation
     if (!globalApikey.includes(apikey)) {
       return res.json({ 
+        creator: "AldiXDCodeX",
         status: false, 
-        error: 'Apikey invalid' 
+        error: 'Apikey invalid',
+        timestamp: new Date().toISOString()
       });
     }
     
     if (!amount) {
       return res.json({ 
+        creator: "AldiXDCodeX",
         status: false, 
-        error: 'Missing amount' 
+        error: 'Missing amount',
+        timestamp: new Date().toISOString()
       });
     }
     
     if (!codeqr) {
       return res.json({ 
+        creator: "AldiXDCodeX",
         status: false, 
-        error: 'Missing codeqr' 
+        error: 'Missing codeqr',
+        timestamp: new Date().toISOString()
       });
     }
 
