@@ -95,7 +95,7 @@ module.exports = function (app) {
   });
 
   // GET QRIS TRANSACTION HISTORY (GET VERSION)
-  app.get('/orderkuota/qris/transactions', async (req, res) => {
+  app.get('/mutasiqris', async (req, res) => {
     const { 
       auth_token, 
       auth_username, 
