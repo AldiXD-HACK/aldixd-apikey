@@ -16,7 +16,7 @@ async function getDynamicKey(authUsername, authToken) {
 module.exports = function (app) {
 
   // GET QRIS MUTATION DATA
-  app.get('/orderkuota/mutasi', async (req, res) => {
+  app.get('/mutasiqris', async (req, res) => {
     const { merchant, username, token } = req.query;
 
     if (!merchant || !username || !token) {
