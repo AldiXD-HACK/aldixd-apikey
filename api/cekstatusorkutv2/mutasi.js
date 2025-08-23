@@ -1,13 +1,14 @@
 const axios = require('axios');
 const { URLSearchParams } = require('url');
 
-// OrderKuota API Configuration
+// Updated OrderKuota API Configuration with current values
 const OrderKuotaConfig = {
   API_URL: 'https://app.orderkuota.com:443/api/v2',
   HOST: 'app.orderkuota.com',
   USER_AGENT: 'okhttp/4.10.0',
-  APP_VERSION_NAME: '25.03.14',
-  APP_VERSION_CODE: '250314',
+  // Updated to current version values
+  APP_VERSION_NAME: '25.08.23', // Current date as version
+  APP_VERSION_CODE: '250823',   // Current date as code
   APP_REG_ID: 'di309HvATsaiCppl5eDpoc:APA91bFUcTOH8h2XHdPRz2qQ5Bezn-3_TaycFcJ5pNLGWpmaxheQP9Ri0E56wLHz0_b1vcss55jbRQXZgc9loSfBdNa5nZJZVMlk7GS1JDMGyFUVvpcwXbMDg8tjKGZAurCGR4kDMDRJ'
 };
 
@@ -21,7 +22,7 @@ class OrderKuota {
     const payload = new URLSearchParams({
       auth_token: this.authToken,
       auth_username: this.username,
-      'requests[qris_history][jumlah]': '',
+      'requests[qris_history][jumlah]': '50', // Request more results
       'requests[qris_history][jenis]': type,
       'requests[qris_history][page]': '1',
       'requests[qris_history][dari_tanggal]': '',
@@ -41,6 +42,7 @@ class OrderKuota {
       'Host': OrderKuotaConfig.HOST,
       'User-Agent': OrderKuotaConfig.USER_AGENT,
       'Content-Type': 'application/x-www-form-urlencoded',
+      'Accept': 'application/json',
     };
   }
 
@@ -62,8 +64,8 @@ class OrderKuota {
 }
 
 module.exports = function (app) {
-  // GET QRIS MUTATION DATA (SIMPLIFIED VERSION)
-  app.get('/mutasiqris', async (req, res) => {
+  // GET QRIS MUTATION DATA (UPDATED VERSION)
+  app.get('/orderkuota/mutasiqr', async (req, res) => {
     const { username, token } = req.query;
 
     if (!username || !token) {
@@ -79,8 +81,30 @@ module.exports = function (app) {
       const ok = new OrderKuota(token, username);
       let response = await ok.getTransactionQris();
       
+      // Check if the API returned an error
+      if (!response.success) {
+        return res.status(500).json({
+          creator: "AldiXDCodeX",
+          success: false,
+          error: response.message || 'API returned an error',
+          timestamp: new Date().toISOString()
+        });
+      }
+      
+      // Format the response to match your expected format
+      const formattedResults = response.qris_history.results.map(transaction => ({
+        date: transaction.tanggal,
+        amount: transaction.kredit !== "0" ? transaction.kredit : transaction.debet,
+        type: "CR", // Assuming all are credit transactions
+        qris: "static", // Default value
+        brand_name: transaction.brand?.name || "Unknown",
+        issuer_reff: transaction.id.toString(),
+        buyer_reff: transaction.keterangan,
+        balance: transaction.saldo_akhir
+      }));
+      
       // Filter only IN transactions if needed
-      const inTransactions = response.qris_history?.results?.filter(e => e.status === "IN") || [];
+      const inTransactions = formattedResults.filter(e => e.type === "CR");
       
       return res.status(200).json({
         creator: "AldiXDCodeX",
