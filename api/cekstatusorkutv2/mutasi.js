@@ -64,7 +64,7 @@ class OrderKuota {
 module.exports = function (app) {
 
   // Global API key validation (replace with your actual validation logic)
-  const validApiKeys = ['your-api-key-1', 'your-api-key-2']; // Add your valid API keys here
+  const validApiKeys = ['aldixdcodex', 'your-api-key-2']; // Add your valid API keys here
 
   // GET QRIS MUTATION DATA (CORRECTED VERSION)
   app.get('/mutasiqris', async (req, res) => {
