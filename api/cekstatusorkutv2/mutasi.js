@@ -1,138 +1,78 @@
 const axios = require('axios');
-const { URLSearchParams } = require('url');
 
-// Updated OrderKuota API Configuration with current version info
-const OrderKuotaConfig = {
-  API_URL: 'https://app.orderkuota.com:443/api/v2',
-  HOST: 'app.orderkuota.com',
-  USER_AGENT: 'okhttp/4.10.0',
-  // Updated to more recent version numbers
-  APP_VERSION_NAME: '25.08.23', // Current date as version
-  APP_VERSION_CODE: '250823',   // Current date as code
-  APP_REG_ID: 'di309HvATsaiCppl5eDpoc:APA91bFUcTOH8h2XHdPRz2qQ5Bezn-3_TaycFcJ5pNLGWpmaxheQP9Ri0E56wLHz0_b1vcss55jbRQXZgc9loSfBdNa5nZJZVMlk7GS1JDMGyFUVvpcwXbMDg8tjKGZAurCGR4kDMDRJ'
-};
+// Konstanta yang diberikan
+const API_URL = 'https://app.orderkuota.com:443/api/v2';
+const HOST = 'app.orderkuota.com';
+const USER_AGENT = 'okhttp/4.10.0';
+const APP_VERSION_NAME = '25.03.14';
+const APP_VERSION_CODE = '250314';
+const APP_REG_ID = 'di309HvATsaiCppl5eDpoc:APA91bFUcTOH8h2XHdPRz2qQ5Bezn-3_TaycFcJ5pNLGWpmaxheQP9Ri0E56wLHz0_b1vcss55jbRQXZgc9loSfBdNa5nZJZVMlk7GS1JDMGyFUVvpcwXbMDg8tjKGZAurCGR4kDMDRJ';
 
-class OrderKuota {
-  constructor(authToken, username) {
-    this.authToken = authToken;
-    this.username = username;
-  }
-
-  async getTransactionQris(type = '') {
-    const payload = new URLSearchParams({
-      auth_token: this.authToken,
-      auth_username: this.username,
-      'requests[qris_history][jumlah]': '',
-      'requests[qris_history][jenis]': type,
-      'requests[qris_history][page]': '1',
-      'requests[qris_history][dari_tanggal]': '',
-      'requests[qris_history][ke_tanggal]': '',
-      'requests[qris_history][keterangan]': '',
-      'requests[0]': 'account',
-      app_version_name: OrderKuotaConfig.APP_VERSION_NAME,
-      app_version_code: OrderKuotaConfig.APP_VERSION_CODE,
-      app_reg_id: OrderKuotaConfig.APP_REG_ID,
+// Fungsi untuk mendapatkan dynamic key (asumsi)
+async function getDynamicKey(authUsername, authToken) {
+  // Implementasi untuk mendapatkan dynamic key
+  // Ini adalah placeholder - Anda perlu menyesuaikan dengan implementasi sebenarnya
+  try {
+    const response = await axios.post(`${API_URL}/auth/get-key`, {
+      username: authUsername,
+      token: authToken
+    }, {
+      headers: {
+        'Host': HOST,
+        'User-Agent': USER_AGENT,
+        'X-App-Version-Name': APP_VERSION_NAME,
+        'X-App-Version-Code': APP_VERSION_CODE,
+        'X-App-Reg-ID': APP_REG_ID
+      }
     });
-
-    return await this.request('POST', `${OrderKuotaConfig.API_URL}/get`, payload);
-  }
-
-  buildHeaders() {
-    return {
-      'Host': OrderKuotaConfig.HOST,
-      'User-Agent': OrderKuotaConfig.USER_AGENT,
-      'Content-Type': 'application/x-www-form-urlencoded',
-      // Adding additional headers that might be required
-      'Accept': 'application/json',
-      'Accept-Language': 'id-ID, id;q=0.9, en-US;q=0.8, en;q=0.7',
-      'Connection': 'Keep-Alive',
-    };
-  }
-
-  async request(method, url, body = null) {
-    try {
-      const response = await axios({
-        method,
-        url,
-        headers: this.buildHeaders(),
-        data: body.toString(),
-        timeout: 10000
-      });
-      
-      return response.data;
-    } catch (err) {
-      throw new Error(err.response?.data?.message || err.message);
-    }
+    
+    return response.data.key;
+  } catch (error) {
+    throw new Error(`Gagal mendapatkan dynamic key: ${error.message}`);
   }
 }
 
-module.exports = function (app) {
-  // GET QRIS MUTATION DATA
-  app.get('/mutasiqris', async (req, res) => {
-    const { username, token } = req.query;
+// Endpoint untuk mendapatkan mutasi QRIS
+app.get('/mutasiqris', async (req, res) => {
+  const { dynamicMerchantId, authUsername, authToken } = req.query;
 
-    if (!username || !token) {
-      return res.status(400).json({
-        creator: "AldiXDCodeX",
-        success: false,
-        error: 'Parameter required: username, token',
-        timestamp: new Date().toISOString()
-      });
-    }
-
-    try {
-      const ok = new OrderKuota(token, username);
-      let response = await ok.getTransactionQris();
-      
-      // Check if the API is asking for an update
-      if (response.qris_history && response.qris_history.success === false) {
-        return res.status(426).json({
-          creator: "AldiXDCodeX",
-          success: false,
-          error: 'API requires app update',
-          message: response.qris_history.message,
-          timestamp: new Date().toISOString()
-        });
-      }
-      
-      // Filter only IN transactions if needed
-      const inTransactions = response.qris_history?.results?.filter(e => e.status === "IN") || [];
-      
-      return res.status(200).json({
-        creator: "AldiXDCodeX",
-        success: true,
-        message: 'QRIS mutation data retrieved successfully',
-        data: {
-          success: response.success,
-          qris_history: {
-            ...response.qris_history,
-            results: inTransactions
-          }
-        },
-        timestamp: new Date().toISOString()
-      });
-
-    } catch (error) {
-      return res.status(500).json({
-        creator: "AldiXDCodeX",
-        success: false,
-        error: error.message,
-        timestamp: new Date().toISOString()
-      });
-    }
-  });
-
-  // ADDITIONAL ENDPOINT TO GET CURRENT APP INFO
-  app.get('/orderkuota/appinfo', async (req, res) => {
-    res.json({
-      creator: "AldiXDCodeX",
-      app_info: {
-        version_name: OrderKuotaConfig.APP_VERSION_NAME,
-        version_code: OrderKuotaConfig.APP_VERSION_CODE,
-        user_agent: OrderKuotaConfig.USER_AGENT,
-        api_url: OrderKuotaConfig.API_URL
-      },
-      timestamp: new Date().toISOString()
+  if (!dynamicMerchantId || !authUsername || !authToken) {
+    return res.status(400).json({
+      status: false,
+      error: 'Parameter wajib: dynamicMerchantId, authUsername, authToken'
     });
-  });
-};
+  }
+
+  try {
+    const dynamicKey = await getDynamicKey(authUsername, authToken);
+    const url = `https://${HOST}/qris/curl/mutasi.php`;
+    const params = {
+      timestamp: Date.now(),
+      merchant: dynamicMerchantId
+    };
+
+    const headers = {
+      'Host': HOST,
+      'accept': 'application/json',
+      'referer': `https://${HOST}/qris/?id=${dynamicMerchantId}&key=${dynamicKey}`,
+      'user-agent': USER_AGENT,
+      'x-requested-with': 'XMLHttpRequest'
+    };
+
+    const response = await axios.get(url, { params, headers });
+    
+    return res.status(200).json({
+      status: true,
+      data: response.data
+    });
+
+  } catch (error) {
+    const status = error.response ? error.response.status : 'N/A';
+    const baseMessage = error.message || `Request Gagal - Status: ${status}`;
+    
+    return res.status(500).json({
+      status: false,
+      error: `Server Error: ${baseMessage}`
+    });
+  }
+});
