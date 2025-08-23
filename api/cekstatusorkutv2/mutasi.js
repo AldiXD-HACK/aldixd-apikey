@@ -62,29 +62,15 @@ class OrderKuota {
 }
 
 module.exports = function (app) {
-
-  // Global API key validation (replace with your actual validation logic)
-  const validApiKeys = ['aldixdcodex', 'your-api-key-2']; // Add your valid API keys here
-
-  // GET QRIS MUTATION DATA (CORRECTED VERSION)
+  // GET QRIS MUTATION DATA (SIMPLIFIED VERSION)
   app.get('/mutasiqris', async (req, res) => {
-    const { apikey, username, token } = req.query;
+    const { username, token } = req.query;
 
-    if (!apikey || !username || !token) {
+    if (!username || !token) {
       return res.status(400).json({
         creator: "AldiXDCodeX",
         success: false,
-        error: 'Parameter required: apikey, username, token',
-        timestamp: new Date().toISOString()
-      });
-    }
-
-    // API key validation (replace with your actual validation logic)
-    if (!validApiKeys.includes(apikey)) {
-      return res.status(401).json({
-        creator: "AldiXDCodeX",
-        success: false,
-        error: 'Invalid API key',
+        error: 'Parameter required: username, token',
         timestamp: new Date().toISOString()
       });
     }
