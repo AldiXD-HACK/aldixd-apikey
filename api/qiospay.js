@@ -140,7 +140,7 @@ async function checkQRISStatus() {
 module.exports = [
   {
     name: "Create QRIS Payment",
-    desc: "Generate QR Code Payment for Qiospay",
+    desc: "Create Qris dynamic Qiospay",
     category: "Qiospay",
     path: "/qiospay/createpayment?apikey=&amount=&codeqr=",
     async run(req, res) {
@@ -161,7 +161,7 @@ module.exports = [
   },
   {
     name: "Check QRIS Status",
-    desc: "Check QRIS mutation status for Qiospay",
+    desc: "Check QRIS Status Mutasi Qiospay",
     category: "Qiospay",
     path: "/qiospay/cekstatus?apikey=&merchant=&keyorkut=",
     async run(req, res) {
