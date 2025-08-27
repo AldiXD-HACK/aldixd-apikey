@@ -16,9 +16,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
-// Static files
-app.use('/', express.static(path.join(__dirname, '/')));
-app.use('/api', express.static(path.join(__dirname, '/api')));
+// Static files → semua file di folder public langsung bisa diakses
+app.use(express.static(path.join(__dirname, '/')));
+app.use('/api', express.static(path.join(__dirname, 'api')));
 
 // Global Helpers
 global.getBuffer = async (url, options = {}) => {
@@ -26,10 +26,7 @@ global.getBuffer = async (url, options = {}) => {
     const res = await axios({
       method: 'get',
       url,
-      headers: {
-        'DNT': 1,
-        'Upgrade-Insecure-Request': 1
-      },
+      headers: { 'DNT': 1, 'Upgrade-Insecure-Request': 1 },
       ...options,
       responseType: 'arraybuffer'
     });
@@ -44,9 +41,7 @@ global.fetchJson = async (url, options = {}) => {
     const res = await axios({
       method: 'GET',
       url,
-      headers: {
-        'User-Agent': 'Mozilla/5.0'
-      },
+      headers: { 'User-Agent': 'Mozilla/5.0' },
       ...options
     });
     return res.data;
@@ -67,177 +62,120 @@ const settings = {
   instagramLink: "https://whatsapp.com/channel/"
 };
 
-// User management functions
+// User management
 const usersFile = path.join(__dirname, 'users.json');
-
-// Ensure users.json exists
-if (!fs.existsSync(usersFile)) {
-  fs.writeFileSync(usersFile, JSON.stringify([]));
-}
+if (!fs.existsSync(usersFile)) fs.writeFileSync(usersFile, JSON.stringify([]));
 
 const readUsers = () => {
-  try {
-    const data = fs.readFileSync(usersFile, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    console.error('Error reading users:', error);
-    return [];
-  }
+  try { return JSON.parse(fs.readFileSync(usersFile, 'utf8')); }
+  catch { return []; }
 };
 
 const writeUsers = (users) => {
   try {
     fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
     return true;
-  } catch (error) {
-    console.error('Error writing users:', error);
+  } catch {
     return false;
   }
 };
 
-// Generate random API key
-const generateApiKey = () => {
-  return Math.random().toString(36).substring(2) + 
-         Math.random().toString(36).substring(2) + 
-         Math.random().toString(36).substring(2);
-};
+const generateApiKey = () =>
+  Math.random().toString(36).substring(2) +
+  Math.random().toString(36).substring(2) +
+  Math.random().toString(36).substring(2);
 
-// Auth endpoints
-app.get('/auth/register', (req, res) => {
+// Auth routes
+app.post('/auth/register', (req, res) => {
   const { username, password } = req.body;
-  
-  if (!username || !password) {
+  if (!username || !password)
     return res.status(400).json({ error: 'Username and password are required' });
-  }
-  
+
   const users = readUsers();
-  
-  // Check if user already exists
-  if (users.find(user => user.username === username)) {
+  if (users.find(u => u.username === username))
     return res.status(400).json({ error: 'Username already exists' });
-  }
-  
-  // Create new user
+
   const apiKey = generateApiKey();
   const newUser = {
     id: Date.now().toString(),
     username,
-    password, // In production, you should hash the password!
+    password, // sebaiknya hash password kalau production
     apikey: apiKey,
     createdAt: new Date().toISOString()
   };
-  
+
   users.push(newUser);
-  
   if (writeUsers(users)) {
-    // Update .env file with new API key
     const envPath = path.join(__dirname, '.env');
-    let envContent = '';
-    
-    if (fs.existsSync(envPath)) {
-      envContent = fs.readFileSync(envPath, 'utf8');
-      
-      // Remove existing APIKEY if it exists
-      envContent = envContent.replace(/APIKEY=.*\n/, '');
-    }
-    
-    // Add all API keys to the environment
-    const allApiKeys = users.map(user => user.apikey);
-    envContent += `APIKEY=["${allApiKeys.join('", "')}"]\n`;
-    
+    let envContent = fs.existsSync(envPath) ? fs.readFileSync(envPath, 'utf8') : '';
+    envContent = envContent.replace(/APIKEY=.*\n/, '');
+    const allKeys = users.map(u => u.apikey);
+    envContent += `APIKEY=["${allKeys.join('", "')}"]\n`;
     fs.writeFileSync(envPath, envContent);
-    
-    // Return user data (without password)
+
     const { password: _, ...userWithoutPassword } = newUser;
-    res.json({ 
-      message: 'User created successfully',
-      user: userWithoutPassword
-    });
-  } else {
-    res.status(500).json({ error: 'Failed to create user' });
+    return res.json({ message: 'User created successfully', user: userWithoutPassword });
   }
+  res.status(500).json({ error: 'Failed to create user' });
 });
 
-app.get('/auth/login', (req, res) => {
+app.post('/auth/login', (req, res) => {
   const { username, password } = req.body;
-  
-  if (!username || !password) {
+  if (!username || !password)
     return res.status(400).json({ error: 'Username and password are required' });
-  }
-  
+
   const users = readUsers();
   const user = users.find(u => u.username === username && u.password === password);
-  
-  if (user) {
-    // Return user data (without password)
-    const { password: _, ...userWithoutPassword } = user;
-    res.json({ 
-      message: 'Login successful',
-      user: userWithoutPassword
-    });
-  } else {
-    res.status(401).json({ error: 'Invalid username or password' });
-  }
+
+  if (!user) return res.status(401).json({ error: 'Invalid username or password' });
+
+  const { password: _, ...userWithoutPassword } = user;
+  res.json({ message: 'Login successful', user: userWithoutPassword });
 });
 
-// Middleware to verify API key
+// Middleware verify API key
 const verifyApiKey = (req, res, next) => {
   const apiKey = req.query.apikey || req.headers['x-api-key'];
-  
-  if (!apiKey) {
-    return res.status(401).json({ error: 'API key is required' });
-  }
-  
+  if (!apiKey) return res.status(401).json({ error: 'API key is required' });
+
   const users = readUsers();
   const user = users.find(u => u.apikey === apiKey);
-  
-  if (user) {
-    req.user = user;
-    next();
-  } else {
-    res.status(401).json({ error: 'Invalid API key' });
-  }
+  if (!user) return res.status(401).json({ error: 'Invalid API key' });
+
+  req.user = user;
+  next();
 };
 
-// Global JSON Response Wrapper
+// Response wrapper
 app.use((req, res, next) => {
-  global.totalreq += 1;
-  
+  global.totalreq++;
   const originalJson = res.json;
   res.json = function (data) {
     if (typeof data === 'object' && req.path !== '/endpoints' && req.path !== '/set') {
-      return originalJson.call(this, {
-        creator: settings.creatorName || "Created Using AldiXDCodeX",
-        ...data
-      });
+      return originalJson.call(this, { creator: settings.creatorName, ...data });
     }
     return originalJson.call(this, data);
   };
-  
   next();
 });
 
 app.get('/set', (req, res) => res.json(settings));
 
-// Dynamic route loader with sorted categories and endpoints
+// Load API routes
 let totalRoutes = 0;
 let rawEndpoints = {};
 const apiFolder = path.join(__dirname, 'api');
 
 fs.readdirSync(apiFolder).forEach(file => {
-  const fullPath = path.join(apiFolder, file);
   if (file.endsWith('.js')) {
     try {
-      const routes = require(fullPath);
+      const routes = require(path.join(apiFolder, file));
       const handlers = Array.isArray(routes) ? routes : [routes];
-      
       handlers.forEach(route => {
         if (route.path && route.name) {
-          const category = route.category || "Uncategorized";
-          if (!rawEndpoints[category]) {
-            rawEndpoints[category] = [];
-          }
-          rawEndpoints[category].push({
+          const cat = route.category || "Uncategorized";
+          if (!rawEndpoints[cat]) rawEndpoints[cat] = [];
+          rawEndpoints[cat].push({
             name: route.name,
             desc: route.desc || "No description provided",
             path: route.path,
@@ -253,28 +191,22 @@ fs.readdirSync(apiFolder).forEach(file => {
 });
 
 const endpoints = Object.keys(rawEndpoints)
-  .sort((a, b) => a.localeCompare(b))
-  .reduce((sorted, category) => {
-    sorted[category] = rawEndpoints[category].sort((a, b) => a.name.localeCompare(b.name));
+  .sort()
+  .reduce((sorted, cat) => {
+    sorted[cat] = rawEndpoints[cat].sort((a, b) => a.name.localeCompare(b.name));
     return sorted;
   }, {});
 
-app.get('/endpoints', (req, res) => {
-  res.json(endpoints);
-});
+app.get('/endpoints', (req, res) => res.json(endpoints));
 
+// Default route → index.html (otomatis serve dari public)
 app.get('/', (req, res) => {
-  try {
-    res.sendFile(path.join(__dirname, 'index.html'));
-  } catch (err) {
-    console.log(err);
-    res.status(500).send('Error loading page');
-  }
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Start Server
+// Start server
 app.listen(PORT, () => {
-  console.log(chalk.bgGreen.black(` 🚀 Server is running on port ${PORT} `));
+  console.log(chalk.bgGreen.black(` 🚀 Server running on port ${PORT} `));
   console.log(chalk.bgCyan.black(` 📦 Total Routes Loaded: ${totalRoutes} `));
 });
 
