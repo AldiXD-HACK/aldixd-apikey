@@ -16,8 +16,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
-// Static
-app.use('/', express.static(path.join(__dirname, '/api')));
+// Static files
+app.use('/', express.static(path.join(__dirname, '/')));
+app.use('/api', express.static(path.join(__dirname, '/api')));
 
 // Global Helpers
 global.getBuffer = async (url, options = {}) => {
@@ -66,18 +67,145 @@ const settings = {
   instagramLink: "https://whatsapp.com/channel/"
 };
 
+// User management functions
+const usersFile = path.join(__dirname, 'users.json');
+
+// Ensure users.json exists
+if (!fs.existsSync(usersFile)) {
+  fs.writeFileSync(usersFile, JSON.stringify([]));
+}
+
+const readUsers = () => {
+  try {
+    const data = fs.readFileSync(usersFile, 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Error reading users:', error);
+    return [];
+  }
+};
+
+const writeUsers = (users) => {
+  try {
+    fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
+    return true;
+  } catch (error) {
+    console.error('Error writing users:', error);
+    return false;
+  }
+};
+
+// Generate random API key
+const generateApiKey = () => {
+  return Math.random().toString(36).substring(2) + 
+         Math.random().toString(36).substring(2) + 
+         Math.random().toString(36).substring(2);
+};
+
+// Auth endpoints
+app.post('/auth/register', (req, res) => {
+  const { username, password } = req.body;
+  
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Username and password are required' });
+  }
+  
+  const users = readUsers();
+  
+  // Check if user already exists
+  if (users.find(user => user.username === username)) {
+    return res.status(400).json({ error: 'Username already exists' });
+  }
+  
+  // Create new user
+  const apiKey = generateApiKey();
+  const newUser = {
+    id: Date.now().toString(),
+    username,
+    password, // In production, you should hash the password!
+    apikey: apiKey,
+    createdAt: new Date().toISOString()
+  };
+  
+  users.push(newUser);
+  
+  if (writeUsers(users)) {
+    // Update .env file with new API key
+    const envPath = path.join(__dirname, '.env');
+    let envContent = '';
+    
+    if (fs.existsSync(envPath)) {
+      envContent = fs.readFileSync(envPath, 'utf8');
+      
+      // Remove existing APIKEY if it exists
+      envContent = envContent.replace(/APIKEY=.*\n/, '');
+    }
+    
+    // Add all API keys to the environment
+    const allApiKeys = users.map(user => user.apikey);
+    envContent += `APIKEY=["${allApiKeys.join('", "')}"]\n`;
+    
+    fs.writeFileSync(envPath, envContent);
+    
+    // Return user data (without password)
+    const { password: _, ...userWithoutPassword } = newUser;
+    res.json({ 
+      message: 'User created successfully',
+      user: userWithoutPassword
+    });
+  } else {
+    res.status(500).json({ error: 'Failed to create user' });
+  }
+});
+
+app.post('/auth/login', (req, res) => {
+  const { username, password } = req.body;
+  
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Username and password are required' });
+  }
+  
+  const users = readUsers();
+  const user = users.find(u => u.username === username && u.password === password);
+  
+  if (user) {
+    // Return user data (without password)
+    const { password: _, ...userWithoutPassword } = user;
+    res.json({ 
+      message: 'Login successful',
+      user: userWithoutPassword
+    });
+  } else {
+    res.status(401).json({ error: 'Invalid username or password' });
+  }
+});
+
+// Middleware to verify API key
+const verifyApiKey = (req, res, next) => {
+  const apiKey = req.query.apikey || req.headers['x-api-key'];
+  
+  if (!apiKey) {
+    return res.status(401).json({ error: 'API key is required' });
+  }
+  
+  const users = readUsers();
+  const user = users.find(u => u.apikey === apiKey);
+  
+  if (user) {
+    req.user = user;
+    next();
+  } else {
+    res.status(401).json({ error: 'Invalid API key' });
+  }
+};
 
 // Global JSON Response Wrapper
 app.use((req, res, next) => {
   global.totalreq += 1;
-
+  
   const originalJson = res.json;
   res.json = function (data) {
-    if (
-      typeof data === 'object' &&
-      req.path !== '/endpoints' &&
-      req.path !== '/set'
-    ) {
+    if (typeof data === 'object' && req.path !== '/endpoints' && req.path !== '/set') {
       return originalJson.call(this, {
         creator: settings.creatorName || "Created Using AldiXDCodeX",
         ...data
@@ -85,7 +213,7 @@ app.use((req, res, next) => {
     }
     return originalJson.call(this, data);
   };
-
+  
   next();
 });
 
@@ -102,26 +230,24 @@ fs.readdirSync(apiFolder).forEach(file => {
     try {
       const routes = require(fullPath);
       const handlers = Array.isArray(routes) ? routes : [routes];
-
+      
       handlers.forEach(route => {
-        const { name, desc, category, path: routePath, run } = route;
-
-        if (name && desc && category && routePath && typeof run === 'function') {
-          const cleanPath = routePath.split('?')[0];
-          app.get(cleanPath, run);
-
-          if (!rawEndpoints[category]) rawEndpoints[category] = [];
-          rawEndpoints[category].push({ name, desc, path: routePath });
-
+        if (route.path && route.name) {
+          const category = route.category || "Uncategorized";
+          if (!rawEndpoints[category]) {
+            rawEndpoints[category] = [];
+          }
+          rawEndpoints[category].push({
+            name: route.name,
+            desc: route.desc || "No description provided",
+            path: route.path,
+            method: route.method || "GET"
+          });
           totalRoutes++;
-          console.log(chalk.hex('#55efc4')(`✔ Loaded: `) + chalk.hex('#ffeaa7')(`${cleanPath} (${file})`));
-        } else {
-          console.warn(chalk.bgRed.white(` ⚠ Skipped invalid route in ${file}`));
         }
       });
-
     } catch (err) {
-      console.error(chalk.bgRed.white(` ❌ Error in ${file}: ${err.message}`));
+      console.error(`Error loading route from ${file}:`, err);
     }
   }
 });
@@ -139,9 +265,10 @@ app.get('/endpoints', (req, res) => {
 
 app.get('/', (req, res) => {
   try {
-  res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
   } catch (err) {
-  console.log(err)
+    console.log(err);
+    res.status(500).send('Error loading page');
   }
 });
 
