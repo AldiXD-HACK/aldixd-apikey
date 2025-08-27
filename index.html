@@ -679,6 +679,66 @@
     transform: translateY(0);
   }
 
+    /* ===== Navbar Brand Animation ===== */
+.brand {
+  position: relative;
+  font-size: 1.4rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark), var(--primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200%;
+  animation: gradientMove 4s linear infinite;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0%; }
+  100% { background-position: 200%; }
+}
+
+/* ===== Hero Section Enhancement ===== */
+.hero h2 {
+  font-size: 2.6rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  text-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+}
+.hero p {
+  font-size: 1.1rem;
+  color: var(--text-gray);
+  line-height: 1.8;
+}
+
+/* ===== API Card Glow Effect ===== */
+.api-card {
+  border-radius: 16px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.api-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(139, 92, 246, 0.25);
+}
+
+/* ===== Modal Animation ===== */
+.modal-dialog {
+  border-radius: 20px;
+  animation: modalZoom 0.4s ease;
+}
+@keyframes modalZoom {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ===== Footer Glow Socials ===== */
+footer .contact a {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  transition: 0.3s;
+}
+footer .contact a:hover {
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+  transform: translateY(-5px) scale(1.1);
+}
   /* ===== Footer Styles ===== */
   footer {
     text-align: center;
