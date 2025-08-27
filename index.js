@@ -103,7 +103,7 @@ const generateApiKey = () => {
 };
 
 // Auth endpoints
-app.post('/auth/register', (req, res) => {
+app.get('/auth/register', (req, res) => {
   const { username, password } = req.body;
   
   if (!username || !password) {
@@ -158,7 +158,7 @@ app.post('/auth/register', (req, res) => {
   }
 });
 
-app.post('/auth/login', (req, res) => {
+app.get('/auth/login', (req, res) => {
   const { username, password } = req.body;
   
   if (!username || !password) {
