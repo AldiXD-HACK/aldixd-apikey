@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   
-  <meta property="og:title" content="Docs - AldiXDCodeX Apie" />
+  <meta property="og:title" content="Docs - AldiXDCodeX Apiee" />
   <meta property="og:description" content="Lightweight API for WhatsApp Bots" />
   <meta property="og:image" content="https://files.catbox.moe/2b3d1b.jpg" />
   <meta property="og:url" content="https://aldixd-apimain.vercel.app/" />
@@ -15,52 +15,18 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-  /* ===== Elegant Dark Theme Variables ===== */
+  /* ===== Base Theme Variables (Light Theme) ===== */
   :root {
-    --primary: #8a63d2; /* Elegant purple accent */
-    --primary-dark: #7856c0; /* Darker purple */
-    --primary-light: #9d7ad9; /* Lighter purple */
-    --secondary: #a78bfa; /* Secondary accent */
-    --text-primary: #e2e8f0; /* Light text color */
-    --text-secondary: #f1f5f9; /* Very light text for headings */
-    --bg-dark: #0a0a0f; /* Deep dark background */
-    --bg-darker: #070710; /* Even darker background */
-    --bg-light: #121218; /* Slightly lighter dark */
-    --text-gray: #94a3b8; /* Muted gray text */
-    --border-color: #2d3748; /* Dark border color */
-    --card-bg: #121218; /* Card background */
-    --card-hover-bg: #1a1a24; /* Card hover background */
-    --input-bg: #0f0f15; /* Input background */
-    --input-border: #2d3748; /* Input border */
-    --placeholder-color: #4a5568; /* Placeholder color */
-    --modal-overlay: rgba(0, 0, 0, 0.88); /* Dark overlay */
-    --success: #10b981; /* Success feedback */
-    --warning: #f59e0b; /* Warning warning */
-    --danger: #ef4444; /* Danger feedback */
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Global transition */
-    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.25), 0 1px 2px 0 rgba(0, 0, 0, 0.15);
-    --shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.35), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-    --border-radius: 12px; /* Slightly larger border radius */
-    --border-radius-sm: 8px; /* Slightly larger small border radius */
-    --glow: 0 0 15px rgba(138, 99, 210, 0.3); /* Subtle glow effect */
-  }
-
-  /* ===== Light Theme Variables ===== */
-  body.light-theme {
     --primary: #6366f1; /* Main brand color */
     --primary-dark: #4f46e5; /* Darker primary for hover/active */
     --primary-light: #a5b4fc; /* Lighter primary for subtle accents */
     --secondary: #818cf8; /* Secondary accent color */
     --text-primary: #1e293b; /* Dark text/element color */
     --text-secondary: rgba(0, 0, 0, 0.8); /* Even darker text/headings */
-    --bg-dark: #ffffff; /* White background */
-    --bg-darker: #f8fafc; /* Even lighter gray, almost white */
-    --bg-light: #f1f5f9; /* Light background */
+    --bg-light: #ffffff; /* White background */
+    --bg-lighter: #f8fafc; /* Even lighter gray, almost white */
     --text-gray: #64748b; /* General text color */
     --border-color: #e2e8f0; /* Light border color */
     --card-bg: #ffffff; /* Card background */
@@ -69,11 +35,38 @@
     --input-border: #e2e8f0; /* Input border */
     --placeholder-color: #94a3b8; /* Placeholder color */
     --modal-overlay: rgba(15, 23, 42, 0.75); /* Dark overlay */
-    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-    --shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.06);
-    --glow: 0 0 10px rgba(99, 102, 241, 0.2);
+    --success: #10b981; /* Success feedback */
+    --warning: #f59e0b; /* Warning warning */
+    --danger: #ef4444; /* Danger feedback */
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Global transition */
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.03); /* Subtle shadow */
+    --shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); /* Medium shadow */
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.08); /* Stronger shadow */
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.06); /* Large shadow */
+    --border-radius: 10px; /* Slightly larger border radius */
+    --border-radius-sm: 6px; /* Slightly larger small border radius */
+  }
+
+  /* ===== Dark Theme Variables ===== */
+  body.dark-theme {
+    --primary: #8b5cf6; /* More vibrant purple for dark mode */
+    --primary-dark: #7c3aed;
+    --text-primary: #f1f5f9; /* Light text/element color */
+    --text-secondary: #e2e8f0; /* Even lighter text/headings */
+    --bg-light: #0a0a0a; /* Pure black background */
+    --bg-lighter: #111827; /* Dark blue-black background */
+    --text-gray: #94a3b8; /* Brighter gray text color for better readability */ 
+    --border-color: #1e293b; /* Darker border color */
+    --card-bg: #1a1a1a; /* Slightly lighter black for cards */
+    --card-hover-bg: #252525; /* Card hover background */
+    --input-bg: #0f172a; /* Input background */
+    --input-border: #334155; /* Input border */
+    --placeholder-color: #64748b; /* Placeholder color */
+    --modal-overlay: rgba(0, 0, 0, 0.9); /* Darker overlay */
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px 0 rgba(0, 0, 0, 0.3); /* Darker shadows */
+    --shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.6), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.7), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.8), 0 10px 10px -5px rgba(0, 0, 0, 0.6);
   }
 
   /* ===== General Styles ===== */
@@ -84,14 +77,17 @@
   }
 
   body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: linear-gradient(to bottom, var(--bg-darker), var(--bg-dark));
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-lighter);
     color: var(--text-primary);
     padding: 1.5rem;
     min-height: 100vh;
     -webkit-tap-highlight-color: transparent;
     line-height: 1.6;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
+    background-image: 
+      radial-gradient(circle at 15% 50%, rgba(28, 28, 28, 0.03) 0%, transparent 25%),
+      radial-gradient(circle at 85% 30%, rgba(28, 28, 28, 0.03) 0%, transparent 25%);
   }
 
   .d-none {
@@ -105,7 +101,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--bg-darker);
+    background: var(--bg-lighter); /* Use theme variable */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -115,18 +111,17 @@
   }
   
   .loading-spinner-large {
-    border: 5px solid rgba(138, 99, 210, 0.1);
-    border-top: 5px solid var(--primary);
+    border: 5px solid rgba(99, 102, 241, 0.1);
+    border-top: 5px solid var(--primary); /* Use theme variable */
     border-radius: 50%;
     width: 50px;
     height: 50px;
     animation: spin 0.8s linear infinite;
     margin-bottom: 15px;
-    box-shadow: var(--glow);
   }
   
   .loading-text {
-    color: var(--text-primary);
+    color: var(--text-primary); /* Use theme variable */
     font-size: 0.95rem; 
     margin-top: 10px;
     text-align: center;
@@ -137,15 +132,15 @@
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow-x: auto;
-    background: var(--card-bg);
-    color: var(--text-primary);
+    background: var(--card-bg); /* Use theme variable */
+    color: var(--text-primary); /* Use theme variable */
     padding: 1.25rem; 
     max-height: 400px;
     font-size: 0.9rem;    
     font-weight: 500;
-    font-family: 'Fira Code', monospace; 
+    font-family: 'Fira Code', 'Poppins', monospace; 
     border-radius: var(--border-radius-sm);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border-color); /* Use theme variable */
   }
 
   /* ===== Form Styles ===== */
@@ -153,7 +148,7 @@
     display: block;
     font-weight: 500;
     margin-bottom: 8px; 
-    color: var(--text-primary);
+    color: var(--text-primary); /* Use theme variable */
     font-size: 0.9rem; 
   }
 
@@ -168,7 +163,7 @@
     font-weight: 500;
     font-size: 0.9rem; 
     transition: var(--transition);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Poppins', sans-serif;
     border-radius: var(--border-radius-sm);
     min-width: 150px; 
   }
@@ -181,39 +176,54 @@
   .modal-body form input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(138, 99, 210, 0.2);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
   }
 
   #submitParamBtn {
-    background: linear-gradient(to right, var(--primary), var(--primary-dark));
+    background: var(--primary);
     color: white;
     border: none;
     padding: 14px 28px; 
     font-size: 0.9rem; 
-    font-family: 'Inter', sans-serif;
-    font-weight: 600; 
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500; 
     cursor: pointer;
     transition: var(--transition);
     width: 100%;
     margin-top: 1rem; 
     border-radius: var(--border-radius-sm);
-    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
   }
 
   #submitParamBtn:hover {
-    background: linear-gradient(to right, var(--primary-dark), var(--primary));
+    background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 10px 20px -10px var(--primary);
   }
 
   #submitParamBtn:active {
     transform: translateY(0);
-    box-shadow: var(--shadow-sm);
+  }
+
+  #submitParamBtn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+  }
+
+  #submitParamBtn:hover::before {
+    left: 100%;
   }
 
   .loading-spinner {
     margin: 2rem auto 1rem auto; 
-    border: 3px solid rgba(138, 99, 210, 0.15); 
+    border: 3px solid rgba(99, 102, 241, 0.15); 
     border-top: 3px solid var(--primary);
     border-radius: 50%;
     width: 30px;
@@ -237,7 +247,7 @@
   .icon-title {
     font-size: 2.2rem; 
     color: var(--primary);
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -274,16 +284,16 @@
     padding: 2rem; 
     color: var(--text-primary); 
     overflow: hidden;
-    transform: translateY(30px) scale(0.95); 
+    transform: translateY(30px); 
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
     opacity: 0;
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color); 
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   }
 
   .modal.active .modal-dialog {
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
     opacity: 1;
   }
 
@@ -298,7 +308,7 @@
 
   .modal-header h5 {
     font-size: 1.25rem; 
-    font-weight: 600;
+    font-weight: 500;
     color: var(--text-secondary); 
     margin-bottom: 6px; 
     display: flex;
@@ -308,7 +318,7 @@
 
   .modal-header h5 .method-badge { 
     font-size: 0.8rem; 
-    font-weight: 700;
+    font-weight: 600;
     padding: 0.3rem 0.6rem; 
     background: rgba(74, 222, 128, 0.15); 
     color: #22c55e; 
@@ -360,7 +370,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 10px; 
-    background: var(--bg-light); 
+    background: var(--bg-lighter); 
     padding: 12px 16px; 
     font-size: 0.9rem; 
     color: var(--text-primary); 
@@ -414,7 +424,6 @@
     word-wrap: break-word;
     transition: var(--transition);
     border-radius: var(--border-radius-sm);
-    font-family: 'Fira Code', monospace;
   }
   
   #apiResponseContent::-webkit-scrollbar {
@@ -423,7 +432,7 @@
   }
   
   #apiResponseContent::-webkit-scrollbar-track {
-    background: var(--bg-light); 
+    background: var(--bg-lighter); 
     border-radius: 10px;
   }
   
@@ -473,15 +482,15 @@
     text-align: left;
     margin: 3rem 0 2rem 0; 
     max-width: 800px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Poppins', sans-serif;
   }
 
   .hero h2 {
     font-size: 2.2rem; 
-    font-weight: 700; 
+    font-weight: 600; 
     color: var(--text-secondary); 
     margin-bottom: 0.75rem; 
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    background: linear-gradient(90deg, var(--primary), var(--primary-dark));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -499,8 +508,8 @@
     font-size: 1.3rem; 
     color: var(--text-secondary); 
     margin-bottom: 0.5rem; 
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
   }
 
   /* ===== Tabs ===== */
@@ -523,7 +532,7 @@
     color: var(--text-gray); 
     border: none;
     font-weight: 500;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Poppins', sans-serif;
     border-bottom: 2px solid transparent;
     padding: 0.1rem 0; 
     cursor: pointer;
@@ -535,7 +544,7 @@
 
   .tab.active {
     border-bottom: 3px solid var(--primary); 
-    color: var(--text-secondary);
+    color: var(--primary);
     font-weight: 600;
   }
 
@@ -595,6 +604,7 @@
     left: 0;
     width: 100%;
     height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(99, 102, 241, 0.05), transparent);
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -614,21 +624,37 @@
   }
 
   .play-button {
-    background: linear-gradient(to right, var(--primary), var(--primary-dark));
+    background: var(--primary);
     border: none;
     padding: 10px 15px; 
     color: white;
     cursor: pointer;
     font-size: 0.9rem; 
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
     transition: var(--transition);
     display: flex;
     align-items: center;
     gap: 8px; 
     border-radius: var(--border-radius-sm);
     flex-shrink: 0;
-    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .play-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+  }
+
+  .play-button:hover::before {
+    left: 100%;
   }
 
   @keyframes cardEntrance {
@@ -645,7 +671,7 @@
   .api-info h3 {
     font-size: 1.05rem; 
     color: var(--text-secondary); 
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 4px; 
     display: flex;
     align-items: center;
@@ -654,7 +680,7 @@
   
   .api-info h3 .method-badge { 
     font-size: 0.8rem; 
-    font-weight: 700;
+    font-weight: 600;
     padding: 0.3rem 0.6rem; 
     margin-right: 0;
     background: rgba(74, 222, 128, 0.15); 
@@ -672,12 +698,10 @@
 
   .play-button:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow);
   }
 
   .play-button:active {
     transform: translateY(0);
-    box-shadow: var(--shadow-sm);
   }
 
   /* ===== Footer Styles ===== */
@@ -708,15 +732,14 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: var(--card-bg); 
-    box-shadow: var(--shadow-sm);
+    background: var(--bg-light); 
   }
 
   footer .contact a:hover {
     color: white;
     background: var(--primary);
     transform: translateY(-4px); 
-    box-shadow: var(--shadow);
+    box-shadow: 0 10px 20px -10px var(--primary);
   }
 
   /* ===== Responsive ===== */
@@ -794,7 +817,7 @@
   
   /* Navbar Styles */
 .navbar {
-  background: rgba(10, 10, 15, 0.8); 
+  background: rgba(10, 10, 10, 0.8); 
   border-bottom: 1px solid var(--border-color); 
   padding: 0.8rem 1rem; 
   position: fixed;
@@ -803,11 +826,13 @@
   left: 0;
   z-index: 1;
   backdrop-filter: blur(10px); 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
 }
 
 .navbar-left span {
-font-family: 'Inter', sans-serif;
-font-weight: 700;
+font-family: 'Poppins', sans-serif;
+font-weight: 600;
 }
 
 .navbar-container {
@@ -821,10 +846,10 @@ font-weight: 700;
 
 .brand {
   font-size: 1.3rem; 
-  font-weight: 800; 
+  font-weight: 700; 
   color: var(--text-secondary); 
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -848,13 +873,14 @@ font-weight: 700;
   width: 40px; 
   height: 40px; 
   border-radius: 50%;
-  background: rgba(138, 99, 210, 0.1);
+  background: rgba(99, 102, 241, 0.1);
 }
 
 .navbar-right .nav-icon:hover {
   color: white;
   background: var(--primary-dark); 
   transform: translateY(-3px); 
+  box-shadow: 0 8px 15px -5px var(--primary);
 }
 
 /* Theme Toggle Button */
@@ -873,7 +899,7 @@ font-weight: 700;
   justify-content: center;
   border-radius: 50%;
   transition: var(--transition);
-  background: var(--card-bg); 
+  background: var(--bg-light); 
 }
 
 #themeToggle:hover {
@@ -883,7 +909,7 @@ font-weight: 700;
 /* Method badges */
 .method-badge { 
   font-size: 0.8rem; 
-  font-weight: 700;
+  font-weight: 600;
   padding: 0.3rem 0.6rem; 
   border-radius: 16px; 
   text-transform: uppercase;
@@ -897,38 +923,71 @@ font-weight: 700;
 .method-delete { }
 .method-patch { }
 
-/* Fade in animation */
-.fade-in {
-  animation: fadeIn 0.8s ease-in-out;
+/* Subtle glow effect for important elements */
+.glow-effect {
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Glassmorphism effect for modals and cards */
-.glass {
-  background: rgba(18, 18, 24, 0.7);
+/* Glassmorphism effect for cards in dark mode */
+body.dark-theme .api-card,
+body.dark-theme .modal-dialog {
+  background: rgba(26, 26, 26, 0.8);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Animated gradient background for the body */
+body.dark-theme::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 15% 50%, rgba(28, 28, 28, 0.03) 0%, transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(28, 28, 28, 0.03) 0%, transparent 25%);
+  z-index: -1;
+}
+
+/* Improved focus styles for accessibility */
+button:focus,
+input:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Subtle pulse animation for loading elements */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
 }
   </style>
 </head>
-<body class="dark-theme">
+<body>
   <div id="loading-screen">
     <div class="loading-spinner-large"></div>
     <div class="loading-text">Loading ...</div>
   </div>
   
-  <header class="navbar glass">
+  <header class="navbar">
     <div class="navbar-container">
       <div class="navbar-left">
-        <span id="navname" class="brand">AldiXDCodeX</span>
+        <span id="navname" class="brand">AldiXDCodeX Apie</span>
       </div>
       <div class="navbar-right">
         <button id="themeToggle" class="nav-icon" aria-label="Toggle Theme">
-          <i class="fas fa-sun"></i> 
+          <i class="fas fa-moon"></i> 
         </button>
       </div>
     </div>
@@ -938,7 +997,7 @@ font-weight: 700;
     <section class="hero fade-in">
       <div class="title-container">
         <i class="fas fa-rocket icon-title"></i> 
-        <h2 id="apiTitle">Selfbot API's</h2> 
+        <h2 id="apiTitle">AldiXDCodeX Apiee</h2> 
       </div>
       <p>Fast and simple API for full WhatsApp Bot integration, with clear docs and powerful tools to boost your bot.</p> 
     </section>
@@ -951,7 +1010,7 @@ font-weight: 700;
   </div>
 
   <div class="modal" id="apiResponseModal">
-    <div class="modal-dialog glass">
+    <div class="modal-dialog">
       <div class="modal-header">
         <div>
           <h5 id="modalEndpointTitle"></h5> 
@@ -980,7 +1039,7 @@ font-weight: 700;
       <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
       <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
     </div>
-    <p>&copy; <span id="currentYear"></span> AldiXDCodeX. All rights reserved.</p>
+    <p>&copy; <span id="currentYear"></span> Since 2023 AldiXDCodeX. All rights reserved.</p>
   </footer>
 
 <script>
@@ -1006,23 +1065,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   let settings = {}, apis = {};
 
   // --- Theme Toggle Logic ---
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme) {
-    document.body.classList.add(savedTheme);
-    if (savedTheme === 'light-theme') {
-      themeToggleIcon.classList.remove('fa-sun');
-      themeToggleIcon.classList.add('fa-moon');
-    }
-  } else {
-    // Default to dark theme
-    document.body.classList.add('dark-theme');
-    themeToggleIcon.classList.remove('fa-moon');
-    themeToggleIcon.classList.add('fa-sun');
-  }
+  // Set dark theme as default
+  document.body.classList.add('dark-theme');
+  localStorage.setItem('theme', 'dark-theme');
+  themeToggleIcon.classList.remove('fa-moon');
+  themeToggleIcon.classList.add('fa-sun');
 
   themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark-theme');
-    document.body.classList.toggle('light-theme');
     if (document.body.classList.contains('dark-theme')) {
       localStorage.setItem('theme', 'dark-theme');
       themeToggleIcon.classList.remove('fa-moon');
