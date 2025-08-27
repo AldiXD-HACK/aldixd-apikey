@@ -16,13 +16,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
-// Static files dari root folder
-app.use(express.static(__dirname));
+// Static
+app.use('/', express.static(path.join(__dirname, '/api')));
 
 // Global Helpers
 global.getBuffer = async (url, options = {}) => {
   try {
-    const res = await axios({ method: 'get', url, responseType: 'arraybuffer', ...options });
+    const res = await axios({
+      method: 'get',
+      url,
+      headers: {
+        'DNT': 1,
+        'Upgrade-Insecure-Request': 1
+      },
+      ...options,
+      responseType: 'arraybuffer'
+    });
     return res.data;
   } catch (err) {
     return err;
@@ -31,7 +40,14 @@ global.getBuffer = async (url, options = {}) => {
 
 global.fetchJson = async (url, options = {}) => {
   try {
-    const res = await axios({ method: 'GET', url, ...options });
+    const res = await axios({
+      method: 'GET',
+      url,
+      headers: {
+        'User-Agent': 'Mozilla/5.0'
+      },
+      ...options
+    });
     return res.data;
   } catch (err) {
     return err;
@@ -50,106 +66,89 @@ const settings = {
   instagramLink: "https://whatsapp.com/channel/"
 };
 
-// ===== User Management (Register / Login) =====
-const usersFile = path.join(__dirname, 'users.json');
-if (!fs.existsSync(usersFile)) fs.writeFileSync(usersFile, JSON.stringify([]));
 
-const readUsers = () => {
-  try { return JSON.parse(fs.readFileSync(usersFile, 'utf8')); }
-  catch { return []; }
-};
-
-const writeUsers = (users) => fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
-
-const generateApiKey = () =>
-  Math.random().toString(36).substring(2) +
-  Math.random().toString(36).substring(2) +
-  Math.random().toString(36).substring(2);
-
-app.post('/auth/register', (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password) return res.status(400).json({ error: 'Username & password required' });
-
-  const users = readUsers();
-  if (users.find(u => u.username === username)) return res.status(400).json({ error: 'Username already exists' });
-
-  const apiKey = generateApiKey();
-  const newUser = { id: Date.now().toString(), username, password, apikey: apiKey, createdAt: new Date().toISOString() };
-
-  users.push(newUser);
-  writeUsers(users);
-
-  const { password: _, ...userWithoutPassword } = newUser;
-  res.json({ message: 'User created successfully', user: userWithoutPassword });
-});
-
-app.post('/auth/login', (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password) return res.status(400).json({ error: 'Username & password required' });
-
-  const users = readUsers();
-  const user = users.find(u => u.username === username && u.password === password);
-
-  if (!user) return res.status(401).json({ error: 'Invalid credentials' });
-
-  const { password: _, ...userWithoutPassword } = user;
-  res.json({ message: 'Login successful', user: userWithoutPassword });
-});
-
-// ===== Global JSON Wrapper =====
+// Global JSON Response Wrapper
 app.use((req, res, next) => {
-  global.totalreq++;
+  global.totalreq += 1;
+
   const originalJson = res.json;
   res.json = function (data) {
-    if (typeof data === 'object' && req.path !== '/endpoints' && req.path !== '/set') {
-      return originalJson.call(this, { creator: settings.creatorName, ...data });
+    if (
+      typeof data === 'object' &&
+      req.path !== '/endpoints' &&
+      req.path !== '/set'
+    ) {
+      return originalJson.call(this, {
+        creator: settings.creatorName || "Created Using AldiXDCodeX",
+        ...data
+      });
     }
     return originalJson.call(this, data);
   };
+
   next();
 });
 
 app.get('/set', (req, res) => res.json(settings));
 
-// ===== Dynamic Route Loader =====
+// Dynamic route loader with sorted categories and endpoints
 let totalRoutes = 0;
 let rawEndpoints = {};
 const apiFolder = path.join(__dirname, 'api');
 
 fs.readdirSync(apiFolder).forEach(file => {
+  const fullPath = path.join(apiFolder, file);
   if (file.endsWith('.js')) {
     try {
-      const routes = require(path.join(apiFolder, file));
+      const routes = require(fullPath);
       const handlers = Array.isArray(routes) ? routes : [routes];
+
       handlers.forEach(route => {
         const { name, desc, category, path: routePath, run } = route;
+
         if (name && desc && category && routePath && typeof run === 'function') {
-          app.get(routePath.split('?')[0], run);
+          const cleanPath = routePath.split('?')[0];
+          app.get(cleanPath, run);
+
           if (!rawEndpoints[category]) rawEndpoints[category] = [];
           rawEndpoints[category].push({ name, desc, path: routePath });
+
           totalRoutes++;
+          console.log(chalk.hex('#55efc4')(`✔ Loaded: `) + chalk.hex('#ffeaa7')(`${cleanPath} (${file})`));
+        } else {
+          console.warn(chalk.bgRed.white(` ⚠ Skipped invalid route in ${file}`));
         }
       });
+
     } catch (err) {
-      console.error(`Error loading route from ${file}:`, err);
+      console.error(chalk.bgRed.white(` ❌ Error in ${file}: ${err.message}`));
     }
   }
 });
 
-const endpoints = Object.keys(rawEndpoints).sort().reduce((sorted, category) => {
-  sorted[category] = rawEndpoints[category].sort((a, b) => a.name.localeCompare(b.name));
-  return sorted;
-}, {});
+const endpoints = Object.keys(rawEndpoints)
+  .sort((a, b) => a.localeCompare(b))
+  .reduce((sorted, category) => {
+    sorted[category] = rawEndpoints[category].sort((a, b) => a.name.localeCompare(b.name));
+    return sorted;
+  }, {});
 
-app.get('/endpoints', (req, res) => res.json(endpoints));
+app.get('/endpoints', (req, res) => {
+  res.json(endpoints);
+});
 
-// ===== Default Route (index.html) =====
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get('/', (req, res) => {
+  try {
+  res.sendFile(path.join(__dirname, 'index.html'));
+  } catch (err) {
+  console.log(err)
+  }
+});
 
 // Start Server
 app.listen(PORT, () => {
-  console.log(chalk.bgGreen.black(` 🚀 Server running on port ${PORT} `));
+  console.log(chalk.bgGreen.black(` 🚀 Server is running on port ${PORT} `));
   console.log(chalk.bgCyan.black(` 📦 Total Routes Loaded: ${totalRoutes} `));
 });
 
-module.exports = app;1
+module.exports = app;
