@@ -17,56 +17,33 @@
   <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-  /* ===== Base Theme Variables (Light Theme) ===== */
+  /* ===== Black Theme Variables ===== */
   :root {
-    --primary: #6366f1; /* Main brand color */
-    --primary-dark: #4f46e5; /* Darker primary for hover/active */
-    --primary-light: #a5b4fc; /* Lighter primary for subtle accents */
-    --secondary: #818cf8; /* Secondary accent color */
-    --text-primary: #1e293b; /* Dark text/element color */
-    --text-secondary: rgba(0, 0, 0, 0.8); /* Even darker text/headings */
-    --bg-light: #ffffff; /* White background */
-    --bg-lighter: #f8fafc; /* Even lighter gray, almost white */
-    --text-gray: #64748b; /* General text color */
-    --border-color: #e2e8f0; /* Light border color */
-    --card-bg: #ffffff; /* Card background */
-    --card-hover-bg: #f5f9fc; /* Card hover background */
-    --input-bg: #ffffff; /* Input background */
-    --input-border: #e2e8f0; /* Input border */
-    --placeholder-color: #94a3b8; /* Placeholder color */
-    --modal-overlay: rgba(15, 23, 42, 0.75); /* Dark overlay */
-    --success: #10b981; /* Success feedback */
-    --warning: #f59e0b; /* Warning warning */
-    --danger: #ef4444; /* Danger feedback */
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Global transition */
-    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.03); /* Subtle shadow */
-    --shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); /* Medium shadow */
-    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.08); /* Stronger shadow */
-    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.06); /* Large shadow */
-    --border-radius: 10px; /* Slightly larger border radius */
-    --border-radius-sm: 6px; /* Slightly larger small border radius */
-  }
-
-  /* ===== Dark Theme Variables ===== */
-  body.dark-theme {
-    --primary: #8b5cf6; /* More vibrant purple for dark mode */
+    --primary: #8b5cf6; /* Vibrant purple */
     --primary-dark: #7c3aed;
-    --text-primary: #f1f5f9; /* Light text/element color */
+    --primary-light: #a78bfa;
+    --text-primary: #f1f5f9; /* Light text color */
     --text-secondary: #e2e8f0; /* Even lighter text/headings */
     --bg-light: #0a0a0a; /* Pure black background */
     --bg-lighter: #111827; /* Dark blue-black background */
-    --text-gray: #94a3b8; /* Brighter gray text color for better readability */ 
-    --border-color: #1e293b; /* Darker border color */
+    --text-gray: #94a3b8; /* Gray text color */
+    --border-color: #1e293b; /* Dark border color */
     --card-bg: #1a1a1a; /* Slightly lighter black for cards */
     --card-hover-bg: #252525; /* Card hover background */
     --input-bg: #0f172a; /* Input background */
     --input-border: #334155; /* Input border */
     --placeholder-color: #64748b; /* Placeholder color */
-    --modal-overlay: rgba(0, 0, 0, 0.9); /* Darker overlay */
-    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px 0 rgba(0, 0, 0, 0.3); /* Darker shadows */
+    --modal-overlay: rgba(0, 0, 0, 0.9); /* Dark overlay */
+    --success: #10b981; /* Success feedback */
+    --warning: #f59e0b; /* Warning */
+    --danger: #ef4444; /* Danger feedback */
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Global transition */
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px 0 rgba(0, 0, 0, 0.3); /* Dark shadows */
     --shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.6), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
     --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.7), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
     --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.8), 0 10px 10px -5px rgba(0, 0, 0, 0.6);
+    --border-radius: 10px;
+    --border-radius-sm: 6px;
   }
 
   /* ===== General Styles ===== */
@@ -84,7 +61,6 @@
     min-height: 100vh;
     -webkit-tap-highlight-color: transparent;
     line-height: 1.6;
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
     background-image: 
       radial-gradient(circle at 15% 50%, rgba(28, 28, 28, 0.03) 0%, transparent 25%),
       radial-gradient(circle at 85% 30%, rgba(28, 28, 28, 0.03) 0%, transparent 25%);
@@ -101,7 +77,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--bg-lighter); /* Use theme variable */
+    background: var(--bg-lighter);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -111,8 +87,8 @@
   }
   
   .loading-spinner-large {
-    border: 5px solid rgba(99, 102, 241, 0.1);
-    border-top: 5px solid var(--primary); /* Use theme variable */
+    border: 5px solid rgba(139, 92, 246, 0.1);
+    border-top: 5px solid var(--primary);
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -121,7 +97,7 @@
   }
   
   .loading-text {
-    color: var(--text-primary); /* Use theme variable */
+    color: var(--text-primary);
     font-size: 0.95rem; 
     margin-top: 10px;
     text-align: center;
@@ -132,15 +108,15 @@
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow-x: auto;
-    background: var(--card-bg); /* Use theme variable */
-    color: var(--text-primary); /* Use theme variable */
+    background: var(--card-bg);
+    color: var(--text-primary);
     padding: 1.25rem; 
     max-height: 400px;
     font-size: 0.9rem;    
     font-weight: 500;
     font-family: 'Fira Code', 'Poppins', monospace; 
     border-radius: var(--border-radius-sm);
-    border: 1px solid var(--border-color); /* Use theme variable */
+    border: 1px solid var(--border-color);
   }
 
   /* ===== Form Styles ===== */
@@ -148,7 +124,7 @@
     display: block;
     font-weight: 500;
     margin-bottom: 8px; 
-    color: var(--text-primary); /* Use theme variable */
+    color: var(--text-primary);
     font-size: 0.9rem; 
   }
 
@@ -176,7 +152,7 @@
   .modal-body form input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
   }
 
   #submitParamBtn {
@@ -223,7 +199,7 @@
 
   .loading-spinner {
     margin: 2rem auto 1rem auto; 
-    border: 3px solid rgba(99, 102, 241, 0.15); 
+    border: 3px solid rgba(139, 92, 246, 0.15); 
     border-top: 3px solid var(--primary);
     border-radius: 50%;
     width: 30px;
@@ -400,7 +376,6 @@
   .copy-section::-webkit-scrollbar-thumb:hover {
     background: var(--primary); 
   }
-
 
   .copy-section.active {
     display: flex;
@@ -604,7 +579,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, transparent, rgba(99, 102, 241, 0.05), transparent);
+    background: linear-gradient(45deg, transparent, rgba(139, 92, 246, 0.05), transparent);
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -817,7 +792,7 @@
   
   /* Navbar Styles */
 .navbar {
-  background: rgba(10, 10, 10, 0.8); 
+  background: rgba(10, 10, 10, 0.95); 
   border-bottom: 1px solid var(--border-color); 
   padding: 0.8rem 1rem; 
   position: fixed;
@@ -861,51 +836,6 @@ font-weight: 600;
   gap: 10px; 
 }
 
-.navbar-right .nav-icon {
-  color: var(--primary);
-  font-size: 1.4rem; 
-  text-decoration: none;
-  padding: 8px; 
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px; 
-  height: 40px; 
-  border-radius: 50%;
-  background: rgba(99, 102, 241, 0.1);
-}
-
-.navbar-right .nav-icon:hover {
-  color: white;
-  background: var(--primary-dark); 
-  transform: translateY(-3px); 
-  box-shadow: 0 8px 15px -5px var(--primary);
-}
-
-/* Theme Toggle Button */
-#themeToggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  outline: none;
-  font-size: 1.4rem;
-  color: var(--text-gray); 
-  padding: 8px;
-  width: 40px; 
-  height: 40px; 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: var(--transition);
-  background: var(--bg-light); 
-}
-
-#themeToggle:hover {
-  transform: translateY(-2px);
-}
-
 /* Method badges */
 .method-badge { 
   font-size: 0.8rem; 
@@ -917,26 +847,15 @@ font-weight: 600;
   color: #22c55e; 
 }
 
-.method-get { } 
-.method-post { }
-.method-put { }
-.method-delete { }
-.method-patch { }
-
-/* Subtle glow effect for important elements */
-.glow-effect {
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
-}
-
-/* Glassmorphism effect for cards in dark mode */
-body.dark-theme .api-card,
-body.dark-theme .modal-dialog {
+/* Glassmorphism effect for cards */
+.api-card,
+.modal-dialog {
   background: rgba(26, 26, 26, 0.8);
   backdrop-filter: blur(10px);
 }
 
 /* Animated gradient background for the body */
-body.dark-theme::before {
+body::before {
   content: '';
   position: fixed;
   top: 0;
@@ -972,6 +891,24 @@ input:focus {
 .pulse {
   animation: pulse 2s infinite;
 }
+
+/* Performance optimizations */
+.api-card {
+  will-change: transform, box-shadow;
+}
+
+.play-button {
+  will-change: transform, background-color;
+}
+
+/* Remove unnecessary transitions for performance */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
   </style>
 </head>
 <body>
@@ -984,11 +921,6 @@ input:focus {
     <div class="navbar-container">
       <div class="navbar-left">
         <span id="navname" class="brand">AldiXDCodeX Apie</span>
-      </div>
-      <div class="navbar-right">
-        <button id="themeToggle" class="nav-icon" aria-label="Toggle Theme">
-          <i class="fas fa-moon"></i> 
-        </button>
       </div>
     </div>
   </header>
@@ -1051,52 +983,29 @@ document.addEventListener('DOMContentLoaded', async () => {
   const paramForm = document.getElementById("paramForm");
   const submitBtn = document.getElementById("submitParamBtn");
   const modal = document.getElementById("apiResponseModal");
-  const modalBody = modal.querySelector('.modal-body'); // Get modal body element
+  const modalBody = modal.querySelector('.modal-body');
   const modalEndpointTitle = document.getElementById("modalEndpointTitle");
   const responseEl = document.getElementById("apiResponseContent");
   const loadingEl = document.getElementById("apiResponseLoading");
   const urlsSection = document.querySelector(".copy-section");
   const copyBtn = document.getElementById("copyBtn");
-  const themeToggle = document.getElementById("themeToggle");
-  const themeToggleIcon = themeToggle.querySelector("i");
   const currentYearSpan = document.getElementById("currentYear");
 
   let currentEndpoint = ""; 
   let settings = {}, apis = {};
-
-  // --- Theme Toggle Logic ---
-  // Set dark theme as default
-  document.body.classList.add('dark-theme');
-  localStorage.setItem('theme', 'dark-theme');
-  themeToggleIcon.classList.remove('fa-moon');
-  themeToggleIcon.classList.add('fa-sun');
-
-  themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-theme');
-    if (document.body.classList.contains('dark-theme')) {
-      localStorage.setItem('theme', 'dark-theme');
-      themeToggleIcon.classList.remove('fa-moon');
-      themeToggleIcon.classList.add('fa-sun');
-    } else {
-      localStorage.setItem('theme', 'light-theme');
-      themeToggleIcon.classList.remove('fa-sun');
-      themeToggleIcon.classList.add('fa-moon');
-    }
-  });
-  // --- End Theme Toggle Logic ---
 
   // Set current year in footer
   currentYearSpan.textContent = new Date().getFullYear();
 
   // Function to hide loading screen and show content
   const hideLoadingScreen = () => {
-  setTimeout(() => {
-    container.style.display = 'block';
-    loadingScreen.style.opacity = '0';
     setTimeout(() => {
-      loadingScreen.style.display = 'none';
-    }, 500); 
-  }, 1000)
+      container.style.display = 'block';
+      loadingScreen.style.opacity = '0';
+      setTimeout(() => {
+        loadingScreen.style.display = 'none';
+      }, 500); 
+    }, 800); // Reduced loading time
   }
 
   // Function to close modal and clean up content AFTER transition
@@ -1110,10 +1019,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       responseEl.innerHTML = ""; 
       responseEl.classList.add("d-none");
       urlsSection.classList.remove("active");
-      // MODIFIKASI INI: Hapus kelas penanda hasil.
       modalBody.classList.remove('hide-form-elements'); 
-      // MODIFIKASI INI: Pastikan form dan tombol submit (jika ada) terlihat saat modal dibuka kembali
-      // Kita TIDAK perlu set display: block di sini karena hide-form-elements akan mengontrolnya.
     }, transitionDurationMs); 
   };
 
@@ -1261,10 +1167,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const basePathForDisplay = currentEndpoint.split('?')[0]; 
       document.getElementById("copyEndpointText").textContent = window.location.origin + basePathForDisplay;
 
-      // MODIFIKASI INI: Pastikan form dan tombol submit terlihat saat modal dibuka
-      // dan hapus kelas hide-form-elements
-      modalBody.classList.remove('hide-form-elements'); // Show form and button when modal is opened
-      // We don't need to explicitly set display:block here, the removal of the class will handle it
+      modalBody.classList.remove('hide-form-elements'); 
 
       paramForm.innerHTML = "";
       responseEl.innerHTML = "";
@@ -1282,9 +1185,6 @@ document.addEventListener('DOMContentLoaded', async () => {
           paramForm.appendChild(label);
           paramForm.appendChild(input);
         });
-      } else {
-        // If there are no params, the form area will be empty, and the button will just submit.
-        // We ensure hide-form-elements is removed above.
       }
       
       modal.classList.add("active");
@@ -1300,7 +1200,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   submitBtn.addEventListener("click", async () => {
-    // Validasi input di sini jika diperlukan
     const formData = new FormData(paramForm);
     let isValid = true;
     for (const [key, value] of formData.entries()) {
@@ -1309,24 +1208,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         isValid = false;
         input.style.borderColor = "var(--danger)";
         input.focus();
-        // Jangan sembunyikan form jika validasi gagal
         loadingEl.style.display = "none";
         responseEl.classList.remove("d-none");
         responseEl.style.color = "var(--danger)";
         responseEl.textContent = "Please fill in all required fields.";
-        return; // Hentikan eksekusi
+        return;
       }
     }
 
-
-    // MODIFIKASI INI: Sembunyikan form dan tombol submit SEBELUM menampilkan loading
-    // Ini dieksekusi HANYA JIKA validasi di atas berhasil
     modalBody.classList.add('hide-form-elements'); 
-    loadingEl.style.display = "block"; // Show loading spinner
+    loadingEl.style.display = "block"; 
     
-    responseEl.classList.add("d-none"); // Hide previous response
-    responseEl.innerHTML = ""; // Clear previous response content
-    urlsSection.classList.remove("active"); // Hide copy URL section
+    responseEl.classList.add("d-none");
+    responseEl.innerHTML = "";
+    urlsSection.classList.remove("active");
 
     let newQueryParams = []; 
     
@@ -1384,8 +1279,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       responseEl.style.color = "var(--danger)"; 
       console.error("Fetch error:", error);
     } finally {
-      loadingEl.style.display = "none"; // Hide loading spinner
-      responseEl.classList.remove("d-none"); // Show response content
+      loadingEl.style.display = "none";
+      responseEl.classList.remove("d-none");
     }
   });
 
