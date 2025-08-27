@@ -61,7 +61,6 @@
     min-height: 100vh;
     -webkit-tap-highlight-color: transparent;
     line-height: 1.6;
-    transition: background-color 0.3s ease, color 0.3s ease;
     background-image: 
       radial-gradient(circle at 15% 50%, rgba(28, 28, 28, 0.03) 0%, transparent 25%),
       radial-gradient(circle at 85% 30%, rgba(28, 28, 28, 0.03) 0%, transparent 25%);
@@ -837,28 +836,6 @@ font-weight: 600;
   gap: 10px; 
 }
 
-.navbar-right .nav-icon {
-  color: var(--primary);
-  font-size: 1.4rem; 
-  text-decoration: none;
-  padding: 8px; 
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px; 
-  height: 40px; 
-  border-radius: 50%;
-  background: rgba(99, 102, 241, 0.1);
-}
-
-.navbar-right .nav-icon:hover {
-  color: white;
-  background: var(--primary-dark); 
-  transform: translateY(-3px); 
-  box-shadow: 0 8px 15px -5px var(--primary);
-}
-
 /* Method badges */
 .method-badge { 
   font-size: 0.8rem; 
@@ -932,118 +909,6 @@ input:focus {
     transition-duration: 0.01ms !important;
   }
 }
-
-/* User Menu Styles */
-.user-menu {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-gray);
-}
-
-.user-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-}
-
-.logout-btn {
-  background: none;
-  border: none;
-  color: var(--text-gray);
-  cursor: pointer;
-  padding: 5px;
-  border-radius: 4px;
-  transition: var(--transition);
-}
-
-.logout-btn:hover {
-  color: var(--danger);
-  background: rgba(239, 68, 68, 0.1);
-}
-
-/* Notification Styles */
-.notification {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 12px 20px;
-  border-radius: 6px;
-  color: white;
-  z-index: 10000;
-  font-weight: 500;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  display: none;
-}
-
-.notification.success {
-  background: #10b981;
-}
-
-.notification.error {
-  background: #ef4444;
-}
-
-.notification.info {
-  background: #3b82f6;
-}
-
-/* API Key Display */
-.api-key-container {
-  background: var(--card-bg);
-  padding: 1rem;
-  border-radius: var(--border-radius-sm);
-  border: 1px solid var(--border-color);
-  margin: 1rem 0;
-}
-
-.api-key-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-
-.api-key-title {
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-
-.api-key-value {
-  font-family: 'Fira Code', monospace;
-  background: var(--bg-lighter);
-  padding: 0.5rem;
-  border-radius: 4px;
-  overflow-x: auto;
-  margin: 0.5rem 0;
-}
-
-.copy-api-key {
-  background: var(--primary);
-  color: white;
-  border: none;
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  transition: var(--transition);
-}
-
-.copy-api-key:hover {
-  background: var(--primary-dark);
-}
   </style>
 </head>
 <body>
@@ -1057,20 +922,6 @@ input:focus {
       <div class="navbar-left">
         <span id="navname" class="brand">AldiXDCodeX Apie</span>
       </div>
-      <div class="navbar-right">
-        <div id="userMenu" class="user-menu" style="display: none;">
-          <div class="user-info">
-            <div class="user-avatar" id="userAvatar"></div>
-            <span id="userName"></span>
-          </div>
-          <button class="logout-btn" id="logoutBtn" title="Logout">
-            <i class="fas fa-sign-out-alt"></i>
-          </button>
-        </div>
-        <a href="login.html" id="loginBtn" class="nav-icon" aria-label="Login">
-          <i class="fas fa-user"></i> 
-        </a>
-      </div>
     </div>
   </header>
 
@@ -1081,18 +932,6 @@ input:focus {
         <h2 id="apiTitle">AldiXDCodeX Apiee</h2> 
       </div>
       <p>Fast and simple API for full WhatsApp Bot integration, with clear docs and powerful tools to boost your bot.</p> 
-      
-      <!-- API Key Display for logged in users -->
-      <div id="apiKeyContainer" class="api-key-container" style="display: none;">
-        <div class="api-key-header">
-          <div class="api-key-title">Your API Key</div>
-          <button class="copy-api-key" id="copyApiKey">
-            <i class="fas fa-copy"></i> Copy
-          </button>
-        </div>
-        <div class="api-key-value" id="apiKeyValue"></div>
-        <small>Use this API key to authenticate your requests</small>
-      </div>
     </section>
 
     <section class="content">
@@ -1135,8 +974,6 @@ input:focus {
     <p>&copy; <span id="currentYear"></span> Since 2023 AldiXDCodeX. All rights reserved.</p>
   </footer>
 
-  <div id="notification" class="notification"></div>
-
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
   const loadingScreen = document.getElementById('loading-screen');
@@ -1153,89 +990,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const urlsSection = document.querySelector(".copy-section");
   const copyBtn = document.getElementById("copyBtn");
   const currentYearSpan = document.getElementById("currentYear");
-  
-  // Auth elements
-  const userMenu = document.getElementById("userMenu");
-  const userName = document.getElementById("userName");
-  const userAvatar = document.getElementById("userAvatar");
-  const logoutBtn = document.getElementById("logoutBtn");
-  const loginBtn = document.getElementById("loginBtn");
-  const apiKeyContainer = document.getElementById("apiKeyContainer");
-  const apiKeyValue = document.getElementById("apiKeyValue");
-  const copyApiKey = document.getElementById("copyApiKey");
-  const notification = document.getElementById("notification");
 
   let currentEndpoint = ""; 
   let settings = {}, apis = {};
-  let currentUser = null;
 
   // Set current year in footer
   currentYearSpan.textContent = new Date().getFullYear();
-
-  // Check if user is logged in
-  const checkAuthStatus = () => {
-    const userData = localStorage.getItem('userData');
-    if (userData) {
-      try {
-        currentUser = JSON.parse(userData);
-        updateUserUI();
-      } catch (e) {
-        console.error('Error parsing user data:', e);
-        localStorage.removeItem('userData');
-      }
-    }
-  };
-
-  // Update UI based on auth status
-  const updateUserUI = () => {
-    if (currentUser) {
-      userMenu.style.display = 'flex';
-      loginBtn.style.display = 'none';
-      userName.textContent = currentUser.username;
-      userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
-      
-      // Show API key if available
-      if (currentUser.apikey) {
-        apiKeyContainer.style.display = 'block';
-        apiKeyValue.textContent = currentUser.apikey;
-      }
-    } else {
-      userMenu.style.display = 'none';
-      loginBtn.style.display = 'flex';
-      apiKeyContainer.style.display = 'none';
-    }
-  };
-
-  // Logout functionality
-  logoutBtn.addEventListener('click', () => {
-    localStorage.removeItem('userData');
-    currentUser = null;
-    updateUserUI();
-    showNotification('Logged out successfully', 'success');
-  });
-
-  // Copy API key functionality
-  copyApiKey.addEventListener('click', () => {
-    if (currentUser && currentUser.apikey) {
-      navigator.clipboard.writeText(currentUser.apikey).then(() => {
-        showNotification('API key copied to clipboard', 'success');
-      }).catch(err => {
-        console.error('Failed to copy API key: ', err);
-        showNotification('Failed to copy API key', 'error');
-      });
-    }
-  });
-
-  // Show notification
-  const showNotification = (message, type = 'info') => {
-    notification.textContent = message;
-    notification.className = `notification ${type}`;
-    notification.style.display = 'block';
-    
-    setTimeout(() => {
-      notification.style.display = 'none';
-    }, 3000);
-  };
 
   // Function to hide loading screen and show content
   const hideLoadingScreen = () => {
@@ -1245,7 +1005,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       setTimeout(() => {
         loadingScreen.style.display = 'none';
       }, 500); 
-    }, 800);
+    }, 800); // Reduced loading time
   }
 
   // Function to close modal and clean up content AFTER transition
@@ -1262,9 +1022,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       modalBody.classList.remove('hide-form-elements'); 
     }, transitionDurationMs); 
   };
-
-  // Check authentication status on page load
-  checkAuthStatus();
 
   try {
     const settingsResponse = await fetch("/set");
@@ -1481,15 +1238,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (newQueryParams.length > 0) {
         constructedUrl += '?' + newQueryParams.join('&');
-    }
-
-    // Add user API key to the request if user is logged in
-    if (currentUser && currentUser.apikey) {
-      if (constructedUrl.includes('?')) {
-        constructedUrl += `&apikey=${currentUser.apikey}`;
-      } else {
-        constructedUrl += `?apikey=${currentUser.apikey}`;
-      }
     }
 
     try {
