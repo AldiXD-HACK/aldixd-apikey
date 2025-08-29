@@ -66,6 +66,122 @@ const settings = {
   instagramLink: "https://whatsapp.com/channel/"
 };
 
+// User management
+const usersFilePath = path.join(__dirname, 'users.json');
+
+// Initialize users file if it doesn't exist
+if (!fs.existsSync(usersFilePath)) {
+  fs.writeFileSync(usersFilePath, JSON.stringify([]));
+}
+
+// Read users from file
+function readUsers() {
+  try {
+    const data = fs.readFileSync(usersFilePath, 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Error reading users file:', error);
+    return [];
+  }
+}
+
+// Write users to file
+function writeUsers(users) {
+  try {
+    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+  } catch (error) {
+    console.error('Error writing users file:', error);
+  }
+}
+
+// Generate random API key
+function generateApiKey() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let key = '';
+  for (let i = 0; i < 32; i++) {
+    key += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return key;
+}
+
+// Auth middleware
+function authenticate(req, res, next) {
+  const apiKey = req.query.apikey || req.headers['x-api-key'];
+  
+  if (!apiKey) {
+    return res.status(401).json({ error: 'API key required' });
+  }
+  
+  const users = readUsers();
+  const user = users.find(u => u.apikey === apiKey);
+  
+  if (!user) {
+    return res.status(401).json({ error: 'Invalid API key' });
+  }
+  
+  req.user = user;
+  next();
+}
+
+// Routes for authentication
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'login.html'));
+});
+
+app.get('/register', (req, res) => {
+  res.sendFile(path.join(__dirname, 'register.html'));
+});
+
+app.post('/register', (req, res) => {
+  const { username, password } = req.body;
+  
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Username and password are required' });
+  }
+  
+  const users = readUsers();
+  
+  // Check if user already exists
+  if (users.find(user => user.username === username)) {
+    return res.status(400).json({ error: 'Username already exists' });
+  }
+  
+  // Create new user
+  const newUser = {
+    username,
+    password, // In a real application, you should hash the password
+    apikey: generateApiKey(),
+    createdAt: new Date().toISOString()
+  };
+  
+  users.push(newUser);
+  writeUsers(users);
+  
+  res.json({ 
+    message: 'User registered successfully', 
+    apikey: newUser.apikey 
+  });
+});
+
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Username and password are required' });
+  }
+  
+  const users = readUsers();
+  const user = users.find(user => user.username === username && user.password === password);
+  
+  if (!user) {
+    return res.status(401).json({ error: 'Invalid username or password' });
+  }
+  
+  res.json({ 
+    message: 'Login successful', 
+    apikey: user.apikey 
+  });
+});
 
 // Global JSON Response Wrapper
 app.use((req, res, next) => {
@@ -76,7 +192,9 @@ app.use((req, res, next) => {
     if (
       typeof data === 'object' &&
       req.path !== '/endpoints' &&
-      req.path !== '/set'
+      req.path !== '/set' &&
+      !req.path.startsWith('/login') &&
+      !req.path.startsWith('/register')
     ) {
       return originalJson.call(this, {
         creator: settings.creatorName || "Created Using AldiXDCodeX",
@@ -108,7 +226,9 @@ fs.readdirSync(apiFolder).forEach(file => {
 
         if (name && desc && category && routePath && typeof run === 'function') {
           const cleanPath = routePath.split('?')[0];
-          app.get(cleanPath, run);
+          
+          // Apply authentication middleware to all API routes
+          app.get(cleanPath, authenticate, run);
 
           if (!rawEndpoints[category]) rawEndpoints[category] = [];
           rawEndpoints[category].push({ name, desc, path: routePath });
@@ -139,9 +259,9 @@ app.get('/endpoints', (req, res) => {
 
 app.get('/', (req, res) => {
   try {
-  res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
   } catch (err) {
-  console.log(err)
+    console.log(err)
   }
 });
 
