@@ -129,13 +129,13 @@ function generateApiKey() {
 // Auth middleware
 function authenticate(req, res, next) {
   // Skip authentication for certain routes
-  if (
-    req.path === '/' ||
-    req.path === '/set' ||
-    req.path === '/endpoints' ||
-    req.path === '/login' ||
-    req.path === '/register'
-  ) {
+  const publicRoutes = [
+    '/', '/set', '/endpoints', 
+    '/login', '/register', 
+    '/api/login', '/api/register'
+  ];
+  
+  if (publicRoutes.includes(req.path)) {
     return next();
   }
   
