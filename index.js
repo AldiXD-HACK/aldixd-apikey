@@ -6,9 +6,6 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
-// Import Firebase configuration
-const { db } = require('./firebase-config');
-
 const app = express();
 const PORT = process.env.PORT || 4000;
 
@@ -69,193 +66,6 @@ const settings = {
   instagramLink: "https://whatsapp.com/channel/"
 };
 
-// Generate random API key
-function generateApiKey() {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let key = '';
-  for (let i = 0; i < 32; i++) {
-    key += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return key;
-}
-
-// Gunakan middleware timeout
-app.use(timeoutMiddleware(10000)); // 10 detik timeout
-
-async function getUserByUsername(username) {
-  return withRetry(async () => {
-    const usersRef = db.collection('users');
-    const snapshot = await usersRef
-      .where('username', '==', username)
-      .limit(1)
-      .get();
-    
-    if (snapshot.empty) return null;
-    
-    return { id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
-  });
-}
-
-async function getUserByApiKey(apiKey) {
-  return withRetry(async () => {
-    const usersRef = db.collection('users');
-    const snapshot = await usersRef
-      .where('apikey', '==', apiKey)
-      .limit(1)
-      .get();
-    
-    if (snapshot.empty) return null;
-    
-    return { id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
-  });
-}
-
-async function createUser(userData) {
-  try {
-    const usersRef = db.collection('users');
-    const docRef = await usersRef.add(userData);
-    return { id: docRef.id, ...userData };
-  } catch (error) {
-    console.error('Error creating user:', error);
-    throw error;
-  }
-}
-
-async function updateUser(userId, updateData) {
-  try {
-    const userRef = db.collection('users').doc(userId);
-    await userRef.update(updateData);
-    return true;
-  } catch (error) {
-    console.error('Error updating user:', error);
-    throw error;
-  }
-}
-
-// Auth middleware
-function authenticate(req, res, next) {
-  // Skip authentication for certain routes
-  const publicRoutes = [
-    '/', '/set', '/endpoints', 
-    '/login', '/register', 
-    '/api/login', '/api/register'
-  ];
-  
-  if (publicRoutes.includes(req.path)) {
-    return next();
-  }
-  
-  const apiKey = req.query.apikey || req.headers['x-api-key'];
-  
-  if (!apiKey) {
-    return res.status(401).json({ error: 'API key required. Please register to get an API key.' });
-  }
-  
-  // Check API key against Firebase
-  getUserByApiKey(apiKey)
-    .then(user => {
-      if (!user) {
-        return res.status(401).json({ error: 'Invalid API key. Please check your API key or register again.' });
-      }
-      
-      req.user = user;
-      next();
-    })
-    .catch(error => {
-      console.error('Authentication error:', error);
-      res.status(500).json({ error: 'Internal server error during authentication' });
-    });
-}
-
-// Apply authentication middleware to all routes
-app.use(authenticate);
-
-// Routes for authentication
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'login.html'));
-});
-
-app.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname, 'register.html'));
-});
-
-app.post('/api/register', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    
-    if (!username || !password) {
-      return res.status(400).json({ error: 'Username and password are required' });
-    }
-    
-    if (username.length < 3) {
-      return res.status(400).json({ error: 'Username must be at least 3 characters long' });
-    }
-    
-    if (password.length < 6) {
-      return res.status(400).json({ error: 'Password must be at least 6 characters long' });
-    }
-    
-    // Check if user already exists
-    const existingUser = await getUserByUsername(username);
-    if (existingUser) {
-      return res.status(400).json({ error: 'Username already exists' });
-    }
-    
-    // Create new user
-    const newUser = {
-      username,
-      password, // Note: In production, you should hash passwords
-      apikey: generateApiKey(),
-      createdAt: new Date().toISOString(),
-      requestCount: 0
-    };
-    
-    const createdUser = await createUser(newUser);
-    
-    res.json({ 
-      success: true,
-      message: 'User registered successfully', 
-      apikey: createdUser.apikey,
-      username: createdUser.username
-    });
-  } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({ error: 'Internal server error during registration' });
-  }
-});
-
-app.post('/api/login', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    
-    if (!username || !password) {
-      return res.status(400).json({ error: 'Username and password are required' });
-    }
-    
-    const user = await getUserByUsername(username);
-    
-    if (!user || user.password !== password) {
-      return res.status(401).json({ error: 'Invalid username or password' });
-    }
-    
-    // Update request count and last login
-    await updateUser(user.id, {
-      requestCount: (user.requestCount || 0) + 1,
-      lastLogin: new Date().toISOString()
-    });
-    
-    res.json({ 
-      success: true,
-      message: 'Login successful', 
-      apikey: user.apikey,
-      username: user.username,
-      requestCount: user.requestCount + 1
-    });
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ error: 'Internal server error during login' });
-  }
-});
 
 // Global JSON Response Wrapper
 app.use((req, res, next) => {
@@ -266,9 +76,7 @@ app.use((req, res, next) => {
     if (
       typeof data === 'object' &&
       req.path !== '/endpoints' &&
-      req.path !== '/set' &&
-      !req.path.startsWith('/api/login') &&
-      !req.path.startsWith('/api/register')
+      req.path !== '/set'
     ) {
       return originalJson.call(this, {
         creator: settings.creatorName || "Created Using AldiXDCodeX",
@@ -288,49 +96,35 @@ let totalRoutes = 0;
 let rawEndpoints = {};
 const apiFolder = path.join(__dirname, 'api');
 
-// Function to load API routes
-function loadAPIRoutes() {
-  if (!fs.existsSync(apiFolder)) {
-    console.log(chalk.bgRed.white(` ❌ API folder not found: ${apiFolder}`));
-    return;
-  }
-  
-  fs.readdirSync(apiFolder).forEach(file => {
-    const fullPath = path.join(apiFolder, file);
-    if (file.endsWith('.js')) {
-      try {
-        // Clear require cache to ensure fresh module
-        delete require.cache[require.resolve(fullPath)];
-        const routes = require(fullPath);
-        const handlers = Array.isArray(routes) ? routes : [routes];
+fs.readdirSync(apiFolder).forEach(file => {
+  const fullPath = path.join(apiFolder, file);
+  if (file.endsWith('.js')) {
+    try {
+      const routes = require(fullPath);
+      const handlers = Array.isArray(routes) ? routes : [routes];
 
-        handlers.forEach(route => {
-          const { name, desc, category, path: routePath, run } = route;
+      handlers.forEach(route => {
+        const { name, desc, category, path: routePath, run } = route;
 
-          if (name && desc && category && routePath && typeof run === 'function') {
-            const cleanPath = routePath.split('?')[0];
-            
-            // Apply authentication middleware to all API routes
-            app.get(cleanPath, run);
+        if (name && desc && category && routePath && typeof run === 'function') {
+          const cleanPath = routePath.split('?')[0];
+          app.get(cleanPath, run);
 
-            if (!rawEndpoints[category]) rawEndpoints[category] = [];
-            rawEndpoints[category].push({ name, desc, path: routePath });
+          if (!rawEndpoints[category]) rawEndpoints[category] = [];
+          rawEndpoints[category].push({ name, desc, path: routePath });
 
-            totalRoutes++;
-            console.log(chalk.hex('#55efc4')(`✔ Loaded: `) + chalk.hex('#ffeaa7')(`${cleanPath} (${file})`));
-          } else {
-            console.warn(chalk.bgRed.white(` ⚠ Skipped invalid route in ${file}`));
-          }
-        });
+          totalRoutes++;
+          console.log(chalk.hex('#55efc4')(`✔ Loaded: `) + chalk.hex('#ffeaa7')(`${cleanPath} (${file})`));
+        } else {
+          console.warn(chalk.bgRed.white(` ⚠ Skipped invalid route in ${file}`));
+        }
+      });
 
-      } catch (err) {
-        console.error(chalk.bgRed.white(` ❌ Error in ${file}: ${err.message}`));
-      }
+    } catch (err) {
+      console.error(chalk.bgRed.white(` ❌ Error in ${file}: ${err.message}`));
     }
-  });
-}
-
-loadAPIRoutes();
+  }
+});
 
 const endpoints = Object.keys(rawEndpoints)
   .sort((a, b) => a.localeCompare(b))
@@ -345,10 +139,9 @@ app.get('/endpoints', (req, res) => {
 
 app.get('/', (req, res) => {
   try {
-    res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
   } catch (err) {
-    console.log(err);
-    res.status(500).send('Error loading page');
+  console.log(err)
   }
 });
 
@@ -356,7 +149,6 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(chalk.bgGreen.black(` 🚀 Server is running on port ${PORT} `));
   console.log(chalk.bgCyan.black(` 📦 Total Routes Loaded: ${totalRoutes} `));
-  console.log(chalk.hex('#ffeaa7')(` 🔥 Using Firebase for user management`));
 });
 
 module.exports = app;
