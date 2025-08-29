@@ -70,17 +70,36 @@ const settings = {
 const usersFilePath = path.join(__dirname, 'users.json');
 
 // Initialize users file if it doesn't exist
-if (!fs.existsSync(usersFilePath)) {
-  fs.writeFileSync(usersFilePath, JSON.stringify([]));
+function initializeUsersFile() {
+  try {
+    if (!fs.existsSync(usersFilePath)) {
+      fs.writeFileSync(usersFilePath, JSON.stringify([], null, 2));
+      console.log(chalk.hex('#55efc4')('✔ Created users.json file'));
+    }
+  } catch (error) {
+    console.error(chalk.bgRed.white(` ❌ Error creating users file: ${error.message}`));
+  }
 }
+
+initializeUsersFile();
 
 // Read users from file
 function readUsers() {
   try {
+    if (!fs.existsSync(usersFilePath)) {
+      return [];
+    }
+    
     const data = fs.readFileSync(usersFilePath, 'utf8');
+    
+    // Handle empty file
+    if (!data || data.trim() === '') {
+      return [];
+    }
+    
     return JSON.parse(data);
   } catch (error) {
-    console.error('Error reading users file:', error);
+    console.error(chalk.bgRed.white(` ❌ Error reading users file: ${error.message}`));
     return [];
   }
 }
@@ -89,8 +108,11 @@ function readUsers() {
 function writeUsers(users) {
   try {
     fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+    console.log(chalk.hex('#55efc4')(`✔ Users file updated with ${users.length} users`));
+    return true;
   } catch (error) {
-    console.error('Error writing users file:', error);
+    console.error(chalk.bgRed.white(` ❌ Error writing users file: ${error.message}`));
+    return false;
   }
 }
 
@@ -106,22 +128,36 @@ function generateApiKey() {
 
 // Auth middleware
 function authenticate(req, res, next) {
+  // Skip authentication for certain routes
+  if (
+    req.path === '/' ||
+    req.path === '/set' ||
+    req.path === '/endpoints' ||
+    req.path === '/login' ||
+    req.path === '/register'
+  ) {
+    return next();
+  }
+  
   const apiKey = req.query.apikey || req.headers['x-api-key'];
   
   if (!apiKey) {
-    return res.status(401).json({ error: 'API key required' });
+    return res.status(401).json({ error: 'API key required. Please register to get an API key.' });
   }
   
   const users = readUsers();
   const user = users.find(u => u.apikey === apiKey);
   
   if (!user) {
-    return res.status(401).json({ error: 'Invalid API key' });
+    return res.status(401).json({ error: 'Invalid API key. Please check your API key or register again.' });
   }
   
   req.user = user;
   next();
 }
+
+// Apply authentication middleware to all routes
+app.use(authenticate);
 
 // Routes for authentication
 app.get('/login', (req, res) => {
@@ -132,11 +168,19 @@ app.get('/register', (req, res) => {
   res.sendFile(path.join(__dirname, 'register.html'));
 });
 
-app.post('/register', (req, res) => {
+app.post('/api/register', (req, res) => {
   const { username, password } = req.body;
   
   if (!username || !password) {
     return res.status(400).json({ error: 'Username and password are required' });
+  }
+  
+  if (username.length < 3) {
+    return res.status(400).json({ error: 'Username must be at least 3 characters long' });
+  }
+  
+  if (password.length < 6) {
+    return res.status(400).json({ error: 'Password must be at least 6 characters long' });
   }
   
   const users = readUsers();
@@ -148,22 +192,30 @@ app.post('/register', (req, res) => {
   
   // Create new user
   const newUser = {
+    id: Date.now().toString(),
     username,
-    password, // In a real application, you should hash the password
+    password, // Note: In production, you should hash passwords
     apikey: generateApiKey(),
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
+    requestCount: 0
   };
   
   users.push(newUser);
-  writeUsers(users);
+  const writeSuccess = writeUsers(users);
+  
+  if (!writeSuccess) {
+    return res.status(500).json({ error: 'Failed to save user data' });
+  }
   
   res.json({ 
+    success: true,
     message: 'User registered successfully', 
-    apikey: newUser.apikey 
+    apikey: newUser.apikey,
+    username: newUser.username
   });
 });
 
-app.post('/login', (req, res) => {
+app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
   
   if (!username || !password) {
@@ -177,9 +229,17 @@ app.post('/login', (req, res) => {
     return res.status(401).json({ error: 'Invalid username or password' });
   }
   
+  // Update request count
+  user.requestCount = (user.requestCount || 0) + 1;
+  user.lastLogin = new Date().toISOString();
+  writeUsers(users);
+  
   res.json({ 
+    success: true,
     message: 'Login successful', 
-    apikey: user.apikey 
+    apikey: user.apikey,
+    username: user.username,
+    requestCount: user.requestCount
   });
 });
 
@@ -193,8 +253,8 @@ app.use((req, res, next) => {
       typeof data === 'object' &&
       req.path !== '/endpoints' &&
       req.path !== '/set' &&
-      !req.path.startsWith('/login') &&
-      !req.path.startsWith('/register')
+      !req.path.startsWith('/api/login') &&
+      !req.path.startsWith('/api/register')
     ) {
       return originalJson.call(this, {
         creator: settings.creatorName || "Created Using AldiXDCodeX",
@@ -214,37 +274,49 @@ let totalRoutes = 0;
 let rawEndpoints = {};
 const apiFolder = path.join(__dirname, 'api');
 
-fs.readdirSync(apiFolder).forEach(file => {
-  const fullPath = path.join(apiFolder, file);
-  if (file.endsWith('.js')) {
-    try {
-      const routes = require(fullPath);
-      const handlers = Array.isArray(routes) ? routes : [routes];
-
-      handlers.forEach(route => {
-        const { name, desc, category, path: routePath, run } = route;
-
-        if (name && desc && category && routePath && typeof run === 'function') {
-          const cleanPath = routePath.split('?')[0];
-          
-          // Apply authentication middleware to all API routes
-          app.get(cleanPath, authenticate, run);
-
-          if (!rawEndpoints[category]) rawEndpoints[category] = [];
-          rawEndpoints[category].push({ name, desc, path: routePath });
-
-          totalRoutes++;
-          console.log(chalk.hex('#55efc4')(`✔ Loaded: `) + chalk.hex('#ffeaa7')(`${cleanPath} (${file})`));
-        } else {
-          console.warn(chalk.bgRed.white(` ⚠ Skipped invalid route in ${file}`));
-        }
-      });
-
-    } catch (err) {
-      console.error(chalk.bgRed.white(` ❌ Error in ${file}: ${err.message}`));
-    }
+// Function to load API routes
+function loadAPIRoutes() {
+  if (!fs.existsSync(apiFolder)) {
+    console.log(chalk.bgRed.white(` ❌ API folder not found: ${apiFolder}`));
+    return;
   }
-});
+  
+  fs.readdirSync(apiFolder).forEach(file => {
+    const fullPath = path.join(apiFolder, file);
+    if (file.endsWith('.js')) {
+      try {
+        // Clear require cache to ensure fresh module
+        delete require.cache[require.resolve(fullPath)];
+        const routes = require(fullPath);
+        const handlers = Array.isArray(routes) ? routes : [routes];
+
+        handlers.forEach(route => {
+          const { name, desc, category, path: routePath, run } = route;
+
+          if (name && desc && category && routePath && typeof run === 'function') {
+            const cleanPath = routePath.split('?')[0];
+            
+            // Apply authentication middleware to all API routes
+            app.get(cleanPath, run);
+
+            if (!rawEndpoints[category]) rawEndpoints[category] = [];
+            rawEndpoints[category].push({ name, desc, path: routePath });
+
+            totalRoutes++;
+            console.log(chalk.hex('#55efc4')(`✔ Loaded: `) + chalk.hex('#ffeaa7')(`${cleanPath} (${file})`));
+          } else {
+            console.warn(chalk.bgRed.white(` ⚠ Skipped invalid route in ${file}`));
+          }
+        });
+
+      } catch (err) {
+        console.error(chalk.bgRed.white(` ❌ Error in ${file}: ${err.message}`));
+      }
+    }
+  });
+}
+
+loadAPIRoutes();
 
 const endpoints = Object.keys(rawEndpoints)
   .sort((a, b) => a.localeCompare(b))
@@ -261,7 +333,8 @@ app.get('/', (req, res) => {
   try {
     res.sendFile(path.join(__dirname, 'index.html'));
   } catch (err) {
-    console.log(err)
+    console.log(err);
+    res.status(500).send('Error loading page');
   }
 });
 
@@ -269,6 +342,7 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(chalk.bgGreen.black(` 🚀 Server is running on port ${PORT} `));
   console.log(chalk.bgCyan.black(` 📦 Total Routes Loaded: ${totalRoutes} `));
+  console.log(chalk.hex('#ffeaa7')(` 📁 Users file: ${usersFilePath}`));
 });
 
 module.exports = app;
