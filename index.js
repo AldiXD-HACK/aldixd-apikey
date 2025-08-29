@@ -79,47 +79,35 @@ function generateApiKey() {
   return key;
 }
 
-// Firebase User Management Functions
+// Gunakan middleware timeout
+app.use(timeoutMiddleware(10000)); // 10 detik timeout
+
 async function getUserByUsername(username) {
-  try {
+  return withRetry(async () => {
     const usersRef = db.collection('users');
-    const snapshot = await usersRef.where('username', '==', username).get();
+    const snapshot = await usersRef
+      .where('username', '==', username)
+      .limit(1)
+      .get();
     
-    if (snapshot.empty) {
-      return null;
-    }
+    if (snapshot.empty) return null;
     
-    let user = null;
-    snapshot.forEach(doc => {
-      user = { id: doc.id, ...doc.data() };
-    });
-    
-    return user;
-  } catch (error) {
-    console.error('Error getting user by username:', error);
-    throw error;
-  }
+    return { id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
+  });
 }
 
 async function getUserByApiKey(apiKey) {
-  try {
+  return withRetry(async () => {
     const usersRef = db.collection('users');
-    const snapshot = await usersRef.where('apikey', '==', apiKey).get();
+    const snapshot = await usersRef
+      .where('apikey', '==', apiKey)
+      .limit(1)
+      .get();
     
-    if (snapshot.empty) {
-      return null;
-    }
+    if (snapshot.empty) return null;
     
-    let user = null;
-    snapshot.forEach(doc => {
-      user = { id: doc.id, ...doc.data() };
-    });
-    
-    return user;
-  } catch (error) {
-    console.error('Error getting user by API key:', error);
-    throw error;
-  }
+    return { id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
+  });
 }
 
 async function createUser(userData) {
@@ -364,14 +352,11 @@ app.get('/', (req, res) => {
   }
 });
 
-if (process.env.VERCEL) {
-  // Mode Vercel → export sebagai handler
-  module.exports = app;
-} else {
-  // Mode Local → jalankan server biasa
-  app.listen(PORT, () => {
-    console.log(chalk.bgGreen.black(` 🚀 Server is running on port ${PORT} `));
-    console.log(chalk.bgCyan.black(` 📦 Total Routes Loaded: ${totalRoutes} `));
-    console.log(chalk.hex('#ffeaa7')(` 🔥 Using Firebase for user management`));
-  });
-}
+// Start Server
+app.listen(PORT, () => {
+  console.log(chalk.bgGreen.black(` 🚀 Server is running on port ${PORT} `));
+  console.log(chalk.bgCyan.black(` 📦 Total Routes Loaded: ${totalRoutes} `));
+  console.log(chalk.hex('#ffeaa7')(` 🔥 Using Firebase for user management`));
+});
+
+module.exports = app;
