@@ -14,6 +14,7 @@
     "ab-downloader": "^1.0.1",
     "async-g-i-s": "^1.5.5",
     "axios": "^1.6.8",
+    "firebase-admin": "^11.11.0",
     "body-parser": "^1.20.3",
     "chalk": "^4.1.2",
     "cheerio": "^1.0.0",
