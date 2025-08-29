@@ -6,6 +6,9 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
+// Import Firebase configuration
+const { db } = require('./firebase-config');
+
 const app = express();
 const PORT = process.env.PORT || 4000;
 
@@ -66,56 +69,6 @@ const settings = {
   instagramLink: "https://whatsapp.com/channel/"
 };
 
-// User management
-const usersFilePath = path.join(__dirname, 'users.json');
-
-// Initialize users file if it doesn't exist
-function initializeUsersFile() {
-  try {
-    if (!fs.existsSync(usersFilePath)) {
-      fs.writeFileSync(usersFilePath, JSON.stringify([], null, 2));
-      console.log(chalk.hex('#55efc4')('✔ Created users.json file'));
-    }
-  } catch (error) {
-    console.error(chalk.bgRed.white(` ❌ Error creating users file: ${error.message}`));
-  }
-}
-
-initializeUsersFile();
-
-// Read users from file
-function readUsers() {
-  try {
-    if (!fs.existsSync(usersFilePath)) {
-      return [];
-    }
-    
-    const data = fs.readFileSync(usersFilePath, 'utf8');
-    
-    // Handle empty file
-    if (!data || data.trim() === '') {
-      return [];
-    }
-    
-    return JSON.parse(data);
-  } catch (error) {
-    console.error(chalk.bgRed.white(` ❌ Error reading users file: ${error.message}`));
-    return [];
-  }
-}
-
-// Write users to file
-function writeUsers(users) {
-  try {
-    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-    console.log(chalk.hex('#55efc4')(`✔ Users file updated with ${users.length} users`));
-    return true;
-  } catch (error) {
-    console.error(chalk.bgRed.white(` ❌ Error writing users file: ${error.message}`));
-    return false;
-  }
-}
-
 // Generate random API key
 function generateApiKey() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -124,6 +77,71 @@ function generateApiKey() {
     key += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return key;
+}
+
+// Firebase User Management Functions
+async function getUserByUsername(username) {
+  try {
+    const usersRef = db.collection('users');
+    const snapshot = await usersRef.where('username', '==', username).get();
+    
+    if (snapshot.empty) {
+      return null;
+    }
+    
+    let user = null;
+    snapshot.forEach(doc => {
+      user = { id: doc.id, ...doc.data() };
+    });
+    
+    return user;
+  } catch (error) {
+    console.error('Error getting user by username:', error);
+    throw error;
+  }
+}
+
+async function getUserByApiKey(apiKey) {
+  try {
+    const usersRef = db.collection('users');
+    const snapshot = await usersRef.where('apikey', '==', apiKey).get();
+    
+    if (snapshot.empty) {
+      return null;
+    }
+    
+    let user = null;
+    snapshot.forEach(doc => {
+      user = { id: doc.id, ...doc.data() };
+    });
+    
+    return user;
+  } catch (error) {
+    console.error('Error getting user by API key:', error);
+    throw error;
+  }
+}
+
+async function createUser(userData) {
+  try {
+    const usersRef = db.collection('users');
+    const docRef = await usersRef.add(userData);
+    return { id: docRef.id, ...userData };
+  } catch (error) {
+    console.error('Error creating user:', error);
+    throw error;
+  }
+}
+
+async function updateUser(userId, updateData) {
+  try {
+    const userRef = db.collection('users').doc(userId);
+    await userRef.update(updateData);
+    return true;
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw error;
+  }
 }
 
 // Auth middleware
@@ -145,15 +163,20 @@ function authenticate(req, res, next) {
     return res.status(401).json({ error: 'API key required. Please register to get an API key.' });
   }
   
-  const users = readUsers();
-  const user = users.find(u => u.apikey === apiKey);
-  
-  if (!user) {
-    return res.status(401).json({ error: 'Invalid API key. Please check your API key or register again.' });
-  }
-  
-  req.user = user;
-  next();
+  // Check API key against Firebase
+  getUserByApiKey(apiKey)
+    .then(user => {
+      if (!user) {
+        return res.status(401).json({ error: 'Invalid API key. Please check your API key or register again.' });
+      }
+      
+      req.user = user;
+      next();
+    })
+    .catch(error => {
+      console.error('Authentication error:', error);
+      res.status(500).json({ error: 'Internal server error during authentication' });
+    });
 }
 
 // Apply authentication middleware to all routes
@@ -168,79 +191,82 @@ app.get('/register', (req, res) => {
   res.sendFile(path.join(__dirname, 'register.html'));
 });
 
-app.post('/api/register', (req, res) => {
-  const { username, password } = req.body;
-  
-  if (!username || !password) {
-    return res.status(400).json({ error: 'Username and password are required' });
+app.post('/api/register', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password are required' });
+    }
+    
+    if (username.length < 3) {
+      return res.status(400).json({ error: 'Username must be at least 3 characters long' });
+    }
+    
+    if (password.length < 6) {
+      return res.status(400).json({ error: 'Password must be at least 6 characters long' });
+    }
+    
+    // Check if user already exists
+    const existingUser = await getUserByUsername(username);
+    if (existingUser) {
+      return res.status(400).json({ error: 'Username already exists' });
+    }
+    
+    // Create new user
+    const newUser = {
+      username,
+      password, // Note: In production, you should hash passwords
+      apikey: generateApiKey(),
+      createdAt: new Date().toISOString(),
+      requestCount: 0
+    };
+    
+    const createdUser = await createUser(newUser);
+    
+    res.json({ 
+      success: true,
+      message: 'User registered successfully', 
+      apikey: createdUser.apikey,
+      username: createdUser.username
+    });
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({ error: 'Internal server error during registration' });
   }
-  
-  if (username.length < 3) {
-    return res.status(400).json({ error: 'Username must be at least 3 characters long' });
-  }
-  
-  if (password.length < 6) {
-    return res.status(400).json({ error: 'Password must be at least 6 characters long' });
-  }
-  
-  const users = readUsers();
-  
-  // Check if user already exists
-  if (users.find(user => user.username === username)) {
-    return res.status(400).json({ error: 'Username already exists' });
-  }
-  
-  // Create new user
-  const newUser = {
-    id: Date.now().toString(),
-    username,
-    password, // Note: In production, you should hash passwords
-    apikey: generateApiKey(),
-    createdAt: new Date().toISOString(),
-    requestCount: 0
-  };
-  
-  users.push(newUser);
-  const writeSuccess = writeUsers(users);
-  
-  if (!writeSuccess) {
-    return res.status(500).json({ error: 'Failed to save user data' });
-  }
-  
-  res.json({ 
-    success: true,
-    message: 'User registered successfully', 
-    apikey: newUser.apikey,
-    username: newUser.username
-  });
 });
 
-app.post('/api/login', (req, res) => {
-  const { username, password } = req.body;
-  
-  if (!username || !password) {
-    return res.status(400).json({ error: 'Username and password are required' });
+app.post('/api/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password are required' });
+    }
+    
+    const user = await getUserByUsername(username);
+    
+    if (!user || user.password !== password) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+    
+    // Update request count and last login
+    await updateUser(user.id, {
+      requestCount: (user.requestCount || 0) + 1,
+      lastLogin: new Date().toISOString()
+    });
+    
+    res.json({ 
+      success: true,
+      message: 'Login successful', 
+      apikey: user.apikey,
+      username: user.username,
+      requestCount: user.requestCount + 1
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Internal server error during login' });
   }
-  
-  const users = readUsers();
-  const user = users.find(user => user.username === username && user.password === password);
-  
-  if (!user) {
-    return res.status(401).json({ error: 'Invalid username or password' });
-  }
-  
-  // Update request count
-  user.requestCount = (user.requestCount || 0) + 1;
-  user.lastLogin = new Date().toISOString();
-  writeUsers(users);
-  
-  res.json({ 
-    success: true,
-    message: 'Login successful', 
-    apikey: user.apikey,
-    username: user.username,
-    requestCount: user.requestCount
-  });
 });
 
 // Global JSON Response Wrapper
@@ -342,7 +368,7 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(chalk.bgGreen.black(` 🚀 Server is running on port ${PORT} `));
   console.log(chalk.bgCyan.black(` 📦 Total Routes Loaded: ${totalRoutes} `));
-  console.log(chalk.hex('#ffeaa7')(` 📁 Users file: ${usersFilePath}`));
+  console.log(chalk.hex('#ffeaa7')(` 🔥 Using Firebase for user management`));
 });
 
 module.exports = app;
