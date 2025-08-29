@@ -364,4 +364,14 @@ app.get('/', (req, res) => {
   }
 });
 
-module.exports = app;
+if (process.env.VERCEL) {
+  // Mode Vercel → export sebagai handler
+  module.exports = app;
+} else {
+  // Mode Local → jalankan server biasa
+  app.listen(PORT, () => {
+    console.log(chalk.bgGreen.black(` 🚀 Server is running on port ${PORT} `));
+    console.log(chalk.bgCyan.black(` 📦 Total Routes Loaded: ${totalRoutes} `));
+    console.log(chalk.hex('#ffeaa7')(` 🔥 Using Firebase for user management`));
+  });
+}
