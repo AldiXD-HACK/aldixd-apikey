@@ -364,11 +364,4 @@ app.get('/', (req, res) => {
   }
 });
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(chalk.bgGreen.black(` 🚀 Server is running on port ${PORT} `));
-  console.log(chalk.bgCyan.black(` 📦 Total Routes Loaded: ${totalRoutes} `));
-  console.log(chalk.hex('#ffeaa7')(` 🔥 Using Firebase for user management`));
-});
-
 module.exports = app;
