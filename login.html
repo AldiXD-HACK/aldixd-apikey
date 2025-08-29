@@ -6,7 +6,7 @@
   <title>Login - AldiXDCodeX API</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
   /* ===== Black Theme Variables ===== */
   :root {
@@ -1051,9 +1051,14 @@ input:focus {
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
       const messageEl = document.getElementById('authMessage');
+      const submitBtn = document.querySelector('#loginForm button');
+      
+      // Show loading state
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
       
       try {
-        const response = await fetch('/login', {
+        const response = await fetch('/api/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -1063,25 +1068,32 @@ input:focus {
         
         const data = await response.json();
         
-        if (response.ok) {
+        if (response.ok && data.success) {
           messageEl.textContent = 'Login successful! Your API key: ' + data.apikey;
           messageEl.className = 'auth-message auth-success';
           messageEl.classList.remove('d-none');
           
           // Copy API key to clipboard
-          navigator.clipboard.writeText(data.apikey).then(() => {
+          try {
+            await navigator.clipboard.writeText(data.apikey);
             messageEl.textContent += ' (copied to clipboard)';
-          });
+          } catch (copyError) {
+            console.error('Failed to copy to clipboard:', copyError);
+          }
         } else {
           messageEl.textContent = data.error || 'Login failed';
           messageEl.className = 'auth-message auth-error';
           messageEl.classList.remove('d-none');
         }
       } catch (error) {
-        messageEl.textContent = 'An error occurred during login';
+        messageEl.textContent = 'An error occurred during login. Please try again.';
         messageEl.className = 'auth-message auth-error';
         messageEl.classList.remove('d-none');
         console.error('Login error:', error);
+      } finally {
+        // Reset button state
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Login';
       }
     });
   </script>
