@@ -163,7 +163,7 @@ module.exports = [
     name: "Check QRIS Status",
     desc: "Check QRIS Status Mutasi Qiospay",
     category: "Qiospay",
-    path: "/qiospay/cekstatus?apikey=&merchant=&keyorkut=",
+    path: "/qiospay/cekstatus?apikey=&merchant=&keyqiospay=",
     async run(req, res) {
       const { merchant, keyorkut, apikey } = req.query;
       if (!global.apikey.includes(apikey)) return res.json({ status: false, error: 'Apikey invalid' });
