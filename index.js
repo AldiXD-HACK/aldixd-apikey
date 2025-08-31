@@ -20,7 +20,7 @@ app.use(cors());
 app.use('/', express.static(path.join(__dirname, '/api')));
 
 app.get('/google8ba01f644037e8a3.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'google8ba01f644037e8a3.html'));
+  res.sendFile(path.join(__dirname, 'google2ef8d8e627565a66.html'));
 });
 
 // Global Helpers
