@@ -19,63 +19,61 @@
 
   /* ===== Base Theme Variables (Light Theme) ===== */
   :root {
-    --primary: #6366f1;
-    --primary-dark: #4f46e5;
-    --primary-light: #c7d2fe;
-    --secondary: #818cf8;
-    --accent: #f472b6;
-    --text-primary: #1e293b;
-    --text-secondary: #334155;
-    --bg-light: #ffffff;
-    --bg-lighter: #f8fafc;
+    --primary: #6366f1; /* Main brand color */
+    --primary-dark: #4f46e5; /* Darker primary for hover/active */
+    --primary-light: #a5b4fc; /* Lighter primary for subtle accents */
+    --secondary: #818cf8; /* Secondary accent color */
+    --accent: #f472b6; /* Accent color for special elements */
+    --text-primary: #1e293b; /* Dark text/element color */
+    --text-secondary: #334155; /* Even darker text/headings */
+    --bg-light: #ffffff; /* White background */
+    --bg-lighter: #f8fafc; /* Even lighter gray, almost white */
     --bg-gradient: linear-gradient(135deg, #f9fafb 0%, #f1f5f9 100%);
-    --text-gray: #64748b;
-    --border-color: #e2e8f0;
-    --card-bg: rgba(255, 255, 255, 0.9);
-    --card-hover-bg: rgba(255, 255, 255, 0.95);
-    --input-bg: rgba(255, 255, 255, 0.7);
-    --input-border: #e2e8f0;
-    --placeholder-color: #94a3b8;
-    --modal-overlay: rgba(15, 23, 42, 0.75);
-    --success: #10b981;
-    --warning: #f59e0b;
-    --danger: #ef4444;
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --text-gray: #64748b; /* General text color */
+    --border-color: #e2e8f0; /* Light border color */
+    --card-bg: rgba(255, 255, 255, 0.8); /* Card background with transparency */
+    --card-hover-bg: rgba(255, 255, 255, 0.95); /* Card hover background */
+    --input-bg: rgba(255, 255, 255, 0.7); /* Input background */
+    --input-border: #e2e8f0; /* Input border */
+    --placeholder-color: #94a3b8; /* Placeholder color */
+    --modal-overlay: rgba(15, 23, 42, 0.75); /* Dark overlay */
+    --success: #10b981; /* Success feedback */
+    --warning: #f59e0b; /* Warning warning */
+    --danger: #ef4444; /* Danger feedback */
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Global transition */
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    --border-radius: 16px;
-    --border-radius-sm: 12px;
-    --glass-bg: rgba(255, 255, 255, 0.25);
-    --glass-border: rgba(255, 255, 255, 0.18);
-    --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-    --card-glow: 0 10px 40px rgba(99, 102, 241, 0.15);
+    --border-radius: 16px; /* Larger border radius for modern look */
+    --border-radius-sm: 10px; /* Slightly larger small border radius */
+    --glass-bg: rgba(255, 255, 255, 0.25); /* Glass effect background */
+    --glass-border: rgba(255, 255, 255, 0.18); /* Glass effect border */
+    --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07); /* Card shadow */
   }
 
   /* ===== Dark Theme Variables ===== */
   body.dark-theme {
-    --text-primary: #f1f5f9;
-    --text-secondary: #e2e8f0;
-    --bg-light: #0f172a;
-    --bg-lighter: #1e293b;
+    --text-primary: #f1f5f9; /* Light text/element color */
+    --text-secondary: #e2e8f0; /* Even lighter text/headings */
+    --bg-light: #0f172a; /* Dark background */
+    --bg-lighter: #0f172a; /* Even darker background */
     --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    --text-gray: #94a3b8;
-    --border-color: #334155;
-    --card-bg: rgba(30, 41, 59, 0.8);
-    --card-hover-bg: rgba(30, 41, 59, 0.95);
-    --input-bg: rgba(15, 23, 42, 0.7);
-    --input-border: #334155;
-    --placeholder-color: #64748b;
-    --modal-overlay: rgba(0, 0, 0, 0.85);
+    --text-gray: #94a3b8; /* Brighter gray text color for better readability */ 
+    --border-color: #334155; /* Darker border color */
+    --card-bg: rgba(30, 41, 59, 0.7); /* Card background with transparency */
+    --card-hover-bg: rgba(30, 41, 59, 0.9); /* Card hover background */
+    --input-bg: rgba(15, 23, 42, 0.7); /* Input background */
+    --input-border: #334155; /* Input border */
+    --placeholder-color: #64748b; /* Placeholder color */
+    --modal-overlay: rgba(0, 0, 0, 0.85); /* Darker overlay */
     --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.1);
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
     --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-    --glass-bg: rgba(15, 23, 42, 0.3);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-    --card-glow: 0 10px 40px rgba(99, 102, 241, 0.2);
+    --glass-bg: rgba(15, 23, 42, 0.25); /* Glass effect background */
+    --glass-border: rgba(255, 255, 255, 0.1); /* Glass effect border */
+    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2); /* Card shadow */
   }
 
   /* ===== General Styles ===== */
@@ -89,12 +87,11 @@
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--bg-gradient);
     color: var(--text-primary);
-    padding: 0;
+    padding: 1.5rem;
     min-height: 100vh;
     -webkit-tap-highlight-color: transparent;
     line-height: 1.6;
     transition: background 0.5s ease, color 0.3s ease;
-    overflow-x: hidden;
   }
 
   .d-none {
@@ -152,7 +149,6 @@
     border: 1px solid var(--border-color);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    box-shadow: var(--shadow-sm);
   }
 
   /* ===== Form Styles ===== */
@@ -180,7 +176,6 @@
     min-width: 180px; 
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    box-shadow: var(--shadow-sm);
   }
 
   .modal-body form input::placeholder {
@@ -207,36 +202,19 @@
     width: 100%;
     margin-top: 1.25rem; 
     border-radius: var(--border-radius-sm);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 4px 6px rgba(99, 102, 241, 0.2);
     letter-spacing: 0.5px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  #submitParamBtn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: 0.5s;
-  }
-
-  #submitParamBtn:hover::before {
-    left: 100%;
   }
 
   #submitParamBtn:hover {
     background: linear-gradient(135deg, var(--primary-dark), var(--primary));
     transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 6px 12px rgba(99, 102, 241, 0.3);
   }
 
   #submitParamBtn:active {
     transform: translateY(0);
-    box-shadow: var(--shadow);
+    box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
   }
 
   .loading-spinner {
@@ -618,13 +596,13 @@
     border: 1px solid var(--glass-border);
     backdrop-filter: blur(12px) saturate(180%);
     -webkit-backdrop-filter: blur(12px) saturate(180%);
-    box-shadow: var(--card-shadow), var(--card-glow);
+    box-shadow: var(--card-shadow);
   }
 
   .api-card:hover {
     transform: translateY(-8px); 
     border-color: var(--primary-light); 
-    box-shadow: var(--shadow-lg), var(--card-glow);
+    box-shadow: var(--shadow-lg);
   }
 
   .api-card::before {
@@ -675,24 +653,7 @@
     gap: 8px; 
     border-radius: var(--border-radius-sm);
     flex-shrink: 0;
-    box-shadow: var(--shadow);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .play-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: 0.5s;
-  }
-
-  .play-button:hover::before {
-    left: 100%;
+    box-shadow: 0 4px 6px rgba(99, 102, 241, 0.2);
   }
 
   @keyframes cardEntrance {
@@ -736,12 +697,12 @@
 
   .play-button:hover {
     transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 6px 12px rgba(99, 102, 241, 0.3);
   }
 
   .play-button:active {
     transform: translateY(0);
-    box-shadow: var(--shadow);
+    box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
   }
 
   /* ===== Footer Styles ===== */
@@ -881,7 +842,7 @@
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   box-shadow: var(--shadow-sm);
-  transition: var(--transition);
+
 }
 
 .navbar-left span {
@@ -1057,75 +1018,10 @@ font-weight: 700;
     box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
   }
 }
-
-/* Subtle glow effects */
-.glow {
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
-}
-
-/* Enhanced glass effect */
-.glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-}
-
-/* Subtle hover effects */
-.hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hover-lift:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
-}
-
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(90deg, var(--primary), var(--accent));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-lighter);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--primary-light);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
-}
-
-/* Decorative elements */
-.decorative-circle {
-  position: absolute;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary-light), var(--accent));
-  opacity: 0.1;
-  filter: blur(20px);
-  z-index: -1;
-}
-
   </style>
 </head>
 <body>
   <div class="particles" id="particles"></div>
-  <div class="decorative-circle" style="width: 300px; height: 300px; top: -150px; right: -150px;"></div>
-  <div class="decorative-circle" style="width: 200px; height: 200px; bottom: -100px; left: -100px;"></div>
-  
   <div id="loading-screen">
     <div class="loading-spinner-large"></div>
     <div class="loading-text">Loading API Documentation...</div>
