@@ -1265,10 +1265,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div class="api-card-footer">
           <span class="endpoint-path">${api.path || ''}</span>
           <button class="play-button" 
-                  data-endpoint="${api.path || ''}" 
                   data-name="${api.name || 'Untitled API'}" 
                   data-description="${api.desc || 'No description provided.'}" 
                   data-method="${method}" 
+                  data-params='${JSON.stringify(extractParams(api.path) || [])}'> 
             <i class="fas fa-arrow-right"></i> Click
           </button>
         </div>
@@ -1290,7 +1290,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (trimmedPair) { 
         const key = trimmedPair.split('=')[0];
         if (key) {
-          params.push({
+          params.push(
             name: key,
             description: key 
           });
