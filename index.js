@@ -19,7 +19,7 @@ app.use(cors());
 // Static
 app.use('/', express.static(path.join(__dirname, '/api')));
 
-app.get('/google8ba01f644037e8a3.html', (req, res) => {
+app.get('/google2ef8d8e627565a66.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'google2ef8d8e627565a66.html'));
 });
 
