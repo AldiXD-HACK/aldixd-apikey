@@ -7,7 +7,7 @@ module.exports = {
   name: "IP Lookup",
   desc: "Mendapatkan informasi geolokasi berdasarkan alamat IP",
   category: "Tools",
-  path: "/ip/lookup",
+  path: "/ip/lookup?apikey=&ip=",
   
   async run(req, res) {
     const { apikey, ip } = req.query;
