@@ -165,12 +165,12 @@ module.exports = [
     category: "Qiospay",
     path: "/qiospay/cekstatus?apikey=&merchant=&keyqiospay=",
     async run(req, res) {
-      const { merchant, keyorkut, apikey } = req.query;
+      const { merchant, keyqiospay, apikey } = req.query;
       if (!global.apikey.includes(apikey)) return res.json({ status: false, error: 'Apikey invalid' });
       if (!merchant) return res.json({ status: false, error: 'Merchant ID is required' });
-      if (!keyorkut) return res.json({ status: false, error: 'Apikey Qiospay is required' });
+      if (!keyqiospay) return res.json({ status: false, error: 'Apikey Qiospay is required' });
       try {
-        const apiUrl = `https://qiospay.id/api/mutasi/qris/${merchant}/${keyorkut}`;
+        const apiUrl = `https://qiospay.id/api/mutasi/qris/${merchant}/${keyqiospay}`;
         const response = await axios.get(apiUrl);
         const result = await response.data;
         const latestTransaction = result.data && result.data.length > 0 ? result.data[0] : null;
