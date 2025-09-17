@@ -204,7 +204,7 @@ module.exports = [
     name: "Cek Mutasi QRIS",
     desc: "Cek Mutasi Qris Orderkuota",
     category: "Orderkuota",
-    path: "/orderkuota/mutasi?apikey=&username=&token=",
+    path: "/orderkuota/mutasiqr?apikey=&username=&token=",
     async run(req, res) {
       const { apikey, username, token } = req.query;
       if (!global.apikey.includes(apikey)) return res.json({ status: false, error: 'Apikey invalid' });
