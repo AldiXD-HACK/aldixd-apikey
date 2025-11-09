@@ -21,7 +21,7 @@ module.exports = [
   {
     name: "Get Produk Order Kuota",
     desc: "Get list produk dari Orkut",
-    category: "OrderKuota",
+    category: "Orderkuota",
     path: "/orderkuota/produk?apikey=&produk=",
     async run(req, res) {
       const { apikey, produk } = req.query;
