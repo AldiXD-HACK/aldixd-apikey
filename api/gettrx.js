@@ -4,7 +4,7 @@ module.exports = [
   {
     name: "Cek Status Order",
     desc: "Cek status Order",
-    category: "OrderKuota",
+    category: "Orderkuota",
     path: "/orderkuota/cekstatustrx?apikey=&kodeproduk=&target=&refid=&kodemerchantorkut=&pinorkut=&pworkut=",
     async run(req, res) {
       const { apikey, kodeproduk, target, refid, kodemerchantorkut, pinorkut, pworkut } = req.query;
