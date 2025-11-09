@@ -5,7 +5,7 @@ module.exports = [
     name: "Cek Status Order",
     desc: "Cek status Order Orkut",
     category: "Orderkuota",
-    path: "/orderkuota/cekstatustrx?kodeproduk=&target=&refid=&kodemerchantorkut=&pinorkut=&pworkut=",
+    path: "/orderkuota/cekstatustrx?apikey=&kodeproduk=&target=&refid=&kodemerchantorkut=&pinorkut=&pworkut=",
     async run(req, res) {
       const { apikey, kodeproduk, target, refid, kodemerchantorkut, pinorkut, pworkut } = req.query;
 
