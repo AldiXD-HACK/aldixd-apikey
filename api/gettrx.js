@@ -3,11 +3,11 @@ const fetch = require("node-fetch");
 module.exports = [
   {
     name: "Cek Status Order",
-    desc: "Cek status Order Produk",
+    desc: "Cek status Order",
     category: "OrderKuota",
-    path: "/orderkuota/cekstatustrx?apikey=&kodeproduk=&target=&refid=&kodemerchantorkut=&pinorkut=&pwordkut=",
+    path: "/orderkuota/cekstatustrx?apikey=&kodeproduk=&target=&refid=&kodemerchantorkut=&pinorkut=&pworkut=",
     async run(req, res) {
-      const { apikey, kodeproduk, target, refid, kodemerchantorkut, pinorkut, pwordkut } = req.query;
+      const { apikey, kodeproduk, target, refid, kodemerchantorkut, pinorkut, pworkut } = req.query;
 
       // Validasi APIKEY lokal
       if (!apikey || !global.apikey.includes(apikey)) {
@@ -15,16 +15,16 @@ module.exports = [
       }
 
       // cek parameter wajib
-      if (!kodeproduk || !target || !refid || !kodemerchantorkut || !pinorkut || !pwordkut) {
+      if (!kodeproduk || !target || !refid || !kodemerchantorkut || !pinorkut || !pworkut) {
         return res.json({
           status: false,
           error: "Parameter kurang lengkap!",
-          needed: ["kodeproduk", "target", "refid", "kodemerchantorkut", "pinorkut", "pwordkut"]
+          needed: ["kodeproduk", "target", "refid", "kodemerchantorkut", "pinorkut", "pworkut"]
         });
       }
 
       // URL API asli
-      const url = `https://h2h.okeconnect.com/trx?product=${kodeproduk}&dest=${target}&refID=${refid}&memberID=${kodemerchantorkut}&pin=${pinorkut}&password=${pwordkut}&check=1`;
+      const url = `https://h2h.okeconnect.com/trx?product=${kodeproduk}&dest=${target}&refID=${refid}&memberID=${kodemerchantorkut}&pin=${pinorkut}&password=${pworkut}&check=1`;
 
       try {
         const response = await fetch(url);
