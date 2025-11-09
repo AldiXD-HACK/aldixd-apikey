@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 
 // Fungsi membuat refID random
 function generateRefID() {
-  return "12" + Math.floor(Math.random() * 999999999);
+  return "CODEX" + Math.floor(Math.random() * 999999999);
 }
 
 module.exports = [
