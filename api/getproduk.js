@@ -9,7 +9,7 @@ module.exports = [
     name: "GetOrder",
     desc: "Create Order Produk OrderKuota",
     category: "Orderkuota",
-    path: "/orderkuota/getorder?kodeproduk=&target=&kodemerchantorkut=&pinorkut=&passwordorkut=",
+    path: "/orderkuota/getorder?apikey=&kodeproduk=&target=&kodemerchantorkut=&pinorkut=&passwordorkut=",
     async run(req, res) {
       const { apikey, kodeproduk, target, kodemerchantorkut, pinorkut, passwordorkut } = req.query;
 
