@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 
 // Fungsi membuat refID random
 function generateRefID() {
-  return "REF" + Math.floor(Math.random() * 999999999);
+  return "12" + Math.floor(Math.random() * 999999999);
 }
 
 module.exports = [
@@ -10,7 +10,7 @@ module.exports = [
     name: "Get Order",
     desc: "Create Order Produk Orderkuota",
     category: "Orderkuota",
-    path: "/orderkuota/getorder?apikey=&kodeproduk=&target=&kodemerchantorkut=&pinorkut=&passwororkut=",
+    path: "/orderkuota/getorder?apikey=&kodeproduk=&target=&kodemerchantorkut=&pinorkut=&passwordorkut=",
     async run(req, res) {
       const {
         apikey,
@@ -18,7 +18,7 @@ module.exports = [
         target,
         kodemerchantorkut,
         pinorkut,
-        passwororkut
+        passwordorkut
       } = req.query;
 
       // Validasi APIKEY
@@ -27,7 +27,7 @@ module.exports = [
       }
 
       // Validasi parameter
-      if (!kodeproduk || !target || !kodemerchantorkut || !pinorkut || !passwororkut) {
+      if (!kodeproduk || !target || !kodemerchantorkut || !pinorkut || !passwordorkut) {
         return res.json({
           status: false,
           error: "Parameter tidak lengkap!",
@@ -36,7 +36,7 @@ module.exports = [
             "target",
             "kodemerchantorkut",
             "pinorkut",
-            "passwororkut"
+            "passwordorkut"
           ]
         });
       }
@@ -51,7 +51,7 @@ module.exports = [
           `&refID=${refID}` +
           `&memberID=${kodemerchantorkut}` +
           `&pin=${pinorkut}` +
-          `&password=${passwororkut}`;
+          `&password=${passwordorkut}`;
 
         const response = await fetch(url);
         const text = await response.text(); // response plain text
@@ -63,7 +63,7 @@ module.exports = [
             dest: target,
             memberID: kodemerchantorkut,
             pin: pinorkut,
-            password: passwororkut,
+            password: passwordorkut,
             refID: refID
           },
           result_raw: text
